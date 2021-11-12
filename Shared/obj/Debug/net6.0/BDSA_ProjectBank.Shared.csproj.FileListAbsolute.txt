@@ -1,0 +1,12 @@
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\bin\Debug\net6.0\BDSA_ProjectBank.Shared.deps.json
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\bin\Debug\net6.0\BDSA_ProjectBank.Shared.dll
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\bin\Debug\net6.0\ref\BDSA_ProjectBank.Shared.dll
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\bin\Debug\net6.0\BDSA_ProjectBank.Shared.pdb
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\obj\Debug\net6.0\BDSA_ProjectBank.Shared.csproj.AssemblyReference.cache
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\obj\Debug\net6.0\BDSA_ProjectBank.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\obj\Debug\net6.0\BDSA_ProjectBank.Shared.AssemblyInfoInputs.cache
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\obj\Debug\net6.0\BDSA_ProjectBank.Shared.AssemblyInfo.cs
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\obj\Debug\net6.0\BDSA_ProjectBank.Shared.csproj.CoreCompileInputs.cache
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\obj\Debug\net6.0\BDSA_ProjectBank.Shared.dll
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\obj\Debug\net6.0\ref\BDSA_ProjectBank.Shared.dll
+C:\Users\tue\source\repos\BDSA_ProjectBank\Shared\obj\Debug\net6.0\BDSA_ProjectBank.Shared.pdb
