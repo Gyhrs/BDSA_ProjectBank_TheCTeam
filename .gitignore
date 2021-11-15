@@ -1,0 +1,6 @@
+bin/
+obj/
+Client/bin/*
+Client/bin/Debug/net6.0/BDSA_ProjectBank.Client.dll
+
+*.dll
