@@ -8,6 +8,14 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+##The files we axtually don't want
+../Client/bin
+../Client/obj
+../Server/bin
+../Server/obj
+../Shared/bin
+../Shared/obj
+
 # User-specific files
 *.rsuser
 *.suo
