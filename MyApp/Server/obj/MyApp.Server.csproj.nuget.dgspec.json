@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Server\\MyApp.Server.csproj": {}
+    "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Server\\MyApp.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Client\\MyApp.Client.csproj": {
+    "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Client\\MyApp.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Client\\MyApp.Client.csproj",
+        "projectUniqueName": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Client\\MyApp.Client.csproj",
         "projectName": "MyApp.Client",
-        "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Client\\MyApp.Client.csproj",
+        "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Client\\MyApp.Client.csproj",
         "packagesPath": "C:\\Users\\lasse\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Client\\obj\\",
+        "outputPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lasse\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -26,8 +26,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Shared\\MyApp.Shared.csproj": {
-                "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Shared\\MyApp.Shared.csproj"
+              "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Shared\\MyApp.Shared.csproj": {
+                "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Shared\\MyApp.Shared.csproj"
               }
             }
           }
@@ -90,14 +90,14 @@
         }
       }
     },
-    "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Server\\MyApp.Server.csproj": {
+    "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Server\\MyApp.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Server\\MyApp.Server.csproj",
+        "projectUniqueName": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Server\\MyApp.Server.csproj",
         "projectName": "MyApp.Server",
-        "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Server\\MyApp.Server.csproj",
+        "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Server\\MyApp.Server.csproj",
         "packagesPath": "C:\\Users\\lasse\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Server\\obj\\",
+        "outputPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lasse\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -112,11 +112,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Client\\MyApp.Client.csproj": {
-                "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Client\\MyApp.Client.csproj"
+              "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Client\\MyApp.Client.csproj": {
+                "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Client\\MyApp.Client.csproj"
               },
-              "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Shared\\MyApp.Shared.csproj": {
-                "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Shared\\MyApp.Shared.csproj"
+              "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Shared\\MyApp.Shared.csproj": {
+                "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Shared\\MyApp.Shared.csproj"
               }
             }
           }
@@ -180,14 +180,14 @@
         }
       }
     },
-    "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Shared\\MyApp.Shared.csproj": {
+    "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Shared\\MyApp.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Shared\\MyApp.Shared.csproj",
+        "projectUniqueName": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Shared\\MyApp.Shared.csproj",
         "projectName": "MyApp.Shared",
-        "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Shared\\MyApp.Shared.csproj",
+        "projectPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Shared\\MyApp.Shared.csproj",
         "packagesPath": "C:\\Users\\lasse\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam\\MyApp\\Shared\\obj\\",
+        "outputPath": "C:\\Users\\lasse\\Documents\\Programmering\\projects\\BDSA\\BDSA_ProjectBank_TheCTeam-1\\MyApp\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lasse\\AppData\\Roaming\\NuGet\\NuGet.Config"
