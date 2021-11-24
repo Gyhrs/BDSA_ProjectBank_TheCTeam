@@ -64,18 +64,8 @@ class Program
         app.MapControllers();
         app.MapFallbackToFile("index.html");
 
+        app.Seed();
+
         app.Run();
-    }
-
-
-
-    static IConfiguration LoadConfiguration()
-    {
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .AddUserSecrets<Program>();
-
-        return builder.Build();
     }
 }
