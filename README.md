@@ -37,8 +37,9 @@ dotnet ef migrations add InitialMigration -s MyApp/Server -p MyApp/Infrastructur
 
 ## Update DB with migration
 ```powershell
-dotnet ef database update -p MyApp/Infrastructure
+dotnet ef database update -p .\MyApp\Infrastructure\ -s .\MyApp\Server\
 ```
+
 ## NOW you can run it
 ```powershell
 dotnet run -p MyApp/Server
