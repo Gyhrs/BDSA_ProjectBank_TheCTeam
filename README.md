@@ -1,7 +1,7 @@
 # BDSA_ProjectBank_TheCTeam
 The C Team's BDSA project 2021 ITU
 
-## Install the Entity Framework global tool
+## First make sure you have installed the Entity Framework global tool
 
 ```powershell
 dotnet tool install --global dotnet-ef
@@ -24,6 +24,28 @@ dotnet user-secrets set "ConnectionStrings:StudyBank" "$connectionString"
 dotnet add package Microsoft.Extensions.Configuration.Json
 dotnet add package Microsoft.Extensions.Configuration.UserSecrets
 ```
+
+## Do dotnet build (in MyApp/Server
+```powershell
+dotnet build
+```
+
+## (If no migration)
+```powershell
+dotnet ef migrations add InitialMigration -s MyApp/Server -p MyApp/Infrastructure
+```
+
+## Update DB with migration
+```powershell
+dotnet ef database update -p MyApp/Infrastructure
+```
+## NOW you can run it
+```powershell
+dotnet run -p MyApp/Server
+```
+
+
+
 
 ## Settings
 
