@@ -15,9 +15,11 @@ namespace MyApp.Infrastructure
         public string Name { get; set; }
         public DateTime StartDate   { get; set; }
         public DateTime EndDate { get; set; }
+        
         public String? Description { get; set; }
         public List<Student>? Students { get; set; }
         public List<Supervisor>? Supervisors { get; set;}
         public User CreatedBy { get; set; }
+        
     }
 }
