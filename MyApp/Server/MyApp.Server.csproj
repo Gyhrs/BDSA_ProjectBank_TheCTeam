@@ -10,10 +10,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Client\MyApp.Client.csproj" />
+    <ProjectReference Include="..\Infrastructure\MyApp.Infrastructure.csproj" />
     <ProjectReference Include="..\Shared\MyApp.Shared.csproj" />
   </ItemGroup>
 

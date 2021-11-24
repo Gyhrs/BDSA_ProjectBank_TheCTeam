@@ -1,16 +1,36 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using MyApp.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
 
 // Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
+/*builder.Services.Configure<JwtBearerOptions>(
+    JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.TokenValidationParameters.NameClaimType = "name";
+    });*/
+
+
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+
+// Connect to server with connection string
+builder.Services.AddDbContext<StudyBankContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StudyBank")));
+builder.Services.AddScoped<IStudyBankContext, StudyBankContext>();
+//builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+
+
 
 var app = builder.Build();
 
