@@ -19,7 +19,7 @@ namespace MyApp.Infrastructure
         public String? Description { get; set; }
         public List<Student>? Students { get; set; }
         public List<Supervisor>? Supervisors { get; set;}
-        public User CreatedBy { get; set; }
+        public User? CreatedBy { get; set; }
 
         public List<Tag>? Tags { get; set; }
         

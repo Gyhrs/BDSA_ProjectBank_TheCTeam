@@ -8,7 +8,6 @@ namespace MyApp.Infrastructure
 {
     public class Supervisor : User
     {
-        public int SupervisorID { get; set; }
-        
+        public List<Project>? Projects { get; set; }
     }
 }

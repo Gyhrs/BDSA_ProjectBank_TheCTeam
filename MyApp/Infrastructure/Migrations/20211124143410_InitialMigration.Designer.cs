@@ -12,8 +12,8 @@ using MyApp.Infrastructure;
 namespace MyApp.Infrastructure.Migrations
 {
     [DbContext(typeof(StudyBankContext))]
-    [Migration("20211124142311_InitialMigration2")]
-    partial class InitialMigration2
+    [Migration("20211124143410_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,8 +32,8 @@ namespace MyApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                    b.Property<string>("CreatedByEmail")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -51,7 +51,7 @@ namespace MyApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
+                    b.HasIndex("CreatedByEmail");
 
                     b.ToTable("Projects");
                 });
@@ -68,26 +68,19 @@ namespace MyApp.Infrastructure.Migrations
 
             modelBuilder.Entity("MyApp.Infrastructure.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Email");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -95,6 +88,21 @@ namespace MyApp.Infrastructure.Migrations
                     b.ToTable("User");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                });
+
+            modelBuilder.Entity("ProjectSupervisor", b =>
+                {
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SupervisorsEmail")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProjectsId", "SupervisorsEmail");
+
+                    b.HasIndex("SupervisorsEmail");
+
+                    b.ToTable("ProjectSupervisor");
                 });
 
             modelBuilder.Entity("ProjectTag", b =>
@@ -122,17 +130,9 @@ namespace MyApp.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("ProjectId")
-                        .HasColumnType("int")
-                        .HasColumnName("Student_ProjectId");
-
-                    b.Property<int>("StudentID")
                         .HasColumnType("int");
 
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("StudentID")
-                        .IsUnique()
-                        .HasFilter("[StudentID] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("Student");
                 });
@@ -141,18 +141,6 @@ namespace MyApp.Infrastructure.Migrations
                 {
                     b.HasBaseType("MyApp.Infrastructure.User");
 
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SupervisorID")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("SupervisorID")
-                        .IsUnique()
-                        .HasFilter("[SupervisorID] IS NOT NULL");
-
                     b.HasDiscriminator().HasValue("Supervisor");
                 });
 
@@ -160,11 +148,24 @@ namespace MyApp.Infrastructure.Migrations
                 {
                     b.HasOne("MyApp.Infrastructure.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById")
+                        .HasForeignKey("CreatedByEmail");
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("ProjectSupervisor", b =>
+                {
+                    b.HasOne("MyApp.Infrastructure.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CreatedBy");
+                    b.HasOne("MyApp.Infrastructure.Supervisor", null)
+                        .WithMany()
+                        .HasForeignKey("SupervisorsEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProjectTag", b =>
@@ -184,23 +185,16 @@ namespace MyApp.Infrastructure.Migrations
 
             modelBuilder.Entity("MyApp.Infrastructure.Student", b =>
                 {
-                    b.HasOne("MyApp.Infrastructure.Project", null)
+                    b.HasOne("MyApp.Infrastructure.Project", "Project")
                         .WithMany("Students")
                         .HasForeignKey("ProjectId");
-                });
 
-            modelBuilder.Entity("MyApp.Infrastructure.Supervisor", b =>
-                {
-                    b.HasOne("MyApp.Infrastructure.Project", null)
-                        .WithMany("Supervisors")
-                        .HasForeignKey("ProjectId");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("MyApp.Infrastructure.Project", b =>
                 {
                     b.Navigation("Students");
-
-                    b.Navigation("Supervisors");
                 });
 #pragma warning restore 612, 618
         }

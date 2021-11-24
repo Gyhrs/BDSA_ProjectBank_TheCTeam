@@ -23,8 +23,6 @@ namespace MyApp.Infrastructure
         {
             modelBuilder.Entity<User>().HasIndex(e => e.Email).IsUnique();
 
-            modelBuilder.Entity<Student>().HasIndex(e => e.StudentID).IsUnique();
-            modelBuilder.Entity<Supervisor>().HasIndex(e => e.SupervisorID).IsUnique();
         }
     }
 }
