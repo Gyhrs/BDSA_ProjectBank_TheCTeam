@@ -1,13 +1,14 @@
 # BDSA_ProjectBank_TheCTeam
 The C Team's BDSA project 2021 ITU
+## How to run the program from "scratch"
 
-## First make sure you have installed the Entity Framework global tool
+### First make sure you have installed the Entity Framework global tool
 
 ```powershell
 dotnet tool install --global dotnet-ef
 ```
 
-## Run SQL Server in Docker Container
+### Run SQL Server in Docker Container
 
 ```powershell
 $password = New-Guid
@@ -16,7 +17,7 @@ $database = "StudyBank"
 $connectionString = "Server=localhost;Database=$database;User Id=sa;Password=$password"
 ```
 
-## Enable User Secrets
+### Enable User Secrets
 
 ```powershell
 dotnet user-secrets init
@@ -25,30 +26,31 @@ dotnet add package Microsoft.Extensions.Configuration.Json
 dotnet add package Microsoft.Extensions.Configuration.UserSecrets
 ```
 
-## Do dotnet build (in MyApp/Server
+### Do dotnet build (in MyApp/Server
 ```powershell
 dotnet build
 ```
 
-## (If no migration)
+### (If no migration)
 ```powershell
 dotnet ef migrations add InitialMigration -s MyApp/Server -p MyApp/Infrastructure
 ```
 
-## Update DB with migration
+### Update DB with migration
 ```powershell
 dotnet ef database update -p .\MyApp\Infrastructure\ -s .\MyApp\Server\
 ```
 
-## NOW you can run it
+### NOW you can run it
 ```powershell
 dotnet run -p MyApp/Server
 ```
 
 
 
+## Notes
 
-## Settings
+### Settings
 
 ```csharp
 var configuration = LoadConfiguration();
@@ -65,31 +67,31 @@ static IConfiguration LoadConfiguration()
 }
 ```
 
-## Startup project
+### Startup project
 
 ```bash
 dotnet add package Microsoft.EntityFrameworkCore.Design
 ```
 
-## Entities project
+### Entities project
 
 ```bash
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 ```
 
-## Add migration
+### Add migration
 
 ```bash
-dotnet ef migrations add InitialMigration
+dotnet ef migrations add InitialMigration -s <STARTUP PROJECT> -p <PROJECT>
 ```
 
-## Update database
+### Update database
 
 ```bash
-dotnet ef database update
+dotnet ef database update -s <STARTUP PROJECT> -p <PROJECT>
 ```
 
-## ComicsContext
+### ComicsContext
 
 ```csharp
 public ComicsContext(DbContextOptions<ComicsContext> options) : base(options) { }
@@ -103,7 +105,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 }
 ```
 
-## DesignTimeDbContextFactory
+### DesignTimeDbContextFactory
 
 ```csharp
 public class ComicsContextFactory : IDesignTimeDbContextFactory<ComicsContext>
@@ -126,7 +128,7 @@ public class ComicsContextFactory : IDesignTimeDbContextFactory<ComicsContext>
 }
 ```
 
-## Seed
+### Seed
 
 ```csharp
 public static void Seed(ComicsContext context)
