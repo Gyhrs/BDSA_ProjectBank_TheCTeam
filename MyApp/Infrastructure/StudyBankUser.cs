@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyApp.Infrastructure
 {
-    public abstract class User
+    public abstract class StudyBankUser
     {
         [EmailAddress]
         [Key]

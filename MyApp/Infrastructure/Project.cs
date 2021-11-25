@@ -11,7 +11,7 @@ namespace MyApp.Infrastructure
     {
         public int Id { get; set; }
         
-        [StringLength(50)]
+        [StringLength(100)]
         public string Name { get; set; }
         public DateTime StartDate   { get; set; }
         public DateTime EndDate { get; set; }
@@ -19,7 +19,7 @@ namespace MyApp.Infrastructure
         public String? Description { get; set; }
         public List<Student>? Students { get; set; }
         public List<Supervisor>? Supervisors { get; set;}
-        public User? CreatedBy { get; set; }
+        public StudyBankUser? CreatedBy { get; set; }
 
         public List<Tag>? Tags { get; set; }
         

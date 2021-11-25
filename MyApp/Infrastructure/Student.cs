@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyApp.Infrastructure
 {
-    public class Student : User
+    public class Student : StudyBankUser
     {
         [StringLength(50)]
         public string Program { get; set; }

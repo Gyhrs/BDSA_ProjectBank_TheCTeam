@@ -12,7 +12,7 @@ using MyApp.Infrastructure;
 namespace MyApp.Infrastructure.Migrations
 {
     [DbContext(typeof(StudyBankContext))]
-    [Migration("20211124143410_InitialMigration")]
+    [Migration("20211125135503_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,8 +43,8 @@ namespace MyApp.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");

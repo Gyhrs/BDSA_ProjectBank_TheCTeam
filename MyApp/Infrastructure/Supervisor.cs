@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyApp.Infrastructure
 {
-    public class Supervisor : User
+    public class Supervisor : StudyBankUser
     {
         public List<Project>? Projects { get; set; }
     }
