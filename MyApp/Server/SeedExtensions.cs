@@ -4,6 +4,8 @@ using MyApp.Infrastructure;
 using System;
 using System.Collections.Generic;
 
+namespace MyApp.Server;
+
 public static class SeedExtensions
 {
     public static IHost Seed(this IHost host)

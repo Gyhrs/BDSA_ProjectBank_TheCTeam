@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using MyApp.Infrastructure;
 
+namespace MyApp.Server;
+
 class Program
 {
 
@@ -17,6 +19,7 @@ class Program
         // Add services to the container.
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
 
         /*builder.Services.Configure<JwtBearerOptions>(
             JwtBearerDefaults.AuthenticationScheme, options =>
