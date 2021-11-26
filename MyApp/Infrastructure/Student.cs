@@ -15,3 +15,4 @@ namespace MyApp.Infrastructure
         public Project? Project { get; set; }
     }
 }
+

@@ -20,6 +20,7 @@ class Program
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
+
         /*builder.Services.Configure<JwtBearerOptions>(
             JwtBearerDefaults.AuthenticationScheme, options =>
             {
