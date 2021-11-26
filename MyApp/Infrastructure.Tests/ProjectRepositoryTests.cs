@@ -5,6 +5,7 @@ using MyApp.Shared;
 using Xunit;
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
+using System.Globalization;
 
 public class ProjectRepositoryTests : IDisposable
 {
@@ -39,8 +40,8 @@ public class ProjectRepositoryTests : IDisposable
             Description = "This is a amazing project working with talented people.",
             Id = 1,
             Name = "Blockchain",
-            StartDate = DateTime.Parse("26/11/2021"),
-            EndDate = DateTime.Parse("28/11/2021"),
+            StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Supervisors = new List<Supervisor> {u1, u2},
         };
 
@@ -50,8 +51,8 @@ public class ProjectRepositoryTests : IDisposable
             Description = "This is a amazing project working with talented people.",
             Id = 2,
             Name = "Algorithm",
-            StartDate = DateTime.Parse("26/11/2021"),
-            EndDate = DateTime.Parse("28/11/2021"),
+            StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Supervisors = new List<Supervisor> {u1, u2},
         };
 
@@ -61,8 +62,8 @@ public class ProjectRepositoryTests : IDisposable
             Description = "This is a amazing project working with talented people.",
             Id = 3,
             Name = "Supercomputer",
-            StartDate = DateTime.Parse("26/11/2021"),
-            EndDate = DateTime.Parse("28/11/2021"),
+            StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Supervisors = new List<Supervisor> {u1, u2},
         };
 
