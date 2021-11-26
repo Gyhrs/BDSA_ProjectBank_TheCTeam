@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using MyApp.Infrastructure;
 
+namespace MyApp.Server;
+
 class Program
 {
 
