@@ -1,0 +1,15 @@
+.project-box {
+    justify-content: space-evenly;
+    text-align: left;
+    width: 380px;
+    display: flex;
+    flex-direction: column;   
+    transition-duration: 0.3s;
+}
+
+.project-box:hover {
+    background-color: #43b4f3;
+    border-color: #43b4f3;
+    width: 400px;
+    box-shadow: -2px 2px 5px 1px rgba(0, 0, 0, 0.2);;
+}
