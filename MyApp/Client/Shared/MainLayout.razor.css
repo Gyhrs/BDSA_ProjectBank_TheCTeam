@@ -11,9 +11,9 @@ main {
 .top-row {
     color: #f3f3f3;
     background-color: #43b4f3;
-    border-bottom: 1px solid #d6d5d5;
+    box-shadow: -1px 1px 5px 0.5px rgba(0, 0, 0, 0.2);
     justify-content: space-between;
-    height: 3.5rem;
+    height: 4.2rem;
     display: flex;
     align-items: center;
 }
