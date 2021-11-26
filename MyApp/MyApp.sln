@@ -1,4 +1,5 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
+
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 16.0.0.0
@@ -12,6 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Infrastructure", "Inf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Tests", "Infrastructure.Tests\Infrastructure.Tests.csproj", "{AF9FCC9B-3DFA-4B6F-9958-CB76D4941FF4}"
 EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,7 @@ Global
 		{AF9FCC9B-3DFA-4B6F-9958-CB76D4941FF4}.Release|x64.Build.0 = Release|Any CPU
 		{AF9FCC9B-3DFA-4B6F-9958-CB76D4941FF4}.Release|x86.ActiveCfg = Release|Any CPU
 		{AF9FCC9B-3DFA-4B6F-9958-CB76D4941FF4}.Release|x86.Build.0 = Release|Any CPU
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
