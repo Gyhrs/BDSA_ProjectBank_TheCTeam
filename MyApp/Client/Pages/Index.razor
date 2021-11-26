@@ -1,4 +1,29 @@
 ﻿@page "/"
 
+@using MyApp.Shared
+@inject HttpClient Http
+
 <PageTitle>Index</PageTitle>
-<ProjectFeed></ProjectFeed>
+@if (projects != null)
+{
+    @foreach (var item in projects)
+    {
+        <h3>
+            @item.Name
+        </h3>
+        <p>
+            @item.Description
+        </p>
+    }
+} else {
+    <ProjectBox></ProjectBox>
+}
+
+@code {
+    private ProjectDTO[]? projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
+    }
+}

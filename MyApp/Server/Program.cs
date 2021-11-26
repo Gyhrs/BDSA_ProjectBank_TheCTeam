@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using MyApp.Infrastructure;
+using MyApp.Shared;
 
 namespace MyApp.Server;
 
@@ -35,7 +36,7 @@ class Program
         // Connect to server with connection string
         builder.Services.AddDbContext<StudyBankContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StudyBank")));
         builder.Services.AddScoped<IStudyBankContext, StudyBankContext>();
-        //builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+        builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 
 
