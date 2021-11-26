@@ -1,0 +1,8 @@
+.project-feed {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    margin: auto;
+    margin-bottom: 2px;
+}
