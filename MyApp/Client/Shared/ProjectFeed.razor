@@ -1,19 +1,42 @@
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using MyApp.Shared
+@attribute [Authorize]
+@inject HttpClient Http
+
 <div class="project-feed">
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
+    @if (projects != null)
+    {
+        @foreach (var item in projects)
+        {
+            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description"></ProjectBox>
+        }
+    }
+    else
+    {
+        <button class="button-like">CLIK ME</button>
+        <button class="button-like btn-highlighted">CLIK ME</button>
+        <input class="button-like" />
+
+
+        <PassiveTag TagName="Hej"></PassiveTag>
+
+        <SearchBar></SearchBar>
+    }
 </div>
+
+@code {
+    private ProjectDTO[]? projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}
