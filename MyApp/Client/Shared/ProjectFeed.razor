@@ -3,23 +3,23 @@
 
 <div class="project-feed">
     @if (projects != null)
-{
-    @foreach (var item in projects)
     {
-        <ProjectBox name="@item.Name" description="@item.Description"></ProjectBox>
+        @foreach (var item in projects)
+        {
+            <ProjectBox name="@item.Name" description="@item.Description"></ProjectBox>
+        }
     }
-}
-else
-{
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
+    else
+    {
+        <button class="button-like">CLIK ME</button>
+        <button class="button-like btn-highlighted">CLIK ME</button>
+        <input class="button-like" />
 
-    <button>CLIK ME</button>
-    <button class="button-like">CLIK ME</button>
-    <button class="button-like btn-highlighted">CLIK ME</button>
-    <button class="btn-highlighted button-like">CLIK ME</button>
-    <input class="button-like" />
-}
+
+        <PassiveTag TagName="Hej"></PassiveTag>
+
+        <SearchBar></SearchBar>
+    }
 </div>
 
 @code {

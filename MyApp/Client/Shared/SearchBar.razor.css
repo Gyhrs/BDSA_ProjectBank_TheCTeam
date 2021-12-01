@@ -1,0 +1,12 @@
+input {
+  outline: none;
+}
+
+#search-bnt {
+  width: 36px;
+  height: 36px;
+}
+
+#search-bar-field {
+  width: 333px;
+}
