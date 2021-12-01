@@ -130,6 +130,30 @@ a,
   color: #43b4f3;
 }
 
+.passiveTag {
+  font-weight: 300;
+
+  height: 34px;
+  padding-top: 2px;
+  min-width: 36px;
+
+  padding-left: 15px;
+  padding-right: 15px;
+
+  margin: 5px;
+
+  font-style: normal;
+  font-weight: 500;
+  color: #2c3536;
+
+  background: #fefefe;
+  background-color: #fefefe;
+
+  border-color: #2c3536;
+  border-width: 2px;
+  border-radius: 25px;
+}
+
 /* Layout and generale components CSS */
 
 .box-layout {
