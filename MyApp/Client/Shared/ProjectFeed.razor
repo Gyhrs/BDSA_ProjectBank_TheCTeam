@@ -1,19 +1,32 @@
+@using MyApp.Shared
+@inject HttpClient Http
+
 <div class="project-feed">
+    @if (projects != null)
+{
+    @foreach (var item in projects)
+    {
+        <ProjectBox name="@item.Name" description="@item.Description"></ProjectBox>
+    }
+}
+else
+{
     <ProjectBox></ProjectBox>
     <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
+
+    <button>CLIK ME</button>
+    <button class="button-like">CLIK ME</button>
+    <button class="button-like btn-highlighted">CLIK ME</button>
+    <button class="btn-highlighted button-like">CLIK ME</button>
+    <input class="button-like" />
+}
 </div>
+
+@code {
+    private ProjectDTO[]? projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
+    }
+}

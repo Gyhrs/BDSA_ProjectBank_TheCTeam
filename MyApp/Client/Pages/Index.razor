@@ -1,38 +1,4 @@
 ﻿@page "/"
-
 @using MyApp.Shared
-@inject HttpClient Http
-
 <PageTitle>Index</PageTitle>
-@if (projects != null)
-{
-    @foreach (var item in projects)
-    {
-        <h3>
-            @item.Name
-        </h3>
-        <p>
-            @item.Description
-        </p>
-    }
-}
-else
-{
-    <ProjectBox></ProjectBox>
-    <ProjectBox></ProjectBox>
-
-    <button>CLIK ME</button>
-    <button class="button-like">CLIK ME</button>
-    <button class="button-like btn-highlighted">CLIK ME</button>
-    <button class="btn-highlighted button-like">CLIK ME</button>
-    <input class="button-like" />
-}
-
-@code {
-    private ProjectDTO[]? projects;
-
-    protected override async Task OnInitializedAsync()
-    {
-        projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
-    }
-}
+<ProjectFeed></ProjectFeed>

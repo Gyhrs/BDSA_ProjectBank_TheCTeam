@@ -1,9 +1,7 @@
 .project-box {
   justify-content: space-evenly;
   text-align: left;
-
   width: 380px;
-  height: 260px;
   padding: 25px;
 
   /* flex-direction: column; */
@@ -13,12 +11,16 @@
 }
 
 .project-box:hover {
-  /*
-  background-color: #43b4f3;
-  border-color: #43b4f3;
-  */
-  width: 382px;
-  height: 262px;
-  padding: 26px;
+  background-color: #fefefebe;
+  border-color: #fefefebe;
+  width: 400px;
+  padding: 25px;
   box-shadow: -4px 4px 7px 1px rgba(0, 0, 0, 0.1);
+}
+
+.descriptionBox {
+  height: 3rem;
+  text-overflow: ellipsis;
+  white-space: initial;
+  overflow: hidden;
 }
