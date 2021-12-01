@@ -1,4 +1,7 @@
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MyApp.Shared
+@attribute [Authorize]
 @inject HttpClient Http
 
 <div class="project-feed">
@@ -6,7 +9,7 @@
     {
         @foreach (var item in projects)
         {
-            <ProjectBox name="@item.Name" description="@item.Description"></ProjectBox>
+            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description"></ProjectBox>
         }
     }
     else
@@ -27,6 +30,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
+        try
+        {
+            projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
     }
 }
