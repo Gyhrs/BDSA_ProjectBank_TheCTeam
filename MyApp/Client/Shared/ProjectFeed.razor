@@ -9,7 +9,7 @@
 {
     @foreach (var item in projects)
     {
-        <ProjectBox name="@item.Name" description="@item.Description"></ProjectBox>
+        <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description"></ProjectBox>
     }
 }
 else

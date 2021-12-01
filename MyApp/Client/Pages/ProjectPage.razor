@@ -1,1 +1,6 @@
-@page "/project"
+@page "/project/{id:int}"
+<ExpProjectBox id="@id"></ExpProjectBox>
+
+@code {
+    [Parameter] public int id {get; set;}
+}
