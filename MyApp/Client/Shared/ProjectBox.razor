@@ -4,15 +4,22 @@
     @if (CreatedBy != null)
     {
         <h5>@CreatedBy</h5>
+    } else 
+    {
+        <h5>No Author</h5>   
     }
-    <h5>No Author</h5>
     <br>
     <div class="descriptionBox">@description</div>
     <br>
+    @foreach (var tag in tags)
+    {
+        <PassiveTag TagName="@tag"></PassiveTag>
+    }
 </div>
 
 @code {
     [Parameter] public string name {get; set;}
-    [Parameter] public string? CreatedBy {get; set;}
+    [Parameter] public string CreatedBy {get; set;}
     [Parameter] public string description {get; set;}
+    public List<string> tags = new List<string>(){"123","123123"};
 }

@@ -1,4 +1,7 @@
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MyApp.Shared
+@attribute [Authorize]
 @inject HttpClient Http
 
 <div class="project-feed">
@@ -27,6 +30,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
+        try
+        {
+             projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
     }
 }
