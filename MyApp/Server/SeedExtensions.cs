@@ -23,46 +23,52 @@ public static class SeedExtensions
     {
         context.Database.Migrate();
 
-        if (!context.Projects.Any())
+
+        context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
+        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
+        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
+        context.Database.ExecuteSqlRaw("DELETE dbo.StudyBankUser");
+        context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
+        //context.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.Projects', RESEED, 0)");
+
+        
+        List<Project> projects = new List<Project>();
+        List<Supervisor> supervisors = new List<Supervisor>();
+
+
+        List<string> existingEmails = new List<string>();
+
+        for (int i = 0; i < 50; i++)
         {
-            List<Project> projects = new List<Project>();
-            List<Supervisor> supervisors = new List<Supervisor>();
-
-
-            List<string> existingEmails = new List<string>();
-
-            for (int i = 0; i < 50; i++)
-            {
-                supervisors.Add(RandomSupervisor(existingEmails));
-            }
-
-            for (int i = 0; i < 200; i++)
-            {
-                projects.Add(RandomProject(supervisors));
-            }
-
-            // foreach (var p in projects)
-            // {
-            //     Console.WriteLine("---- Project -----");
-
-            //     Console.WriteLine(p.Name);
-            //     Console.WriteLine(p.Description);
-            //     Console.WriteLine("By: " + p.CreatedBy.Name + " " + p.CreatedBy.Email);
-            //     Console.WriteLine("Startdate: " + p.StartDate.ToString("dd/MM/yyyy") + "\nEnd date: " + p.EndDate.ToString("dd/MM/yyyy"));
-            //     Console.WriteLine("Supervisors: ");
-            //     foreach (var s in p.Supervisors)
-            //     {
-            //         Console.WriteLine(s.Name + " " + s.Email);
-            //     }
-
-            //     Console.WriteLine();
-            // }
-
-            foreach (var p in projects) {
-                context.Projects.Add(p);
-            }
-            context.SaveChanges();
+            supervisors.Add(RandomSupervisor(existingEmails));
         }
+
+        for (int i = 0; i < 200; i++)
+        {
+            projects.Add(RandomProject(supervisors));
+        }
+
+        // foreach (var p in projects)
+        // {
+        //     Console.WriteLine("---- Project -----");
+
+        //     Console.WriteLine(p.Name);
+        //     Console.WriteLine(p.Description);
+        //     Console.WriteLine("By: " + p.CreatedBy.Name + " " + p.CreatedBy.Email);
+        //     Console.WriteLine("Startdate: " + p.StartDate.ToString("dd/MM/yyyy") + "\nEnd date: " + p.EndDate.ToString("dd/MM/yyyy"));
+        //     Console.WriteLine("Supervisors: ");
+        //     foreach (var s in p.Supervisors)
+        //     {
+        //         Console.WriteLine(s.Name + " " + s.Email);
+        //     }
+
+        //     Console.WriteLine();
+        // }
+
+        foreach (var p in projects) {
+            context.Projects.Add(p);
+        }
+        context.SaveChanges();
     }
 
     public static Project RandomProject(List<Supervisor> supervisors)
@@ -132,6 +138,7 @@ public static class SeedExtensions
             "ambitious",
             "clever",
             "fearless",
+            "stylish",
             "adventurous",
             "intelligent",
             "bright",
@@ -160,10 +167,10 @@ public static class SeedExtensions
 
         List<string> aboutYou = new List<string>
         {
-            "We expect you to be a " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + ". ",
-            "We seek a " + adjectives[0] + " and " + adjectives[2] + " student. ",
+            "We expect you to be " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + ". ",
+            "We seek " + adjectives[0] + " and " + adjectives[2] + " students. ",
             "Are you a " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + " individual? ",
-            "Do you see yourself as a " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + "? ",
+            "Do you see yourself as " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + "? ",
             adjectives[0] + ", " + adjectives[1] + ", " + adjectives[2] + ", " + adjectives[3] + ", " + adjectives[4] + ", " + adjectives[4] + "! These are just few of the attributes we expect you to have! "
         };
 
@@ -172,7 +179,7 @@ public static class SeedExtensions
 
         List<string> wannaWorkIn = new List<string>
         {
-            "Are you willing to be a part of a work environment where the people are " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + ", and passionate about " + buzzwords[0] + " and " + buzzwords[1] + "? ",
+            "Are you willing to be a part of a work environment where everyone is " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + ", and passionate about " + buzzwords[0] + " and " + buzzwords[1] + "? ",
             "We aim to develop a " + title + " and we want you to help us! Join " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + " people at " + company + ". ",
             "Do you have a thesis idea that is focusing either on " + buzzwords[0] + " or " + buzzwords[1] + "? Please do not hesitate to reach out! Your research does not necessarily have to fit perfectly into one of our projects - if you have a good idea and you are " +  adjectives[1] + " and " + adjectives[2] + ", we would love to hear it and help you realise it! ",
         };
@@ -225,7 +232,7 @@ public static class SeedExtensions
 
         Supervisor u = new Supervisor();
         List<string> firstnames = new List<string> { "Lasse", "Anton", "Nikoline", "Tue", "Philip", "Peter", "Asger", "Vilhelm", "Axel", "Lucas", "Alma", "Mille", "Dagmar", "Louise", "Sofie", "Sofia" };
-        List<string> surnames = new List<string> { "Klausen", "Burman", "Fuchs", "Bertelsen", "Cronval", "Gyrs", "Kjærgaard", "Hviid", "Andersen", "Birch", "Dyrholm" };
+        List<string> surnames = new List<string> { "Klausen", "Burman", "Fuchs", "Bertelsen", "Cronval", "Gyhrs", "Kjærgaard", "Hviid", "Andersen", "Birch", "Dyrholm" };
         List<string> domains = new List<string> { "@hotmail.com", "@gmail.com", "@outlook.com", "@outlook.dk"};
         List<string> final = new List<string>();
 
@@ -265,7 +272,7 @@ public static class SeedExtensions
         // Title is build up of 2 buzzwords and 1 ending.
         Random r = new Random();
 
-        List<string> buzzwords = new List<string> { "Rolling-Wave planning", "Agile and Lean", "Blockchain", "Performance enhancing", "NFT", "Database Management", "Maximizing", "Profit Obtaining", "Metaverse", "Photoscanning", "Research", "Development", "Algorithm", "API", "KTP", "MVC", "MVVM", "DNA", "Smart", "Web 3", "Wi-Fi", "Internet of things", "Internet of", "Backend", "Frontend", "Bugs", "Code", "HTML", "CSS", "Java", "C#", "C++", "Javascript", "Web", "Cache", "Golang", "gRPC", "Byzantine Generals Problem", "Debugging", "Deployment", "Chess", "Testing", "Test driven Development", "Documentation", "Domain", "Framework", "Git", "Github", "BitBucket", "REST", "HTTPS", "Information Architecture", "Language", "Minification", "Library", "Mobilefirst", "LINQ", "Data", "MySQL", "MongoDB", "PHP", "Operating System", "Plugin", "Responsive Design", "UX Design", "UI", "Version Control", "Web" };
+        List<string> buzzwords = new List<string> { "Rolling-Wave_planning", "Agile_and_Lean", "Blockchain", "Performance_enhancing", "NFT", "Database_Management", "Maximizing", "Profit_Obtaining", "Metaverse", "Photoscanning", "Research", "Development", "Algorithm", "API", "KTP", "MVC", "MVVM", "DNA", "Smart", "Web_3", "Wi-Fi", "Internet_of_things", "Backend", "Frontend", "Bugs", "Code", "HTML", "CSS", "Java", "C_", "C++", "Javascript", "Web", "Cache", "Golang", "gRPC", "Byzantine_Generals_Problem", "Debugging", "Deployment", "Chess", "Testing", "Test_Driven_Development", "Documentation", "Domain", "Framework", "Git", "Github", "BitBucket", "REST", "HTTPS", "Information_Architecture", "Language", "Minification", "Library", "Mobilefirst", "LINQ", "Data", "MySQL", "MongoDB", "PHP", "Operating_System", "Plugin", "Responsive_Design", "UX_Design", "Bug-fixing", "UI", "Version_Control", "Web" };
         List<string> endwords = new List<string> { "Study", "Thesis", "Activity", "Program", "Project", "Entrepreneurship" };
 
         List<string> final = new List<string>();
