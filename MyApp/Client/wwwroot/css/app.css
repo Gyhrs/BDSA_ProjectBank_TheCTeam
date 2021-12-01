@@ -66,13 +66,21 @@ h1:focus {
 
 /* Button CSS */
 
-button {
+.button-like {
   border-radius: 25px;
   border: none;
+  /* 
   padding-top: 6px;
   padding-bottom: 6px;
+  */
+
+  height: 34px;
+  padding-top: 2px;
+  min-width: 36px;
+
   padding-left: 15px;
   padding-right: 15px;
+
   margin: 5px;
 
   font-style: normal;
@@ -85,7 +93,7 @@ button {
 
   transition-duration: 0.3s;
 }
-button:hover {
+.button-like:hover {
   background: #ffffff;
   background-color: #ffffff;
   box-shadow: -3px 3px 5px 0.7px rgba(0, 0, 0, 0.15);
@@ -119,7 +127,7 @@ button:hover {
 
 a,
 .btn-link {
-  color: #0071c1;
+  color: #43b4f3;
 }
 
 /* Layout and generale components CSS */
