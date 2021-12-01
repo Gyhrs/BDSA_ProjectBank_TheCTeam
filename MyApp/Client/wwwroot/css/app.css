@@ -66,13 +66,21 @@ h1:focus {
 
 /* Button CSS */
 
-button {
+.button-like {
   border-radius: 25px;
   border: none;
+  /* 
   padding-top: 6px;
   padding-bottom: 6px;
+  */
+
+  height: 34px;
+  padding-top: 2px;
+  min-width: 36px;
+
   padding-left: 15px;
   padding-right: 15px;
+
   margin: 5px;
 
   font-style: normal;
@@ -83,6 +91,20 @@ button {
   background-color: #fefefe;
   box-shadow: -1px 1px 3px 0.5px rgba(0, 0, 0, 0.2);
 
+  transition-duration: 0.3s;
+}
+.button-like:hover {
+  background: #ffffff;
+  background-color: #ffffff;
+  box-shadow: -3px 3px 5px 0.7px rgba(0, 0, 0, 0.15);
+}
+
+.btn-highlighted {
+  color: #fff;
+  background: #43b4f3;
+  background-color: #43b4f3;
+  box-shadow: 0px 0px 10px 0.5px rgba(32, 194, 215, 0.438);
+  border-radius: 50px;
   transition-duration: 0.3s;
 }
 button:hover {
@@ -97,9 +119,6 @@ button:hover {
   background-color: #43b4f3;
   box-shadow: 0px 0px 10px 0.5px rgba(32, 194, 215, 0.438);
   border-radius: 50px;
-
-  transition-duration: 0.3s;
-}
 
 .btn-highlighted:hover {
   color: #dbf1ff;
@@ -119,7 +138,31 @@ button:hover {
 
 a,
 .btn-link {
-  color: #0071c1;
+  color: #43b4f3;
+}
+
+.passiveTag {
+  font-weight: 300;
+
+  height: 34px;
+  padding-top: 2px;
+  min-width: 36px;
+
+  padding-left: 15px;
+  padding-right: 15px;
+
+  margin: 5px;
+
+  font-style: normal;
+  font-weight: 500;
+  color: #2c3536;
+
+  background: #fefefe;
+  background-color: #fefefe;
+
+  border-color: #2c3536;
+  border-width: 2px;
+  border-radius: 25px;
 }
 
 /* Layout and generale components CSS */

@@ -1,15 +1,17 @@
 <div class="project-box mb-4 box-layout">
-
-    <h2> Frontend HTML Project </h2>
-    <h5> Author </h5>
+    <h2>@name</h2>
+    @if (CreatedBy != null)
+    {
+        <h5>@CreatedBy</h5>
+    }
+    <h5>No Author</h5>
     <br>
-    <p>Are you about to write your master’s thesis or a similar project and interested in exploring Frontend and HTML?
-        We're interested in working with you! Help us at GiraffeOmniSmooth AAT.</p>
+    <div class="descriptionBox">@description</div>
     <br>
-
-    @* <div> @for (int i = 0; i < 5; i++)
-        {
-        <p>Tag</p>
-        }</div> *@
-
 </div>
+
+@code {
+    [Parameter] public string name {get; set;}
+    [Parameter] public string? CreatedBy {get; set;}
+    [Parameter] public string description {get; set;}
+}
