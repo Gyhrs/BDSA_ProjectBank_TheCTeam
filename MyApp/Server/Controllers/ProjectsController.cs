@@ -40,9 +40,9 @@ public class ProjectsController : ControllerBase
         //  otherwise corresponding http code.
         return response switch
         {
-            State.Found => await result,
-            State.NotFound => new NotFoundResult(),
-            State.BadRequest => new BadRequestResult(),
+            Status.Found => await result,
+            Status.NotFound => new NotFoundResult(),
+            Status.BadRequest => new BadRequestResult(),
             _ => throw new NotSupportedException("bruh")
         };
     }
@@ -63,9 +63,9 @@ public class ProjectsController : ControllerBase
         return response switch
         {
             // Hmmmmmmmmm is this legal?
-            State.Found =>  Ok(await result),
-            State.NotFound => new NotFoundResult(),
-            State.BadRequest => new BadRequestResult(),
+            Status.Found =>  Ok(await result),
+            Status.NotFound => new NotFoundResult(),
+            Status.BadRequest => new BadRequestResult(),
             _ => throw new NotSupportedException("bruh")
         };
     }
@@ -85,9 +85,9 @@ public class ProjectsController : ControllerBase
         //  otherwise corresponding http code.
         return response switch
         {
-            State.Found => Ok(await result),
-            State.NotFound => new NotFoundResult(),
-            State.BadRequest => new BadRequestResult(),
+            Status.Found => Ok(await result),
+            Status.NotFound => new NotFoundResult(),
+            Status.BadRequest => new BadRequestResult(),
             _ => throw new NotSupportedException("bruh")
         };
     }
