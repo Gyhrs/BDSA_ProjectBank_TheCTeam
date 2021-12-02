@@ -22,14 +22,12 @@ public static class SeedExtensions
     private static void SeedProjects(StudyBankContext context)
     {
         context.Database.Migrate();
-
         context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
         context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
         context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
         context.Database.ExecuteSqlRaw("DELETE dbo.StudyBankUser");
         context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
         //context.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.Projects', RESEED, 0)");
-        
         List<Supervisor> supervisors = GenerateSupervisors(50);
         List<Project> projects = GenerateProjects(200, supervisors);
         List<Tag> tags = GetTags();
@@ -54,7 +52,6 @@ public static class SeedExtensions
         {
             context.Tags.Add(t);
         }
-
         context.SaveChanges();
     }
 
@@ -270,7 +267,6 @@ public static class SeedExtensions
         // Name is build up of 1 first name and 2 surnames
         Random r = new Random();
         Supervisor supervisor = new Supervisor();
-
         List<string> firstNames = new List<string> { "Lasse", "Anton", "Nikoline", "Tue", "Philip", "Peter", "Asger", "Vilhelm", "Axel", "Lucas", "Alma", "Mille", "Dagmar", "Louise", "Sofie", "Sofia" };
         List<string> surnames = new List<string> { "Klausen", "Burman", "Fuchs", "Bertelsen", "Cronval", "Gyhrs", "Kjærgaard", "Hviid", "Andersen", "Birch", "Dyrholm" };
         List<string> domains = new List<string> { "@hotmail.com", "@gmail.com", "@outlook.com", "@outlook.dk"};
@@ -316,7 +312,6 @@ public static class SeedExtensions
         
         return string.Join(" ", buzzwords) + " " + projectTypes[r.Next(0, projectTypes.Count - 1)];
     }
-
     /// <summary>
     /// Select two random buzzwords, returns a List<string>
     /// </summary>
