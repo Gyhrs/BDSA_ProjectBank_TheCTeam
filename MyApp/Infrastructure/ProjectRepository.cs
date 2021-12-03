@@ -51,11 +51,11 @@ public class ProjectRepository : IProjectRepository
         return await projects.FirstOrDefaultAsync();
     }
 
-    public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTagsAsync(List<string> tags)
+    public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTagsAsync(List<string> searchTags)
     {
         var projects = await (
                         from p in _context.Projects
-                        where p.Tags.Select(t => tags.Contains(t.Name)).Any()
+                        where p.Tags.Any(t => searchTags.Contains(t.Name)) // If any projecttag is contained in list of searchtags, return true
                         select new ProjectDTO(
                             p.Id,
                             p.Name,

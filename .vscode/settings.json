@@ -1,3 +1,4 @@
 {
+    "dotnet-test-explorer.testProjectPath": "**/*.sln",
     "razor.disableBlazorDebugPrompt": true
 }

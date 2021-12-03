@@ -1,8 +1,10 @@
+using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using Microsoft.OpenApi.Models;
 using MyApp.Infrastructure;
 using MyApp.Shared;
 
@@ -29,11 +31,18 @@ class Program
         builder.Services.AddScoped<IStudyBankContext, StudyBankContext>();
         builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
-        /*builder.Services.Configure<JwtBearerOptions>(
-        JwtBearerDefaults.AuthenticationScheme, options =>
+        // builder.Services.Configure<JwtBearerOptions>(
+        // JwtBearerDefaults.AuthenticationScheme, options =>
+        // {
+        //     options.TokenValidationParameters.NameClaimType = "name";
+        // });
+
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen( c =>
         {
-            options.TokenValidationParameters.NameClaimType = "name";
-        });*/
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyApp.Server", Version = "v1"});
+            c.UseInlineDefinitionsForEnums();
+        });
 
 
         var app = builder.Build();
@@ -41,6 +50,9 @@ class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseDeveloperExceptionPage();
             app.UseWebAssemblyDebugging();
         }
         else
