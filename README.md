@@ -43,7 +43,7 @@ dotnet ef database update -p .\MyApp\Infrastructure\ -s .\MyApp\Server\
 
 ### NOW you can run it
 ```powershell
-dotnet run -p MyApp/Server
+dotnet run --project MyApp/Server
 ```
 
 
