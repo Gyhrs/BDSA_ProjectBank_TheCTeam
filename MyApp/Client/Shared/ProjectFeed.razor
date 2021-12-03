@@ -33,7 +33,7 @@
     {
         try
         {
-            projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects");
+            projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects");
         }
         catch (AccessTokenNotAvailableException exception)
         {

@@ -6,6 +6,7 @@ using Xunit;
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 public class ProjectRepositoryTests : IDisposable
 {
@@ -34,6 +35,21 @@ public class ProjectRepositoryTests : IDisposable
             Name = "Lasse"
         };
 
+        Tag t1 = new Tag
+        {
+            Name = "UI",
+        };
+
+        Tag t2 = new Tag
+        {
+            Name = "Business",
+        };
+
+        Tag t3 = new Tag
+        {
+            Name = "Consulting",
+        };
+
         Project p1 = new Project
         {
             CreatedBy = u1,
@@ -42,10 +58,11 @@ public class ProjectRepositoryTests : IDisposable
             Name = "Blockchain",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> {u1, u2},
+            Supervisors = new List<Supervisor> { u1, u2 },
+            Tags = new List<Tag> { t1, t2 }
         };
 
-         Project p2 = new Project
+        Project p2 = new Project
         {
             CreatedBy = u1,
             Description = "This is a amazing project working with talented people.",
@@ -53,10 +70,11 @@ public class ProjectRepositoryTests : IDisposable
             Name = "Algorithm",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> {u1, u2},
+            Supervisors = new List<Supervisor> { u1, u2 },
+            Tags = new List<Tag> { t3 }
         };
 
-         Project p3 = new Project
+        Project p3 = new Project
         {
             CreatedBy = u1,
             Description = "This is a amazing project working with talented people.",
@@ -64,13 +82,25 @@ public class ProjectRepositoryTests : IDisposable
             Name = "Supercomputer",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> {u1, u2},
+            Supervisors = new List<Supervisor> { u1, u2 },
+            Tags = new List<Tag> { t1, t3 }
+        };
+
+        Project p4 = new Project
+        {
+            CreatedBy = u1,
+            Description = "This is a amazing project working with talented people.",
+            Id = 4,
+            Name = "Blockchain",
+            StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Supervisors = new List<Supervisor> { u1, u2 },
         };
 
         context.Projects.AddRange(
-            p1, p2, p3
+            p1, p2, p3, p4
         );
-        
+
         context.SaveChanges();
 
         _context = context;
@@ -78,10 +108,10 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public void ReadAsync_Returns_All_Projects()
+    public void GetAllProjectsAsync_Returns_All_Projects()
     {
         // Arrange
-        var expected = 3;
+        var expected = 4;
 
         // Act
         var list = _repository.GetAllProjectsAsync();
@@ -91,7 +121,59 @@ public class ProjectRepositoryTests : IDisposable
         Assert.Equal(expected, actual);
     }
 
-     public void Dispose()
+    [Theory]
+    [InlineData(1, "Blockchain")]
+    [InlineData(2, "Algorithm")]
+    [InlineData(3, "Supercomputer")]
+    public void GetProjectFromIDAsync_Returns_Correct_Project(int id, string name)
+    {
+        // Arrange
+        var expected = name;
+
+        // Act
+        var actual = _repository.GetProjectFromIDAsync(id).Result.Name;
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData("UI", 2)]
+    [InlineData("Business", 1)]
+    [InlineData("Consulting", 2)]
+    [InlineData("Consulting#Business", 3)]
+    [InlineData("Consulting#Business#UI", 3)]
+    [InlineData("Fast", 0)]
+
+    public void GetProjectsFromTagsAsync_Returns_Correct_Projects(string tags, int expected)
+    {
+        // Arrange
+        var list = tags.Split("#");
+
+        // Act
+        var actual = _repository.GetProjectsFromTagsAsync(list.ToList()).Result.Count;
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(2, "Blockchain")]
+    [InlineData(1, "Algorithm")]
+    [InlineData(1, "Supercomputer")]
+    public void GetProjectsFromNameAsync_Returns_Correct_Projects(int count, string name)
+    {
+        // Arrange
+        var expected = count;
+
+        // Act
+        var actual = _repository.GetProjectsFromNameAsync(name).Result.Count;
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    public void Dispose()
     {
         _context.Dispose();
     }
