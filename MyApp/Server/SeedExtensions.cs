@@ -22,92 +22,129 @@ public static class SeedExtensions
     private static void SeedProjects(StudyBankContext context)
     {
         context.Database.Migrate();
-
-
         context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
         context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
         context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
         context.Database.ExecuteSqlRaw("DELETE dbo.StudyBankUser");
         context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
         //context.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.Projects', RESEED, 0)");
+        List<Supervisor> supervisors = GenerateSupervisors(50);
+        List<Project> projects = GenerateProjects(200, supervisors);
+        List<Tag> tags = GetTags();
+
+        Random r = new Random();
 
         
-        List<Project> projects = new List<Project>();
-        List<Supervisor> supervisors = new List<Supervisor>();
-
-
-        List<string> existingEmails = new List<string>();
-
-        for (int i = 0; i < 50; i++)
+        foreach (var p in projects) 
         {
-            supervisors.Add(RandomSupervisor(existingEmails));
-        }
+            // Select 1-8 random tags for the project
+            for (int i = 0; i < r.Next(1, 8); i++)
+            {
+                Tag t = tags[r.Next(0, tags.Count - 1)];
+                p.Tags.Add(t);
+                t.Projects.Add(p);
+            }
 
-        for (int i = 0; i < 200; i++)
-        {
-            projects.Add(RandomProject(supervisors));
-        }
-
-        // foreach (var p in projects)
-        // {
-        //     Console.WriteLine("---- Project -----");
-
-        //     Console.WriteLine(p.Name);
-        //     Console.WriteLine(p.Description);
-        //     Console.WriteLine("By: " + p.CreatedBy.Name + " " + p.CreatedBy.Email);
-        //     Console.WriteLine("Startdate: " + p.StartDate.ToString("dd/MM/yyyy") + "\nEnd date: " + p.EndDate.ToString("dd/MM/yyyy"));
-        //     Console.WriteLine("Supervisors: ");
-        //     foreach (var s in p.Supervisors)
-        //     {
-        //         Console.WriteLine(s.Name + " " + s.Email);
-        //     }
-
-        //     Console.WriteLine();
-        // }
-
-        foreach (var p in projects) {
             context.Projects.Add(p);
+        }
+
+        foreach (var t in tags)
+        {
+            context.Tags.Add(t);
         }
         context.SaveChanges();
     }
 
-    public static Project RandomProject(List<Supervisor> supervisors)
+    /// <summary>
+    /// Build a specified number of supervisors
+    /// </summary>
+    private static List<Supervisor> GenerateSupervisors(int amount)
     {
-        Project p = new Project();
-        Random r = new Random();
+        List<Supervisor> supervisors = new List<Supervisor>();
+        List<string> existingEmails = new List<string>();
 
-
-        // Create random title, start/end date and CreatedBy Supervisor
-        p.Name = RandomTitle();
-        p.StartDate = DateTime.Parse("1/2/2022");
-        p.EndDate = DateTime.Parse("24/6/2022");
-        p.CreatedBy = supervisors[r.Next(0, supervisors.Count - 1)];
-        p.Supervisors = new List<Supervisor>();
-
-        // Create 1-3 random super visor for the project
-        for (int i = 0; i < r.Next(1, 3); i++)
+        for (int i = 0; i < amount; i++)
         {
-            p.Supervisors.Add(supervisors[r.Next(0, supervisors.Count - 1)]);
+            supervisors.Add(GenerateRandomSupervisor(existingEmails));
         }
-
-        p.Description = RandomDescription(p.Name);
-
-        return p;
+        
+        return supervisors;
     }
 
-    public static string RandomDescription(string title)
+    /// <summary>
+    /// Build a specified number of projects, all associated with at least one of the generated supervisors.
+    /// </summary>
+    private static List<Project> GenerateProjects(int amount, List<Supervisor> supervisors)
     {
+        List<Project> projects = new List<Project>();
 
-        string[] buzzwords = title.Split(" ");
+        for (int i = 0; i < amount; i++)
+        {
+            projects.Add(GenerateRandomProject(supervisors));
+        }
 
+        return projects;
+    }
 
-
-        // Description is build up of 1 starter, title + ?. Then a section about the firm, and then a conclusion
+    /// <summary>
+    /// Build one random project. Will use randomly generated buzzwords to make a title and description, will have a start/ end date and a 
+    /// random CreatedBy supervisor. There are 1-3 random supervisors associated with a project.
+    /// </summary>
+    private static Project GenerateRandomProject(List<Supervisor> supervisors)
+    {
+        Project project = new Project();
         Random r = new Random();
-        string company = RandomCompany();
 
+        List<string> randomWords = SelectTwoRandomBuzzwords(); 
+        string title = GenerateTitle(randomWords);
 
-        List<string> starters = new List<string> { "Are you about to write your master’s thesis or a similar project and interested in exploring",
+        project.Name = title;
+        project.StartDate = DateTime.Parse("1/2/2022");
+        project.EndDate = DateTime.Parse("24/6/2022");
+        project.CreatedBy = supervisors[r.Next(0, supervisors.Count - 1)];
+        project.Description = GenerateRandomDescription(randomWords, title);
+        
+        // Select 1-3 random supervisors for the project
+        project.Supervisors = new List<Supervisor>();
+        for (int i = 0; i < r.Next(1, 3); i++)
+        {
+            project.Supervisors.Add(supervisors[r.Next(0, supervisors.Count - 1)]);
+        }
+
+        return project;
+    }
+
+    private static List<Tag> GetTags()
+    {
+        List<string> tagNames = new List<string>
+        {
+            "UI", "C#", "java", "python", "HTML", "CSS", "SASS", "XML", "f#", "Golang", "Go", "Design",
+            "innovation", "hands-on", "Computing", "software", "OS", "art", "partnership", "SCRUM", "GDPR",
+            "Agile", "Lean", "development", "SQL", "noSQL", "SqlLite", "cyber-security", "hacking", "profit", 
+            "online", "Zoom", "digital", "Discord", "integration", "testdriven", "encryption", "microsoft", "SOLID",
+            "AI", "MachineLearning", "VideoGames", "NASA", "Algorithms", "Business", "Consulting", "UserInterface"
+        };
+
+        List<Tag> tags = new List<Tag>();
+
+        foreach (string tagName in tagNames) 
+        {
+            Tag t = new Tag();
+            t.Name = tagName;
+            tags.Add(t);
+        }
+        return tags;
+    }
+
+    ///<summary>
+    /// Description is build up of intro, some lines that use the buzzwords, then info about the company, and a conclusion.
+    ///</summary>
+    private static string GenerateRandomDescription(List<string> buzzwords, string title)
+    {
+        Random r = new Random();
+        string company = GenerateRandomCompany();
+
+        List<string> intro = new List<string> { "Are you about to write your master’s thesis or a similar project and interested in exploring",
                                                    "Have an interesting idea involving",
                                                    "Do you wanna grow and explore the market of",
                                                    "Have you been wondering how to improve the current state of",
@@ -184,74 +221,72 @@ public static class SeedExtensions
             "Do you have a thesis idea that is focusing either on " + buzzwords[0] + " or " + buzzwords[1] + "? Please do not hesitate to reach out! Your research does not necessarily have to fit perfectly into one of our projects - if you have a good idea and you are " +  adjectives[1] + " and " + adjectives[2] + ", we would love to hear it and help you realise it! ",
         };
 
-        List<string> final = new List<string>();
+        List<string> fullDescription = new List<string>();
 
-        final.Add(starters[r.Next(0, starters.Count - 1)]);
-        final.Add(buzzwords[0] + " and " + buzzwords[1] + "? ");
-        final.Add(workWithCompany[r.Next(0, workWithCompany.Count - 1)]);
-        final.Add(workWithbuzzwords[r.Next(0, workWithbuzzwords.Count - 1)]);
-        final.Add(aboutYou[r.Next(0, aboutYou.Count - 1)]);
-        final.Add(wannaWorkIn[r.Next(0, wannaWorkIn.Count - 1)]);
+        fullDescription.Add(intro[r.Next(0, intro.Count - 1)]);
+        fullDescription.Add(buzzwords[0] + " and " + buzzwords[1] + "? ");
+        fullDescription.Add(workWithCompany[r.Next(0, workWithCompany.Count - 1)]);
+        fullDescription.Add(workWithbuzzwords[r.Next(0, workWithbuzzwords.Count - 1)]);
+        fullDescription.Add(aboutYou[r.Next(0, aboutYou.Count - 1)]);
+        fullDescription.Add(wannaWorkIn[r.Next(0, wannaWorkIn.Count - 1)]);
 
-
-        return string.Join(" ", final);
+        return string.Join(" ", fullDescription);
     }
 
-    public static string RandomCompany()
+    
+    /// <summary>
+    /// Build a company name with 2 starters and 1 ending
+    /// </summary>
+    private static string GenerateRandomCompany()
     {
-        // Build a company name with 2 starters and 1 ending
         Random r = new Random();
-        List<string> start = new List<string>() {
-            "Tex", "Pad", "Swift", "Just", "Fast", "Blur", "Gradient", "Optical", "Polaroid", "All", "Blue", "Red", "Jay", "Super", "Charge", "Dev", "Soft", "Root", "Web", "Smooth", "Easy", "Mind", "Green", "Future", "Factory", "Coffee", "Code", "Monkey", "Tiger", "Lion", "Giraffe", "Look", "Omni", "Bus", "Page", "Widget", "Hq", "Bank", "Software", "Path"
-        };
+        List<string> companyName = new List<string>();
+        
+        List<string> firstParts = new List<string>() {"Tex", "Pad", "Swift", "Just", "Fast", "Blur", "Gradient", "Optical", "Polaroid", "All", "Blue", "Red", "Jay", "Modern", "Super", "Charge", "Dev", "Soft", "Root", "Web", "Smooth", "Easy", "Mind", "Green", "Future", "Factory", "Coffee", "Code", "Monkey", "Tiger", "Lion", "Giraffe", "Look", "Omni", "Bus", "Page", "Widget", "Hq", "Bank", "Software", "Path"};
+        List<string> lastParts = new List<string>() {"Co", "Inc", "ApS", "AAT", "LLC"};
 
-        List<string> ending = new List<string>() {
-            " Co", " Inc", " ApS", " AAT", " LLC"
-        };
-
-        List<string> final = new List<string>();
-
-        while (final.Count < 3)
+        while (companyName.Count < 3)
         {
-            string word = start[r.Next(0, start.Count - 1)];
-            if (!final.Contains(word))
+            string word = firstParts[r.Next(0, firstParts.Count - 1)];
+            if (!companyName.Contains(word))
             {
-                final.Add(word);
+                companyName.Add(word);
             }
         }
 
-        final.Add(ending[r.Next(0, ending.Count - 1)]);
+        companyName.Add(" " + lastParts[r.Next(0, lastParts.Count - 1)]);
 
-        return string.Join("", final);
+        return string.Join("", companyName);
     }
 
-    public static Supervisor RandomSupervisor(List<string> existingEmails)
+    /// <summary>
+    /// A Supervisor is generated and given an unique email. Returns supervisor.
+    /// </summary>
+    private static Supervisor GenerateRandomSupervisor(List<string> existingEmails)
     {
         // Name is build up of 1 first name and 2 surnames
         Random r = new Random();
-
-        Supervisor u = new Supervisor();
-        List<string> firstnames = new List<string> { "Lasse", "Anton", "Nikoline", "Tue", "Philip", "Peter", "Asger", "Vilhelm", "Axel", "Lucas", "Alma", "Mille", "Dagmar", "Louise", "Sofie", "Sofia" };
+        Supervisor supervisor = new Supervisor();
+        List<string> firstNames = new List<string> { "Lasse", "Anton", "Nikoline", "Tue", "Philip", "Peter", "Asger", "Vilhelm", "Axel", "Lucas", "Alma", "Mille", "Dagmar", "Louise", "Sofie", "Sofia" };
         List<string> surnames = new List<string> { "Klausen", "Burman", "Fuchs", "Bertelsen", "Cronval", "Gyhrs", "Kjærgaard", "Hviid", "Andersen", "Birch", "Dyrholm" };
         List<string> domains = new List<string> { "@hotmail.com", "@gmail.com", "@outlook.com", "@outlook.dk"};
-        List<string> final = new List<string>();
+        List<string> fullName = new List<string>();
 
-        final.Add(firstnames[r.Next(0, firstnames.Count - 1)]);
+        fullName.Add(firstNames[r.Next(0, firstNames.Count - 1)]);
 
-        while (final.Count < 3)
+        while (fullName.Count < 3)
         {
             string word = surnames[r.Next(0, surnames.Count - 1)];
-            if (!final.Contains(word))
+            if (!fullName.Contains(word))
             {
-                final.Add(word);
+                fullName.Add(word);
             }
         }
 
-        u.Name = string.Join(" ", final);
+        supervisor.Name = string.Join(" ", fullName);
 
         // Email is build up of firstname + first surname + @hotmail.com
-
-        var emailName = final[0] + final[1];
+        var emailName = fullName[0] + fullName[1];
 
         while(existingEmails.Contains(emailName)){
             emailName += r.Next(1, 99);
@@ -261,33 +296,39 @@ public static class SeedExtensions
         existingEmails.Add(emailName);
 
         emailName += domains[r.Next(0, domains.Count - 1)];
-        u.Email = emailName;
+        supervisor.Email = emailName;
         System.Console.WriteLine(emailName);
 
-        return u;
+        return supervisor;
     }
 
-    public static string RandomTitle()
+    /// <summary>
+    /// Using the random buzzwords and an additional projectType string, returns a string
+    /// </summary>
+    private static string GenerateTitle(List<string> buzzwords)
     {
-        // Title is build up of 2 buzzwords and 1 ending.
         Random r = new Random();
-
-        List<string> buzzwords = new List<string> { "Rolling-Wave_planning", "Agile_and_Lean", "Blockchain", "Performance_enhancing", "NFT", "Database_Management", "Maximizing", "Profit_Obtaining", "Metaverse", "Photoscanning", "Research", "Development", "Algorithm", "API", "KTP", "MVC", "MVVM", "DNA", "Smart", "Web_3", "Wi-Fi", "Internet_of_things", "Backend", "Frontend", "Bugs", "Code", "HTML", "CSS", "Java", "C_", "C++", "Javascript", "Web", "Cache", "Golang", "gRPC", "Byzantine_Generals_Problem", "Debugging", "Deployment", "Chess", "Testing", "Test_Driven_Development", "Documentation", "Domain", "Framework", "Git", "Github", "BitBucket", "REST", "HTTPS", "Information_Architecture", "Language", "Minification", "Library", "Mobilefirst", "LINQ", "Data", "MySQL", "MongoDB", "PHP", "Operating_System", "Plugin", "Responsive_Design", "UX_Design", "Bug-fixing", "UI", "Version_Control", "Web" };
-        List<string> endwords = new List<string> { "Study", "Thesis", "Activity", "Program", "Project", "Entrepreneurship" };
-
-        List<string> final = new List<string>();
-
-
-        while (final.Count < 2)
+        List<string> projectTypes = new List<string> { "Study", "Thesis", "Activity", "Program", "Project", "Entrepreneurship" };
+        
+        return string.Join(" ", buzzwords) + " " + projectTypes[r.Next(0, projectTypes.Count - 1)];
+    }
+    /// <summary>
+    /// Select two random buzzwords, returns a List<string>
+    /// </summary>
+    private static List<string> SelectTwoRandomBuzzwords()
+    {
+        Random r = new Random();
+        List<string> buzzwords = new List<string> { "Rolling-Wave planning", "Agile and Lean", "Blockchain", "Performance enhancing", "NFT", "Database Management", "Maximizing", "Profit Obtaining", "Metaverse", "Photoscanning", "Research", "Development", "Algorithm", "API", "KTP", "MVC", "MVVM", "DNA", "Smart", "Web 3", "Wi-Fi", "Internet of things", "Backend", "Frontend", "Bugs", "Code", "HTML", "CSS", "Java", "C#", "C++", "Javascript", "Web", "Cache", "Golang", "gRPC", "Byzantine Generals Problem", "Debugging", "Deployment", "Chess", "Testing", "Test Driven Development", "Documentation", "Domain", "Framework", "Git", "Github", "BitBucket", "REST", "HTTPS", "Information Architecture", "Language", "Minification", "Library", "Mobilefirst", "LINQ", "Data", "MySQL", "MongoDB", "PHP", "Operating System", "Plugin", "Responsive Design", "UX Design", "Bug-fixing", "UI", "Version Control", "Web" };
+        List<string> chosenWords = new List<string> {};
+        while (chosenWords.Count < 2)
         {
             string word = buzzwords[r.Next(0, buzzwords.Count - 1)];
-            if (!final.Contains(word))
+            if (!chosenWords.Contains(word))
             {
-                final.Add(word);
+                chosenWords.Add(word);
             }
         }
-        final.Add(endwords[r.Next(0, endwords.Count - 1)]);
-
-        return string.Join(" ", final.ToArray());
+        
+        return chosenWords;
     }
 }
