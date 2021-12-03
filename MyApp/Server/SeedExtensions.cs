@@ -41,8 +41,8 @@ public static class SeedExtensions
             for (int i = 0; i < r.Next(1, 8); i++)
             {
                 Tag t = tags[r.Next(0, tags.Count - 1)];
-                p.Tags?.Add(t);
-                t.Projects?.Add(p);
+                p.Tags.Add(t);
+                t.Projects.Add(p);
             }
 
             context.Projects.Add(p);
