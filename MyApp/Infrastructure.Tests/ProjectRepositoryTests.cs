@@ -77,8 +77,6 @@ public class ProjectRepositoryTests : IDisposable
         _repository = new ProjectRepository(_context);
     }
 
-   
-
     [Fact]
     public void ReadAsync_Returns_All_Projects()
     {
@@ -86,7 +84,7 @@ public class ProjectRepositoryTests : IDisposable
         var expected = 3;
 
         // Act
-        var list = _repository.ReadAsync();
+        var list = _repository.GetAllProjectsAsync();
         var actual = list.Result.Count;
 
         // Assert
