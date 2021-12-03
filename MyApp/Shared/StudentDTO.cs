@@ -6,4 +6,4 @@ public record StudentDTO
     string Name,
     string Program,
     int? Projects
-);
+) : UserDTO(Email, Name);
