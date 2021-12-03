@@ -142,6 +142,15 @@ a,
   color: #43b4f3;
 }
 
+.nav-link {
+  align-items: flex-start;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+
+  color: #f3f3f3;
+}
+
 .passiveTag {
   font-weight: 300;
 

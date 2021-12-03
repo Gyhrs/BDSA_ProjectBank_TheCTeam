@@ -63,10 +63,20 @@
                     </svg>
                 </a>
             </div>
-            <div>
+            <div style="width: 230px; display: flex; align-items: flex-start;">
                 <LoginDisplay />
-                <a style="color: #f3f3f3;" href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+                <!--<button class="button-like" href="https://docs.microsoft.com/aspnet/" target="_blank">About</button> -->
+                <a class="nav-link" href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
             </div>
+
+            @for (int i = 0; i < 20; i++)
+            {
+                <div>
+                    <p> </p>
+                </div>
+            }
+
+            <SearchBar></SearchBar>
         </div>
 
         <article class="content px-4">

@@ -21,12 +21,14 @@
 
         <PassiveTag TagName="Hej"></PassiveTag>
 
-        <SearchBar></SearchBar>
+        @SearchBar123
     }
 </div>
 
 @code {
     private ProjectDTO[]? projects;
+
+    public SearchBar SearchBar123 = new SearchBar();
 
     protected override async Task OnInitializedAsync()
     {
