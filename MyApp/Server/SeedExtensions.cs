@@ -65,7 +65,7 @@ public static class SeedExtensions
             for (int i = 0; i < r.Next(minTags, maxTags+1); i++)
             {
                 Tag t = tags[r.Next(0, tags.Count - 1)];
-                p.Tags.Add(t);
+                p.Tags.Add(t); 
                 t.Projects.Add(p);
             }
 
@@ -146,11 +146,12 @@ public static class SeedExtensions
     {
         List<string> tagNames = new List<string>
         {
-            "UI", "C#", "java", "python", "HTML", "CSS", "SASS", "XML", "f#", "Golang", "Go", "Design",
-            "innovation", "hands-on", "Computing", "software", "OS", "art", "partnership", "SCRUM", "GDPR",
-            "Agile", "Lean", "development", "SQL", "noSQL", "SqlLite", "cyber-security", "hacking", "profit", 
-            "online", "Zoom", "digital", "Discord", "integration", "testdriven", "encryption", "microsoft", "SOLID",
-            "AI", "MachineLearning", "VideoGames", "NASA", "Algorithms", "Business", "Consulting", "UserInterface"
+            "UI", "C#", "Java", "Python", "HTML", "CSS", "SASS", "XML", "F#", "Golang", "Go", "Design", "Hashing",
+            "Innovation", "Hands-on", "Computing", "Software", "OS", "Art", "Partnership", "SCRUM", "GDPR",
+            "Agile", "Lean", "Development", "SQL", "NoSQL", "SqlLite", "Cyber-security", "Hacking", "Profit", 
+            "Online", "Zoom", "Digital", "Discord", "Integration", "Testdriven", "Encryption", "Microsoft", "SOLID",
+            "AI", "MachineLearning", "VideoGames", "NASA", "Algorithms", "Business", "Consulting", "UserInterface",
+            "UserFriendly", "AccessibleDesign", "Usability", "UX", "Blazor"
         };
 
         List<Tag> tags = new List<Tag>();
@@ -197,35 +198,11 @@ public static class SeedExtensions
 
         List<string> adjectives = new List<string>
         {
-            "hardworking",
-            "enthusiastic",
-            "creative",
-            "ambitious",
-            "clever",
-            "fearless",
-            "stylish",
-            "adventurous",
-            "intelligent",
-            "bright",
-            "brainy",
-            "savvy",
-            "perceptive",
-            "sharp",
-            "audacious",
-            "interesting",
-            "strong",
-            "likeable",
-            "beautiful",
-            "ferocious",
-            "smart",
-            "not stupid",
-            "genius",
-            "boy wonder",
-            "scientist",
-            "team player",
-            "passionate",
-            "self-driven",
-            "curious",
+            "hardworking", "enthusiastic", "creative", "ambitious", "clever", "fearless",
+            "stylish", "adventurous", "intelligent", "bright", "brainy", "savvy", "friendly",
+            "perceptive", "sharp", "audacious", "interesting", "strong", "likeable", "beautiful",
+            "ferocious", "smart", "not stupid", "genius", "boy wonder", "scientist", "team player",
+            "passionate", "self-driven", "curious"
         };
 
         adjectives = adjectives.OrderBy(a => Guid.NewGuid()).ToList();
@@ -270,7 +247,12 @@ public static class SeedExtensions
         Random r = new Random();
         List<string> companyName = new List<string>();
         
-        List<string> firstParts = new List<string>() {"Tex", "Pad", "Swift", "Just", "Fast", "Blur", "Gradient", "Optical", "Polaroid", "All", "Blue", "Red", "Jay", "Modern", "Super", "Charge", "Dev", "Soft", "Root", "Web", "Smooth", "Easy", "Mind", "Green", "Future", "Factory", "Coffee", "Code", "Monkey", "Tiger", "Lion", "Giraffe", "Look", "Omni", "Bus", "Page", "Widget", "Hq", "Bank", "Software", "Path"};
+        List<string> firstParts = new List<string>() {
+            "Tex", "Pad", "Swift", "Just", "Fast", "Blur", "Gradient", "Optical", "Polaroid", "All", 
+            "Blue", "Red", "Jay", "Modern", "Super", "Charge", "Dev", "Soft", "Root", "Web", "Smooth", 
+            "Easy", "Mind", "Green", "Future", "Factory", "Coffee", "Code", "Monkey", "Tiger", "Lion", 
+            "Giraffe", "Look", "Omni", "Bus", "Page", "Widget", "Hq", "Bank", "Software", "Path"
+            };
         List<string> lastParts = new List<string>() {"Co", "Inc", "ApS", "AAT", "LLC"};
 
         while (companyName.Count < 3)
@@ -295,8 +277,13 @@ public static class SeedExtensions
         // Name is build up of 1 first name and 2 surnames
         Random r = new Random();
         Supervisor supervisor = new Supervisor();
-        List<string> firstNames = new List<string> { "Lasse", "Anton", "Nikoline", "Tue", "Philip", "Peter", "Asger", "Vilhelm", "Axel", "Lucas", "Alma", "Mille", "Dagmar", "Louise", "Sofie", "Sofia" };
-        List<string> surnames = new List<string> { "Klausen", "Burman", "Fuchs", "Bertelsen", "Cronval", "Gyhrs", "Kjærgaard", "Hviid", "Andersen", "Birch", "Dyrholm" };
+        List<string> firstNames = new List<string> { 
+            "Lasse", "Anton", "Nikoline", "Tue", "Philip", "Peter", "Asger", "Vilhelm", "Axel", 
+            "Lucas", "Alma", "Mille", "Dagmar", "Louise", "Sofie", "Sofia" 
+            };
+        List<string> surnames = new List<string> { 
+            "Klausen", "Burman", "Fuchs", "Bertelsen", "Cronval", "Gyhrs", "Kjærgaard", 
+            "Hviid", "Andersen", "Birch", "Dyrholm" };
         List<string> domains = new List<string> { "@hotmail.com", "@gmail.com", "@outlook.com", "@outlook.dk"};
         List<string> fullName = new List<string>();
 
@@ -336,7 +323,9 @@ public static class SeedExtensions
     private static string GenerateTitle(List<string> buzzwords)
     {
         Random r = new Random();
-        List<string> projectTypes = new List<string> { "Study", "Thesis", "Activity", "Program", "Project", "Entrepreneurship" };
+        List<string> projectTypes = new List<string> { 
+            "Study", "Thesis", "Activity", "Program", "Project", "Entrepreneurship" 
+            };
         
         return string.Join(" ", buzzwords) + " " + projectTypes[r.Next(0, projectTypes.Count - 1)];
     }
@@ -346,7 +335,18 @@ public static class SeedExtensions
     private static List<string> SelectTwoRandomBuzzwords()
     {
         Random r = new Random();
-        List<string> buzzwords = new List<string> { "Rolling-Wave planning", "Agile and Lean", "Blockchain", "Performance enhancing", "NFT", "Database Management", "Maximizing", "Profit Obtaining", "Metaverse", "Photoscanning", "Research", "Development", "Algorithm", "API", "KTP", "MVC", "MVVM", "DNA", "Smart", "Web 3", "Wi-Fi", "Internet of things", "Backend", "Frontend", "Bugs", "Code", "HTML", "CSS", "Java", "C#", "C++", "Javascript", "Web", "Cache", "Golang", "gRPC", "Byzantine Generals Problem", "Debugging", "Deployment", "Chess", "Testing", "Test Driven Development", "Documentation", "Domain", "Framework", "Git", "Github", "BitBucket", "REST", "HTTPS", "Information Architecture", "Language", "Minification", "Library", "Mobilefirst", "LINQ", "Data", "MySQL", "MongoDB", "PHP", "Operating System", "Plugin", "Responsive Design", "UX Design", "Bug-fixing", "UI", "Version Control", "Web" };
+        List<string> buzzwords = new List<string> { 
+            "Rolling-Wave planning", "Agile and Lean", "Blockchain", "Performance enhancing", "NFT", 
+            "Database Management", "Maximizing", "Profit Obtaining", "Metaverse", "Photoscanning", 
+            "Research", "Development", "Algorithm", "API", "KTP", "MVC", "MVVM", "DNA", "Smart", "Web 3", 
+            "Wi-Fi", "Internet of things", "Backend", "Frontend", "Bugs", "Code", "HTML", "CSS", "Java", 
+            "C#", "C++", "Javascript", "Web", "Cache", "Golang", "gRPC", "Byzantine Generals Problem", 
+            "Debugging", "Deployment", "Chess", "Testing", "Test Driven Development", "Documentation", 
+            "Domain", "Framework", "Git", "Github", "BitBucket", "REST", "HTTPS", "Information Architecture", 
+            "Language", "Minification", "Library", "Mobilefirst", "LINQ", "Data", "MySQL", "MongoDB", "PHP", 
+            "Operating System", "Plugin", "Responsive Design", "UX Design", "Bug-fixing", "UI", 
+            "Version Control", "Web", "Accessibility", "Usability", "Blazor"
+            };
         List<string> chosenWords = new List<string> {};
         while (chosenWords.Count < 2)
         {
