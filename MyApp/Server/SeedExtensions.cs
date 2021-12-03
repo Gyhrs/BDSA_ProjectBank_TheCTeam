@@ -28,16 +28,41 @@ public static class SeedExtensions
         context.Database.ExecuteSqlRaw("DELETE dbo.StudyBankUser");
         context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
         //context.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.Projects', RESEED, 0)");
-        List<Supervisor> supervisors = GenerateSupervisors(50);
-        List<Project> projects = GenerateProjects(200, supervisors);
+        
+        PopulateDatabase(context);
+    }
+
+    ///<summary> 
+    ///Default version of PopulateDatabase method with 50 Supervisors, 200 Projects, and 1-7 Tags per Project. 
+    ///Adds the 200 randomly generated Projects (with 50 randomly assigned Supervisors, and a number of Tags) and 
+    ///Tags (that are assigned to the corresponding Projects) to the context, and saves the context.
+    ///</summary>
+    public static void PopulateDatabase(StudyBankContext context) 
+    {
+        PopulateDatabase(context, 50, 200, 1, 7);
+    }
+
+    ///<summary> 
+    ///Adds randomly generated Projects (with randomly assigned Supervisors and Tags) and 
+    /// Tags (that are assigned corresponding Projects) to the context, and saves the context.
+    ///</summary>
+    ///<param name="context">the StudyBankContext to be modified</param>
+    ///<param name="sNum">the number of generated Supervisors</param>
+    ///<param name="pNum">the number of generated Projects</param>
+    ///<param name="minTags">the minimum number of Tags per Project</param>
+    ///<param name="maxTags">the maximum number of Tags per Project</param>
+    public static void PopulateDatabase(StudyBankContext context, int sNum, int pNum, int minTags, int maxTags)
+    {
+        List<Supervisor> supervisors = GenerateSupervisors(sNum);
+        List<Project> projects = GenerateProjects(pNum, supervisors);
         List<Tag> tags = GetTags();
 
         Random r = new Random();
-        
+
         foreach (var p in projects) 
         {
-            // Select 1-8 random tags for the project
-            for (int i = 0; i < r.Next(1, 8); i++)
+            // Select a number of random tags for the project
+            for (int i = 0; i < r.Next(minTags, maxTags+1); i++)
             {
                 Tag t = tags[r.Next(0, tags.Count - 1)];
                 p.Tags.Add(t); 
@@ -53,6 +78,7 @@ public static class SeedExtensions
         }
         context.SaveChanges();
     }
+
 
     /// <summary>
     /// Build a specified number of supervisors
@@ -113,6 +139,9 @@ public static class SeedExtensions
         return project;
     }
 
+    ///<summary>
+    /// Iterates through a list of strings to create tags with a corresponding tagname. Returns a List<Tag>
+    ///</summary>
     private static List<Tag> GetTags()
     {
         List<string> tagNames = new List<string>
