@@ -7,11 +7,12 @@ using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class UserRepositoryTests : IDisposable
 {
     private readonly IStudyBankContext _context;
-    private readonly IProjectRepository _repository;
+    private readonly IUserRepository _repository;
     private bool disposedValue;
 
     public UserRepositoryTests()
@@ -122,25 +123,55 @@ public class UserRepositoryTests : IDisposable
             p1, p2, p3, p4
         );
 
+        context.Users.Add(u3);
+
         context.SaveChanges();
 
         _context = context;
-        _repository = new ProjectRepository(_context);
+        _repository = new UserRepository(_context);
     }
 
     [Fact]
-    public void GetAllUsersAsync_Returns_All_Users()
+    public async Task GetAllUsersAsync_Returns_All_Users()
     {
         // Arrange
-        var expected = 5;
+        var expectedCount = 5;
 
         // Act
-        var list = _repository.GetAllProjectsAsync();
-        var actual = list.Result.Count;
+        var users = await _repository.GetAllUsersAsync();
+        var actualCount = users.Count;
+
+        // Assert
+        Assert.Equal(expectedCount, actualCount);
+
+        Assert.Collection(users,
+            user => Assert.Equal("AntonBertelsen@hotmail.com", user.Email),
+            user => Assert.Equal("LasseGyrs@hotmail.com", user.Email),
+            user => Assert.Equal("CronvalPhilip@hotmail.com", user.Email), 
+            user => Assert.Equal("FastMartin@hotmail.com", user.Email),
+            user => Assert.Equal("Klartmanner@hotmail.com", user.Email)
+        );
+    }
+
+    [Theory]
+    [InlineData("AntonBertelsen@hotmail.com", "Anton")]
+    [InlineData("LasseGyrs@hotmail.com", "Lasse")]
+    [InlineData("CronvalPhilip@hotmail.com", "Cronval")]
+    [InlineData("FastMartin@hotmail.com", "Martin")]
+    [InlineData("Klartmanner@hotmail.com", "Klart")]
+    public async Task GetUserFromEmailAsync_Returns_Correct_User(string email, string name)
+    {
+        // Arrange
+        var expected = name;
+
+        // Act
+        var user = await _repository.GetUserFromEmailAsync(email);
+        var actual = user.Name;
 
         // Assert
         Assert.Equal(expected, actual);
     }
+
 
     public void Dispose()
     {

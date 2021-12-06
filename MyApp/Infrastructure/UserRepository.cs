@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Shared;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace MyApp.Infrastructure;
@@ -13,16 +14,65 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public Task<IReadOnlyCollection<UserDTO>> GetAllUsersAsync()
+    public async Task<IReadOnlyCollection<UserDTO>> GetAllUsersAsync()
     {
-        //Await simply allows the application to perform other actions while it waits for a response from the database.
-        throw new NotImplementedException();
-        
+        List<UserDTO> users = new List<UserDTO>();
+
+        List<StudyBankUser> studybankUsers = await _context.Users.ToListAsync();
+
+        foreach (var u in studybankUsers)
+        {
+            if (u is Student s)
+            {
+                users.Add(
+                    new StudentDTO
+                    (
+                        s.Email,
+                        s.Name,
+                        s.Program,
+                        s.Project.Id
+                    )
+                );
+            }
+            else if (u is Supervisor su)
+            {
+                users.Add(
+                    new SupervisorDTO
+                    (
+                        su.Email,
+                        su.Name,
+                        su.Projects.Select(p => p.Id).ToList()
+                    )
+                );
+            }
+        }
+
+        return users.AsReadOnly();
     }
 
-    public Task<UserDTO> GetUserFromEmailAsync(string userEmail)
+    public async Task<UserDTO> GetUserFromEmailAsync(string userEmail)
     {
-        throw new NotImplementedException();
+        var user = (await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync());
+
+        if (user is Student s)
+        {
+            return new StudentDTO
+            (
+                s.Email,
+                s.Name,
+                s.Program,
+                s.Project.Id
+            );
+        }
+        else if (user is Supervisor su)
+        {
+            return new SupervisorDTO(
+            su.Email,
+            su.Name,
+            su.Projects.Select(p => p.Id).ToList()
+            );
+        }
+        return null;
     }
 
     public Task<IReadOnlyCollection<UserDTO>> GetUsersFromProjectIDAsync(int projectId)
