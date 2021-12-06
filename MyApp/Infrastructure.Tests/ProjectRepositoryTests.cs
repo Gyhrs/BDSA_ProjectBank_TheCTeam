@@ -110,6 +110,7 @@ public class ProjectRepositoryTests : IDisposable
 
     [Fact]
     public async Task GetAllProjectsAsync_Returns_All_Projects()
+
     {
         // Arrange
         var expected = 4;
@@ -127,12 +128,14 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData(2, "Algorithm")]
     [InlineData(3, "Supercomputer")]
     public async Task GetProjectFromIDAsync_Returns_Correct_Project(int id, string name)
+
     {
         // Arrange
         var expected = name;
 
         // Act
         var actual = (await _repository.GetProjectFromIDAsync(id)).Name;
+
 
         // Assert
         Assert.Equal(expected, actual);
@@ -158,12 +161,14 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData("Fast", 0)]
 
     public async Task GetProjectsFromTagsAsync_Returns_Correct_Projects(string tags, int expected)
+
     {
         // Arrange
         var list = tags.Split("#");
 
         // Act
         var actual = (await _repository.GetProjectsFromTagsAsync(list.ToList())).Count;
+
 
         // Assert
         Assert.Equal(expected, actual);
@@ -184,12 +189,14 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData(1, "Algorithm")]
     [InlineData(1, "Supercomputer")]
     public async Task GetProjectsFromNameAsync_Returns_Correct_Projects(int count, string name)
+
     {
         // Arrange
         var expected = count;
 
         // Act
         var actual = (await _repository.GetProjectsFromNameAsync(name)).Count;
+
 
         // Assert
         Assert.Equal(expected, actual);
@@ -204,7 +211,6 @@ public class ProjectRepositoryTests : IDisposable
         // Assert
         Assert.Empty(actual);
     }
-
 
     public void Dispose()
     {
