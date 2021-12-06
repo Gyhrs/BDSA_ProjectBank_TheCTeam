@@ -92,7 +92,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
         return Ok(projects);
     }
 
-    //TODO: Test this method
+    //TODO: 
     // Get projects from Tags from DB
     [AllowAnonymous]
     [ProducesResponseType(404)]
@@ -102,14 +102,14 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetFromTags(string tags)
     {
         string[] tagList = tags.Split("#");
-        if (tagList.Length == 0)
+        if (tagList.Length == 0 || (tagList.Length == 1 && tagList.ElementAt(0) == ""))
         {
             return BadRequest("No tags provided");
         }
 
         var projects = await _repository.GetProjectsFromTagsAsync(tagList.ToList());
 
-        if (projects == null)
+        if (projects.Count == 0)
         {
             return NotFound("No Project with specified tags");
         }

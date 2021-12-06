@@ -67,7 +67,7 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("students/{id}")]
-    public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetStudentsFromProjectId(int id)
+    public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetStudentsFromProjectId(int id)
     {
         if (id < 0)
         {
@@ -89,7 +89,7 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
     [ProducesResponseType(400)]
     [ProducesResponseType(typeof(ProjectDTO), 200)]
     [HttpGet("supervisors/{id}")]
-    public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetSupervisorsFromProjectId(int id)
+    public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetSupervisorsFromProjectId(int id)
     {
          if (id < 0)
         {
