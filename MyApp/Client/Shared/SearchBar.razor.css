@@ -3,6 +3,9 @@ input {
 }
 
 #search-bnt {
+  padding-left: 1px;
+  padding-right: 0;
+
   width: 36px;
   height: 36px;
 }

@@ -7,28 +7,31 @@
 <div class="project-feed">
     @if (projects != null)
     {
+        /*
         @foreach (var item in projects)
         {
-            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description"></ProjectBox>
+        <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description"></ProjectBox>
         }
-    }
-    else
-    {
+        */
+
+        // Testing componets:
+
+        <ProjectFeedNavBar></ProjectFeedNavBar>
+
         <button class="button-like">CLIK ME</button>
         <button class="button-like btn-highlighted">CLIK ME</button>
         <input class="button-like" />
 
-
         <PassiveTag TagName="Hej"></PassiveTag>
-
-        @SearchBar123
+    }
+    else
+    {
+        // TODO: Add loading
     }
 </div>
 
 @code {
     private ProjectDTO[]? projects;
-
-    public SearchBar SearchBar123 = new SearchBar();
 
     protected override async Task OnInitializedAsync()
     {
