@@ -1,0 +1,19 @@
+.tag-row {
+  background-color: #f3f3f3;
+  background: #f3f3f3;
+  box-shadow: -1px 1px 5px 0.5px rgba(0, 0, 0, 0.2);
+
+  height: 90px;
+
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.colum-container {
+  justify-content: space-between;
+  display: table-column;
+}
