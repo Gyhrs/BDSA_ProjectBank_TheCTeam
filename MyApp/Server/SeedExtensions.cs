@@ -146,12 +146,13 @@ public static class SeedExtensions
     {
         List<string> tagNames = new List<string>
         {
-            "UI", "C#", "Java", "Python", "HTML", "CSS", "SASS", "XML", "F#", "Golang", "Go", "Design", "Hashing",
-            "Innovation", "Hands-on", "Computing", "Software", "OS", "Art", "Partnership", "SCRUM", "GDPR",
-            "Agile", "Lean", "Development", "SQL", "NoSQL", "SqlLite", "Cyber-security", "Hacking", "Profit", 
-            "Online", "Zoom", "Digital", "Discord", "Integration", "Testdriven", "Encryption", "Microsoft", "SOLID",
-            "AI", "MachineLearning", "VideoGames", "NASA", "Algorithms", "Business", "Consulting", "UserInterface",
-            "UserFriendly", "AccessibleDesign", "Usability", "UX", "Blazor"
+            "AccessibleDesign", "Agile", "AI", "Algorithms", "Art", "Blazor", "Business", "C#", 
+            "Computing", "Consulting", "CSS", "Cyber-security", "Design", "Development", "Digital", 
+            "Discord", "Encryption", "F#", "GDPR", "Go", "Golang", "Hacking", "Hands-on", "Hashing", 
+            "HTML", "Innovation", "Integration", "Java", "Lean", "MachineLearning", "Microsoft", 
+            "NoSQL", "Online", "OS", "Partnership", "Profit", "Python", "SASS", "SCRUM", "Software", 
+            "SOLID", "SQL", "SqlLite", "Testdriven", "UI", "Usability", "UserFriendly", "UserInterface", 
+            "UX", "VideoGames", "XML", "Zoom"
         };
 
         List<Tag> tags = new List<Tag>();
@@ -173,36 +174,41 @@ public static class SeedExtensions
         Random r = new Random();
         string company = GenerateRandomCompany();
 
-        List<string> intro = new List<string> { "Are you about to write your master’s thesis or a similar project and interested in exploring",
-                                                   "Have an interesting idea involving",
-                                                   "Do you wanna grow and explore the market of",
-                                                   "Have you been wondering how to improve the current state of",
-                                                   "Are you interested in exploring the future of"};
+        List<string> intro = new List<string> 
+        { 
+            "Are you about to write your master’s thesis or a similar project and interested in exploring",
+            "Have an interesting idea involving",
+            "Do you wanna grow and explore the market of",
+            "Have you been wondering how to improve the current state of",
+            "Are you interested in exploring the future of"
+        };
 
         List<string> workWithCompany = new List<string>
-        { "Then join us at " + company + "! ",
-          "We're interested in working with you! Help us at " + company + ". ",
-          "We're looking for students to help us at " + company + ". ",
-          "At " + company + " we invent the future. Join us! ",
-          "By: " + company + ". "
+        { 
+            "Then join us at " + company + "! ",
+            "We're interested in working with you! Help us at " + company + ". ",
+            "We're looking for students to help us at " + company + ". ",
+            "At " + company + " we invent the future. Join us! ",
+            "By: " + company + ". "
         };
 
         List<string> workWithbuzzwords = new List<string>
-        { "Work with " + buzzwords[0] + " and " + buzzwords[1] + " alongside talented individuals at " + company + " and help invent the future! ",
-          "Do you wanna work with " + buzzwords[0] + " and " + buzzwords[1] + "?" ,
-          "Can you see yourself working with " + buzzwords[0] + " and " + buzzwords[1] + "? ",
-          "Do you like " + buzzwords[1] + "? What about " + buzzwords[0] + "? ",
-          "Help us at " + company + " working with " + buzzwords[0] + " and " + buzzwords[1] + ". ",
-          "Come write your master’s thesis about " + title + " at " + company + ". "
+        { 
+            "Work with " + buzzwords[0] + " and " + buzzwords[1] + " alongside talented individuals at " + company + " and help invent the future! ",
+            "Do you wanna work with " + buzzwords[0] + " and " + buzzwords[1] + "?" ,
+            "Can you see yourself working with " + buzzwords[0] + " and " + buzzwords[1] + "? ",
+            "Do you like " + buzzwords[1] + "? What about " + buzzwords[0] + "? ",
+            "Help us at " + company + " working with " + buzzwords[0] + " and " + buzzwords[1] + ". ",
+            "Come write your master’s thesis about " + title + " at " + company + ". "
         };
 
         List<string> adjectives = new List<string>
         {
-            "hardworking", "enthusiastic", "creative", "ambitious", "clever", "fearless",
-            "stylish", "adventurous", "intelligent", "bright", "brainy", "savvy", "friendly",
-            "perceptive", "sharp", "audacious", "interesting", "strong", "likeable", "beautiful",
-            "ferocious", "smart", "not stupid", "genius", "boy wonder", "scientist", "team player",
-            "passionate", "self-driven", "curious"
+            "adventurous", "ambitious", "audacious", "beautiful", "boy wonder", "brainy", "bright", 
+            "clever", "creative", "curious", "enthusiastic", "fearless", "ferocious", "genius", 
+            "hardworking", "intelligent", "interesting", "likeable", "not stupid", "passionate", 
+            "perceptive", "savvy", "scientist", "self-driven", "sharp", "smart", "strong", "stylish", 
+            "team player"
         };
 
         adjectives = adjectives.OrderBy(a => Guid.NewGuid()).ToList();
@@ -247,13 +253,14 @@ public static class SeedExtensions
         Random r = new Random();
         List<string> companyName = new List<string>();
         
-        List<string> firstParts = new List<string>() {
-            "Tex", "Pad", "Swift", "Just", "Fast", "Blur", "Gradient", "Optical", "Polaroid", "All", 
-            "Blue", "Red", "Jay", "Modern", "Super", "Charge", "Dev", "Soft", "Root", "Web", "Smooth", 
-            "Easy", "Mind", "Green", "Future", "Factory", "Coffee", "Code", "Monkey", "Tiger", "Lion", 
-            "Giraffe", "Look", "Omni", "Bus", "Page", "Widget", "Hq", "Bank", "Software", "Path"
-            };
-        List<string> lastParts = new List<string>() {"Co", "Inc", "ApS", "AAT", "LLC"};
+        List<string> firstParts = new List<string>() 
+        {
+            "All", "Bank", "Blue", "Blur", "Bus", "Charge", "Code", "Coffee", "Dev", "Easy", "Factory", 
+            "Fast", "Future", "Giraffe", "Gradient", "Green", "Hq", "Jay", "Just", "Lion", "Look", "Mind", 
+            "Modern", "Monkey", "Omni", "Optical", "Pad", "Page", "Path", "Polaroid", "Red", "Root", 
+            "Smooth", "Soft", "Software", "Super", "Swift", "Tex", "Tiger", "Web", "Widget"
+        };
+        List<string> lastParts = new List<string>() { "ApS", "AAT", "Co", "Inc", "LLC" };
 
         while (companyName.Count < 3)
         {
@@ -277,14 +284,17 @@ public static class SeedExtensions
         // Name is build up of 1 first name and 2 surnames
         Random r = new Random();
         Supervisor supervisor = new Supervisor();
-        List<string> firstNames = new List<string> { 
-            "Lasse", "Anton", "Nikoline", "Tue", "Philip", "Peter", "Asger", "Vilhelm", "Axel", 
-            "Lucas", "Alma", "Mille", "Dagmar", "Louise", "Sofie", "Sofia" 
-            };
-        List<string> surnames = new List<string> { 
-            "Klausen", "Burman", "Fuchs", "Bertelsen", "Cronval", "Gyhrs", "Kjærgaard", 
-            "Hviid", "Andersen", "Birch", "Dyrholm" };
-        List<string> domains = new List<string> { "@hotmail.com", "@gmail.com", "@outlook.com", "@outlook.dk"};
+        List<string> firstNames = new List<string> 
+        { 
+            "Alma", "Anton", "Asger", "Axel", "Dagmar", "Lasse", "Louise", "Lucas", "Mille", "Nikoline", 
+            "Peter", "Philip", "Sofia", "Sofie", "Tue", "Vilhelm"
+        };
+        List<string> surnames = new List<string> 
+        { 
+            "Andersen", "Bertelsen", "Birch", "Burman", "Cronval", "Dyrholm", "Fuchs", "Gyhrs", "Hviid", 
+            "Kjærgaard", "Klausen"
+        };
+        List<string> domains = new List<string> { "@gmail.com", "@hotmail.com", "@outlook.com", "@outlook.dk"};
         List<string> fullName = new List<string>();
 
         fullName.Add(firstNames[r.Next(0, firstNames.Count - 1)]);
@@ -323,9 +333,10 @@ public static class SeedExtensions
     private static string GenerateTitle(List<string> buzzwords)
     {
         Random r = new Random();
-        List<string> projectTypes = new List<string> { 
-            "Study", "Thesis", "Activity", "Program", "Project", "Entrepreneurship" 
-            };
+        List<string> projectTypes = new List<string> 
+        { 
+            "Activity", "Entrepreneurship", "Program", "Project", "Study", "Thesis"
+        };
         
         return string.Join(" ", buzzwords) + " " + projectTypes[r.Next(0, projectTypes.Count - 1)];
     }
@@ -335,18 +346,19 @@ public static class SeedExtensions
     private static List<string> SelectTwoRandomBuzzwords()
     {
         Random r = new Random();
-        List<string> buzzwords = new List<string> { 
-            "Rolling-Wave planning", "Agile and Lean", "Blockchain", "Performance enhancing", "NFT", 
-            "Database Management", "Maximizing", "Profit Obtaining", "Metaverse", "Photoscanning", 
-            "Research", "Development", "Algorithm", "API", "KTP", "MVC", "MVVM", "DNA", "Smart", "Web 3", 
-            "Wi-Fi", "Internet of things", "Backend", "Frontend", "Bugs", "Code", "HTML", "CSS", "Java", 
-            "C#", "C++", "Javascript", "Web", "Cache", "Golang", "gRPC", "Byzantine Generals Problem", 
-            "Debugging", "Deployment", "Chess", "Testing", "Test Driven Development", "Documentation", 
-            "Domain", "Framework", "Git", "Github", "BitBucket", "REST", "HTTPS", "Information Architecture", 
-            "Language", "Minification", "Library", "Mobilefirst", "LINQ", "Data", "MySQL", "MongoDB", "PHP", 
-            "Operating System", "Plugin", "Responsive Design", "UX Design", "Bug-fixing", "UI", 
-            "Version Control", "Web", "Accessibility", "Usability", "Blazor"
-            };
+        List<string> buzzwords = new List<string> 
+        { 
+            "Accessibility", "Agile and Lean", "Algorithm", "API", "Backend", "BitBucket", "Blazor", 
+            "Blockchain", "Bug-fixing", "Bugs", "Byzantine Generals Problem", "C#", "C++", "Cache", 
+            "Chess", "Code", "CSS", "Data", "Database Management", "Debugging", "Deployment", "Development", 
+            "DNA", "Documentation", "Domain", "Framework", "Frontend", "Git", "Github", "Golang", "gRPC", 
+            "HTML", "HTTPS", "Information Architecture", "Internet of things", "Java", "Javascript", "KTP", 
+            "Language", "Library", "LINQ", "Maximizing", "Metaverse", "Minification", "Mobilefirst", "MongoDB", 
+            "MVC", "MVVM", "MySQL", "NFT", "Operating System", "Performance enhancing", "Photoscanning", "PHP", 
+            "Plugin", "Profit Obtaining", "Research", "Responsive Design", "REST", "Rolling-Wave planning", 
+            "Smart", "Test Driven Development", "Testing", "UI", "Usability", "UX Design", "Version Control", 
+            "Web", "Web", "Web 3", "Wi-Fi"
+        };
         List<string> chosenWords = new List<string> {};
         while (chosenWords.Count < 2)
         {
