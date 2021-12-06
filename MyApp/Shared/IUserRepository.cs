@@ -7,5 +7,6 @@ public interface IUserRepository
 
     Task<IReadOnlyCollection<UserDTO>> GetAllUsersAsync();
 
-    Task<IReadOnlyCollection<UserDTO>> GetUsersFromProjectIDAsync(int projectId);
+    Task<IReadOnlyCollection<StudentDTO>> GetStudentsFromProjectIDAsync(int projectId);
+    Task<IReadOnlyCollection<SupervisorDTO>> GetSupervisorsFromProjectIDAsync(int projectId);
 }

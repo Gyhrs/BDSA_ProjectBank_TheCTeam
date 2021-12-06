@@ -89,7 +89,7 @@ public class UserRepositoryTests : IDisposable
             Name = "Algorithm",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> { u1, u2 },
+            Supervisors = new List<Supervisor> { u2 },
             Tags = new List<Tag> { t3 }
         };
 
@@ -101,7 +101,7 @@ public class UserRepositoryTests : IDisposable
             Name = "Supercomputer",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> { u1, u2 },
+            Supervisors = new List<Supervisor> { u1 },
             Tags = new List<Tag> { t1, t3 },
             Students = new List<Student> { u4, u5 }
 
@@ -115,15 +115,13 @@ public class UserRepositoryTests : IDisposable
             Name = "Blockchain",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> { u1, u2 },
+            Supervisors = new List<Supervisor> { u2 },
             Students = new List<Student> { u3 }
         };
 
         context.Projects.AddRange(
             p1, p2, p3, p4
         );
-
-        context.Users.Add(u3);
 
         context.SaveChanges();
 
@@ -172,6 +170,75 @@ public class UserRepositoryTests : IDisposable
         Assert.Equal(expected, actual);
     }
 
+    [Theory]
+    [InlineData(3, "CronvalPhilip@hotmail.com#FastMartin@hotmail.com", 2)]
+    [InlineData(4, "Klartmanner@hotmail.com", 1)]
+    public async Task GetStudentsFromProjectIdAsync_Returns_Correct_Students(int projectId, string names, int count)
+    {
+        // Arrange
+        var expected = names.Split("#");
+
+        // Act
+        var users = await _repository.GetStudentsFromProjectIDAsync(projectId);
+
+        Assert.Equal(count, users.Count);
+
+        // Assert
+        foreach (var name in expected)
+        {
+            Assert.Contains(name, users.Select(u => u.Email));
+        }
+    }
+
+    [Theory]
+    [InlineData(1, "AntonBertelsen@hotmail.com#LasseGyrs@hotmail.com", 2)]
+    [InlineData(2, "LasseGyrs@hotmail.com", 1)]
+    [InlineData(3, "AntonBertelsen@hotmail.com", 1)]
+    [InlineData(4, "LasseGyrs@hotmail.com", 1)]
+    public async Task GetSupervisorsFromProjectIdAsync_Returns_Correct_Supervisors(int projectId, string names, int count)
+    {
+        // Arrange
+        var expected = names.Split("#");
+
+        // Act
+        var users = await _repository.GetSupervisorsFromProjectIDAsync(projectId);
+
+        Assert.Equal(count, users.Count);   
+        // Assert
+        foreach (var name in expected)
+        {
+            Assert.Contains(name, users.Select(u => u.Email));
+        }
+    }
+
+
+    [Fact]
+    public async Task GetSupervisorsFromProjectIdAsync_Returns_Empty_Given_Non_Existent_Project_Id()
+    {
+        // Act
+        var users = await _repository.GetSupervisorsFromProjectIDAsync(5);
+
+        Assert.Equal(0,users.Count);
+    }
+
+    [Fact]
+    public async Task GetStudentsFromProjectIdAsync_Returns_Empty_Given_Non_Existent_Project_Id()
+    {
+        // Act
+        var users = await _repository.GetStudentsFromProjectIDAsync(5);
+
+        Assert.Equal(0,users.Count);
+    }
+
+
+    [Fact]
+    public async Task GetUserFromEmailAsync_Returns_Null_When_Given_Nonexisting_Email() {
+        // Act
+        var actual = await _repository.GetUserFromEmailAsync("MickeyMouse@Disney.com");
+
+        // Assert
+        Assert.Null(actual);
+    }
 
     public void Dispose()
     {

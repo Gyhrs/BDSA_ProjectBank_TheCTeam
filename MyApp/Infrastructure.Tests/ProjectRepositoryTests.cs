@@ -7,6 +7,7 @@ using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class ProjectRepositoryTests : IDisposable
 {
@@ -108,14 +109,14 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public void GetAllProjectsAsync_Returns_All_Projects()
+    public async Task GetAllProjectsAsync_Returns_All_Projects()
     {
         // Arrange
         var expected = 4;
 
         // Act
-        var list = _repository.GetAllProjectsAsync();
-        var actual = list.Result.Count;
+        var list = await _repository.GetAllProjectsAsync();
+        var actual = list.Count;
 
         // Assert
         Assert.Equal(expected, actual);
@@ -125,16 +126,27 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData(1, "Blockchain")]
     [InlineData(2, "Algorithm")]
     [InlineData(3, "Supercomputer")]
-    public void GetProjectFromIDAsync_Returns_Correct_Project(int id, string name)
+    public async Task GetProjectFromIDAsync_Returns_Correct_Project(int id, string name)
     {
         // Arrange
         var expected = name;
 
         // Act
-        var actual = _repository.GetProjectFromIDAsync(id).Result.Name;
+        var actual = (await _repository.GetProjectFromIDAsync(id)).Name;
 
         // Assert
         Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public async Task GetProjectFromIDAsync_Returns_Null_Given_Nonexisting_ProjectId()
+    {
+        // Arrange
+        // Act
+        var actual = await _repository.GetProjectFromIDAsync(27);
+
+        // Assert
+        Assert.Null(actual);
     }
 
     [Theory]
@@ -145,34 +157,53 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData("Consulting#Business#UI", 3)]
     [InlineData("Fast", 0)]
 
-    public void GetProjectsFromTagsAsync_Returns_Correct_Projects(string tags, int expected)
+    public async Task GetProjectsFromTagsAsync_Returns_Correct_Projects(string tags, int expected)
     {
         // Arrange
         var list = tags.Split("#");
 
         // Act
-        var actual = _repository.GetProjectsFromTagsAsync(list.ToList()).Result.Count;
+        var actual = (await _repository.GetProjectsFromTagsAsync(list.ToList())).Count;
 
         // Assert
         Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public async Task GetProjectsFromTagsAsync_Returns_Empty_Given_Nonexisting_Tag()
+    {
+        // Act
+        var actual = await _repository.GetProjectsFromTagsAsync(new List<string> {"J#"});
+
+        // Assert
+        Assert.Empty(actual);
     }
 
     [Theory]
     [InlineData(2, "Blockchain")]
     [InlineData(1, "Algorithm")]
     [InlineData(1, "Supercomputer")]
-    public void GetProjectsFromNameAsync_Returns_Correct_Projects(int count, string name)
+    public async Task GetProjectsFromNameAsync_Returns_Correct_Projects(int count, string name)
     {
         // Arrange
         var expected = count;
 
         // Act
-        var actual = _repository.GetProjectsFromNameAsync(name).Result.Count;
+        var actual = (await _repository.GetProjectsFromNameAsync(name)).Count;
 
         // Assert
         Assert.Equal(expected, actual);
     }
 
+    [Fact]
+    public async Task GetProjectsFromNameAsync_Returns_Empty_Given_Nonexisting_Project_Name()
+    {
+        // Act
+        var actual = await _repository.GetProjectsFromNameAsync("Antons projekt");
+
+        // Assert
+        Assert.Empty(actual);
+    }
     public void Dispose()
     {
         _context.Dispose();

@@ -50,6 +50,24 @@ public class UserRepository : IUserRepository
         return users.AsReadOnly();
     }
 
+    public async Task<IReadOnlyCollection<StudentDTO>> GetStudentsFromProjectIDAsync(int projectId)
+    {
+        return (await _context.Users.OfType<Student>()
+            .Where(s => s.Project.Id == projectId)
+            .Select(s => new StudentDTO(s.Email, s.Name, s.Program, s.Project.Id))
+            .ToListAsync())
+        .AsReadOnly();
+    }
+
+    public async Task<IReadOnlyCollection<SupervisorDTO>> GetSupervisorsFromProjectIDAsync(int projectId)
+    {
+         return (await _context.Users.OfType<Supervisor>()
+            .Where(s => s.Projects.Select(p => p.Id).Contains(projectId))
+            .Select(s => new SupervisorDTO(s.Email, s.Name, s.Projects.Select(p => p.Id).ToList()))
+            .ToListAsync())
+        .AsReadOnly();
+    }
+
     public async Task<UserDTO> GetUserFromEmailAsync(string userEmail)
     {
         var user = (await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync());
@@ -73,10 +91,5 @@ public class UserRepository : IUserRepository
             );
         }
         return null;
-    }
-
-    public Task<IReadOnlyCollection<UserDTO>> GetUsersFromProjectIDAsync(int projectId)
-    {
-        throw new NotImplementedException();
     }
 }
