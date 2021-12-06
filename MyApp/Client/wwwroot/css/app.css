@@ -56,6 +56,15 @@ h5 {
   color: #47abb9;
 }
 
+h6 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 16px;
+
+  color: #47abb9;
+}
+
 p {
   font-size: 11pt;
 }
