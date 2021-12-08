@@ -128,7 +128,7 @@ h1:focus {
 
   height: 34px;
   padding-top: 2px;
-  min-width: 36px;
+  /* min-width: 36px; */
 
   padding-left: 15px;
   padding-right: 15px;

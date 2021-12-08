@@ -10,47 +10,45 @@
     <div class="colum-container">
         <h6 id="invisible">Hej ehj</h6>
         <hr class="invisible-line" id="invisible" />
-        <button class="button-like" id="round-bnt"> ⮜ </button>
+        <button class="button-like" id="round-bnt" @onclick="ScrollLeft"> ⮜ </button>
     </div>
 
     <div class="colum-container">
         <h6>Tags:</h6>
         <hr class="line" style="background-color: #47abb9;" />
-        <div class="scrollable">
-            <button class="button-like">tag</button>
-            <button class="button-like">tag</button>
-            <button class="button-like">tag</button>
-            <button class="button-like">tag</button>
-            <button class="button-like">tag</button>
-            <button class="button-like">tag</button>
-            <button class="button-like">tag</button>
-            <button
-                class="button-like">tagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtagtag</button>
+        <div class="scrollable" @bind:"scrollvalue" @bind:event="onscroll">
+            <!-- @bind:event="onscroll" -->
+            <button class="button-like">tahgnfsddfg</button>
+            <button class="button-like">tadfdfgerasdasdasdasdfg</button>
+            <button class="button-like">tasdasdasdasdag</button>
+            <button class="button-like">tasdasdasdasdasasdag</button>
+            <button class="button-like">tagasdas</button>
+            <button class="button-like">asdasdtag</button>
+            <button class="button-like">tagaasdasdasdasdasdsdasd</button>
+            <button class="button-like">tagasdasdgavsdghasd</button>
         </div>
     </div>
 
     <div class="colum-container">
         <h6 id="invisible">Settings:</h6>
         <hr class="invisible-line" id="invisible" />
-        <button class="button-like" id="round-bnt" disabled> ⮞ </button>
+        <button class="button-like" id="round-bnt" @onclick="ScrollRight"> ⮞ </button>
     </div>
+
+    <!-- <p>@scrollvalue</p> -->
 </div>
 
 
 @code {
-        /*
-        const buttonRight = document.getElementById('slideRight');
-        const buttonLeft = document.getElementById('slideLeft');
+    public int scrollvalue { get; set; } = 0;
 
-        buttonRight.onclick = function()
-        {
-        document.getElementById('container').scrollLeft += 20;
-        };
-        buttonLeft.onclick = function()
-        {
-        document.getElementById('container').scrollLeft -= 20;
-        };
-    */
+    private void ScrollLeft()
+    {
+        scrollvalue += 20;
+    }
 
-
+    private void ScrollRight()
+    {
+        scrollvalue -= 20;
+    }
 }

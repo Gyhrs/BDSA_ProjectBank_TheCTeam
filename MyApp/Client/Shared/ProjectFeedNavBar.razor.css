@@ -16,13 +16,15 @@
 .colum-container {
   justify-content: space-between;
   display: table-column;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .scrollable {
   overflow: hidden;
 
   max-height: 43px;
-  width: 70vw;
+  width: 65vw;
 
   overflow-x: scroll;
   overflow-y: hidden;
