@@ -109,14 +109,14 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetAllProjectsAsync_Returns_All_Projects()
+    public async Task GetAllProjects_Returns_All_Projects()
 
     {
         // Arrange
         var expected = 4;
 
         // Act
-        var list = await _repository.GetAllProjectsAsync();
+        var list = await _repository.GetAllProjects();
         var actual = list.Count;
 
         // Assert
@@ -127,14 +127,14 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData(1, "Blockchain")]
     [InlineData(2, "Algorithm")]
     [InlineData(3, "Supercomputer")]
-    public async Task GetProjectFromIDAsync_Returns_Correct_Project(int id, string name)
+    public async Task GetProjectFromID_Returns_Correct_Project(int id, string name)
 
     {
         // Arrange
         var expected = name;
 
         // Act
-        var actual = (await _repository.GetProjectFromIDAsync(id)).Name;
+        var actual = (await _repository.GetProjectFromID(id)).Name;
 
 
         // Assert
@@ -142,11 +142,11 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetProjectFromIDAsync_Returns_Null_Given_Nonexisting_ProjectId()
+    public async Task GetProjectFromID_Returns_Null_Given_Nonexisting_ProjectId()
     {
         // Arrange
         // Act
-        var actual = await _repository.GetProjectFromIDAsync(27);
+        var actual = await _repository.GetProjectFromID(27);
 
         // Assert
         Assert.Null(actual);
@@ -160,14 +160,14 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData("Consulting#Business#UI", 3)]
     [InlineData("Fast", 0)]
 
-    public async Task GetProjectsFromTagsAsync_Returns_Correct_Projects(string tags, int expected)
+    public async Task GetProjectsFromTags_Returns_Correct_Projects(string tags, int expected)
 
     {
         // Arrange
         var list = tags.Split("#");
 
         // Act
-        var actual = (await _repository.GetProjectsFromTagsAsync(list.ToList())).Count;
+        var actual = (await _repository.GetProjectsFromTags(list.ToList())).Count;
 
 
         // Assert
@@ -175,10 +175,10 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetProjectsFromTagsAsync_Returns_Empty_Given_Nonexisting_Tag()
+    public async Task GetProjectsFromTags_Returns_Empty_Given_Nonexisting_Tag()
     {
         // Act
-        var actual = await _repository.GetProjectsFromTagsAsync(new List<string> {"J#"});
+        var actual = await _repository.GetProjectsFromTags(new List<string> { "J#" });
 
         // Assert
         Assert.Empty(actual);
@@ -188,14 +188,14 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData(2, "Blockchain")]
     [InlineData(1, "Algorithm")]
     [InlineData(1, "Supercomputer")]
-    public async Task GetProjectsFromNameAsync_Returns_Correct_Projects(int count, string name)
+    public async Task GetProjectsFromName_Returns_Correct_Projects(int count, string name)
 
     {
         // Arrange
         var expected = count;
 
         // Act
-        var actual = (await _repository.GetProjectsFromNameAsync(name)).Count;
+        var actual = (await _repository.GetProjectsFromName(name)).Count;
 
 
         // Assert
@@ -203,13 +203,30 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetProjectsFromNameAsync_Returns_Empty_Given_Nonexisting_Project_Name()
+    public async Task GetProjectsFromName_Returns_Empty_Given_Nonexisting_Project_Name()
     {
         // Act
-        var actual = await _repository.GetProjectsFromNameAsync("Antons projekt");
+        var actual = await _repository.GetProjectsFromName("Antons projekt");
 
         // Assert
         Assert.Empty(actual);
+    }
+
+    [Fact]
+    public async Task GetProjectsFromTagsAndName_Returns_Correct_Projects()
+    {
+        // Arrange
+        var tags = new List<string> {"UI"};
+        var title = "Supercomputer";
+
+        var expected = 3;
+
+        // Act
+        var projects = await _repository.GetProjectsFromTagsAndName(tags, title);
+        var actual = projects.ElementAt(0).Id;
+
+        // Assert
+        Assert.Equal(expected, actual);
     }
 
     public void Dispose()
