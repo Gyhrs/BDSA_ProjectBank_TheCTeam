@@ -15,13 +15,13 @@
 
         <div class="Exp-small-container">
             <div class="ExpProjectBox SmallBox mb-4 box-layout">
-                <p>hej</p>
+                @foreach (var tag in tags)
+                {
+                    <PassiveTag TagName="@tag"></PassiveTag>
+                }
             </div>
             <div class="ExpProjectBox SmallBox mb-4 box-layout">
-                <p>med</p>
-            </div>
-            <div class="ExpProjectBox SmallBox mb-4 box-layout">
-                <p>dig</p>
+                <p>Contact Information Should go here with a small mail icon</p>
             </div>
         </div>
 </div>
@@ -31,4 +31,5 @@
     [Parameter] public string name { get; set; }
     [Parameter] public string CreatedBy { get; set; }
     [Parameter] public string description { get; set; }
+    [Parameter] public List<string> tags {get; set;}
 }
