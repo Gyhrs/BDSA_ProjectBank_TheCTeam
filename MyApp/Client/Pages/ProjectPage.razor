@@ -26,7 +26,7 @@ else
     {
         try
         {
-            ProjectDTO[]? projects = await Http.GetFromJsonAsync<ProjectDTO[]>("Projects"); ///tags/tag1#tag2#tag3/searchstring/....
+            ProjectDTO[]? projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects"); ///tags/tag1#tag2#tag3/searchstring/....
 
             if (projects != null)
             {
