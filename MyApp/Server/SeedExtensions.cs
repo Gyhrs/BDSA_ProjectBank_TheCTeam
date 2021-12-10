@@ -21,7 +21,7 @@ public static class SeedExtensions
 
     private static void SeedProjects(StudyBankContext context)
     {
-        context.Database.Migrate();
+        //context.Database.Migrate();
         // context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
         // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
         // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
