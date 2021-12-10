@@ -1,5 +1,4 @@
 @inject NavigationManager NavigationManager
-
 <div class="project-box mb-4 box-layout" @onclick="navigateToProject">
     <h2>@name</h2>
     @if (CreatedBy != null)
@@ -20,14 +19,13 @@
 </div>
 
 @code {
-    [Parameter] public int id { get; set; }
-    [Parameter] public string name { get; set; }
-    [Parameter] public string CreatedBy { get; set; }
-    [Parameter] public string description { get; set; }
-    public List<string> tags = new List<string>() { "123", "123123" };
+    [Parameter] public int id {get; set;}
+    [Parameter] public string? name {get; set;}
+    [Parameter] public string? CreatedBy {get; set;}
+    [Parameter] public string? description {get; set;}
+    [Parameter] public List<string>? tags {get; set;}
 
-    public void navigateToProject()
-    {
-        NavigationManager.NavigateTo("project/" + id);
+    public void navigateToProject() {
+        NavigationManager.NavigateTo("project/"+id);
     }
 }

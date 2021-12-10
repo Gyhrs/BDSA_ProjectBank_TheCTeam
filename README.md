@@ -1,7 +1,10 @@
 # BDSA_ProjectBank_TheCTeam
 The C Team's BDSA project 2021 ITU
-## How to run the program from "scratch"
 
+## How to run the program from "scratch"
+Make sure you aren't running any docker container with port 1443 exposed. Run startup.ps1 with PowerShell.
+
+## Notes
 ### First make sure you have installed the Entity Framework global tool
 
 ```powershell
@@ -43,12 +46,9 @@ dotnet ef database update -p .\MyApp\Infrastructure\ -s .\MyApp\Server\
 
 ### NOW you can run it
 ```powershell
-dotnet run -p MyApp/Server
+dotnet run --project MyApp/Server
 ```
 
-
-
-## Notes
 
 ### Settings
 
