@@ -12,7 +12,7 @@ using MyApp.Infrastructure;
 namespace MyApp.Infrastructure.Migrations
 {
     [DbContext(typeof(StudyBankContext))]
-    [Migration("20211125135503_InitialMigration")]
+    [Migration("20211210100327_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,17 +56,7 @@ namespace MyApp.Infrastructure.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("MyApp.Infrastructure.Tag", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Tags");
-                });
-
-            modelBuilder.Entity("MyApp.Infrastructure.User", b =>
+            modelBuilder.Entity("MyApp.Infrastructure.StudyBankUser", b =>
                 {
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(450)");
@@ -85,9 +75,19 @@ namespace MyApp.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("StudyBankUser");
+                });
+
+            modelBuilder.Entity("MyApp.Infrastructure.Tag", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Name");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("ProjectSupervisor", b =>
@@ -122,7 +122,7 @@ namespace MyApp.Infrastructure.Migrations
 
             modelBuilder.Entity("MyApp.Infrastructure.Student", b =>
                 {
-                    b.HasBaseType("MyApp.Infrastructure.User");
+                    b.HasBaseType("MyApp.Infrastructure.StudyBankUser");
 
                     b.Property<string>("Program")
                         .IsRequired()
@@ -139,14 +139,14 @@ namespace MyApp.Infrastructure.Migrations
 
             modelBuilder.Entity("MyApp.Infrastructure.Supervisor", b =>
                 {
-                    b.HasBaseType("MyApp.Infrastructure.User");
+                    b.HasBaseType("MyApp.Infrastructure.StudyBankUser");
 
                     b.HasDiscriminator().HasValue("Supervisor");
                 });
 
             modelBuilder.Entity("MyApp.Infrastructure.Project", b =>
                 {
-                    b.HasOne("MyApp.Infrastructure.User", "CreatedBy")
+                    b.HasOne("MyApp.Infrastructure.StudyBankUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedByEmail");
 

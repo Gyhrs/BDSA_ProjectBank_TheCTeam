@@ -19,6 +19,6 @@ namespace MyApp.Infrastructure
         public List<Student>? Students { get; set; }
         public List<Supervisor>? Supervisors { get; set;}
         public StudyBankUser? CreatedBy { get; set; }
-        public List<Tag>? Tags { get; set; }
+        public List<Tag> Tags { get; set; } = new List<Tag>();
     }
 }

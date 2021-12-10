@@ -2,11 +2,13 @@ namespace MyApp.Shared;
 
 public interface IProjectRepository
 {
-    (State, Task<ProjectDTO>) ReadAsync(int projectId);
+    Task<ProjectDTO> GetProjectFromID(int projectId);
 
-    (State, Task<IReadOnlyCollection<ProjectDTO>>) ReadAsync(List<string> tags);
+    Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTags(List<string> tags);
 
-    (State, Task<IReadOnlyCollection<ProjectDTO>>) ReadAsync(string title);
+    Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromName(string title);
 
-    Task<IReadOnlyCollection<ProjectDTO>> ReadAsync();
+    Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTagsAndName(List<string> tags, string title);
+
+    Task<IReadOnlyCollection<ProjectDTO>> GetAllProjects();
 }
