@@ -1,7 +1,36 @@
-<h1>This is check</h1>
-<br>
-<h2>This should be id:@id</h2>
+<div class="general-layout">
+    <div class="centering">
+        <div class="MainBox ExpProjectBox mb-4 box-layout">
+            <h2>@name</h2>
+            @if (CreatedBy != null)
+            {
+                <h5>@CreatedBy</h5>
+            }
+            else
+            {
+                <h5>No Author</h5>
+            }
+            <br>
+            <div class="descriptionBox">@description</div>
+        </div>
+
+        <div class="Exp-Left-container">
+            <div class="ExpProjectBox mb-4 box-layout">
+                <p>hej</p>
+            </div>
+            <div class="ExpProjectBox mb-4 box-layout">
+                <p>med</p>
+            </div>
+            <div class="ExpProjectBox mb-4 box-layout">
+                <p>dig</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
-    [Parameter] public int id {get; set;}
+    [Parameter] public int id { get; set; }
+    [Parameter] public string name { get; set; }
+    [Parameter] public string CreatedBy { get; set; }
+    [Parameter] public string description { get; set; }
 }

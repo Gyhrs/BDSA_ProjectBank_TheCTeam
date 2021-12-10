@@ -1,0 +1,57 @@
+<div class="tag-row">
+    <div class="colum-container">
+        <h6>Settings:</h6>
+        <hr class="line" />
+        <button class="button-like">Clear All</button>
+    </div>
+
+
+
+    <div class="colum-container">
+        <h6 id="invisible">Hej ehj</h6>
+        <hr class="invisible-line" id="invisible" />
+        <button class="button-like" id="round-bnt"
+            onclick="document.getElementById('tagbar').scrollLeft -= 40 ({behavior:'smooth'})"> ⮜ </button>
+    </div>
+
+    <div class="colum-container">
+        <h6>Tags:</h6>
+        <hr class="line" style="background-color: #47abb9;" />
+        <div class="scrollable" id="tagbar">
+            <!-- @bind:event="onscroll" -->
+            <button class="button-like">tahgnfsddfg</button>
+            <button class="button-like">tadfdfgerasdasdasdasdfg</button>
+            <button class="button-like">tasdasdasdasdag</button>
+            <button class="button-like">tasdasdasdasdasasdag</button>
+            <button class="button-like">tagasdas</button>
+            <button class="button-like">asdasdtag</button>
+            <button class="button-like">tagaasdasdasdasdasdsdasd</button>
+            <button class="button-like">tagasdasdgavsdghasd</button>
+        </div>
+    </div>
+
+    <div class="colum-container">
+        <h6 id="invisible">Settings:</h6>
+        <hr class="invisible-line" id="invisible" />
+        <button class="button-like" id="round-bnt"
+            onclick="document.getElementById('tagbar').scrollLeft += 40 ({behavior:'smooth'})"> ⮞
+        </button>
+    </div>
+
+    <!-- <p>@scrollvalue</p> -->
+</div>
+
+
+@code {
+    public int scrollvalue { get; set; } = 0;
+
+    private void ScrollLeft()
+    {
+        scrollvalue += 20;
+    }
+
+    private void ScrollRight()
+    {
+        scrollvalue -= 20;
+    }
+}

@@ -1,19 +1,19 @@
-
 @inject NavigationManager NavigationManager
 <div class="project-box mb-4 box-layout" @onclick="navigateToProject">
     <h2>@name</h2>
     @if (CreatedBy != null)
     {
         <h5>@CreatedBy</h5>
-    } else 
+    }
+    else
     {
-        <h5>No Author</h5>   
+        <h5>No Author</h5>
     }
     <br>
     <div class="descriptionBox">@description</div>
+    <br>
     @foreach (var tag in tags)
     {
-        Console.WriteLine("This is a tag");
         <PassiveTag TagName="@tag"></PassiveTag>
     }
 </div>

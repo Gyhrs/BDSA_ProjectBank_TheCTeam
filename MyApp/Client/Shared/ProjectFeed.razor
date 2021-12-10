@@ -1,4 +1,3 @@
-
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MyApp.Shared
@@ -12,17 +11,12 @@
         {
             <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"></ProjectBox>
         }
+        // Testing componets:
+        // ...
     }
     else
     {
-        <button class="button-like">CLIK ME</button>
-        <button class="button-like btn-highlighted">CLIK ME</button>
-        <input class="button-like" />
-
-
-        <PassiveTag TagName="Hej"></PassiveTag>
-
-        <SearchBar></SearchBar>
+        // TODO: Add loading
     }
 </div>
 
