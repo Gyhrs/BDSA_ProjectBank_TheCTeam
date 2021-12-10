@@ -96,7 +96,6 @@ h1:focus {
 }
 
 /* Button CSS */
-
 .button-like:disabled,
 .button-like[disabled] {
   background-color: #f4f4f4;
@@ -163,7 +162,7 @@ h1:focus {
   border-radius: 50px;
   transition-duration: 0.3s;
 }
-button:hover {
+.button-like:hover {
   background: #ffffff;
   background-color: #ffffff;
   box-shadow: -3px 3px 5px 0.7px rgba(0, 0, 0, 0.15);
@@ -175,6 +174,20 @@ button:hover {
   background-color: #43b4f3;
   box-shadow: 0px 0px 10px 0.5px rgba(32, 194, 215, 0.438);
   border-radius: 50px;
+}
+
+.btn-highlighted {
+  color: #fff;
+  background: #43b4f3;
+  background-color: #43b4f3;
+  box-shadow: 0px 0px 10px 0.5px rgba(32, 194, 215, 0.438);
+  border-radius: 50px;
+  transition-duration: 0.3s;
+}
+button:hover {
+  background: #ffffff;
+  background-color: #ffffff;
+  box-shadow: -3px 3px 5px 0.7px rgba(0, 0, 0, 0.15);
 }
 
 .btn-highlighted {

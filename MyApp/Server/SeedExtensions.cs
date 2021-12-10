@@ -296,7 +296,6 @@ public static class SeedExtensions
         List<string> domains = new List<string> { "@gmail.com", "@hotmail.com", "@outlook.com", "@outlook.dk"};
         List<string> fullName = new List<string>();
         fullName.Add(firstNames[r.Next(0, firstNames.Count - 1)]);
-
         while (fullName.Count < 3)
         {
             string word = surnames[r.Next(0, surnames.Count - 1)];
