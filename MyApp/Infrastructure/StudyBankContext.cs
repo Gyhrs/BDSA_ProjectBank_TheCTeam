@@ -9,9 +9,11 @@ namespace MyApp.Infrastructure
 {
     public class StudyBankContext : DbContext, IStudyBankContext
     {
-        public DbSet<Student> Students => Set<Student>();
+        //public DbSet<Student> Students => Set<Student>();
 
-        public DbSet<Supervisor> Supervisors => Set<Supervisor>();
+        //public DbSet<Supervisor> Supervisors => Set<Supervisor>();
+
+        public DbSet<StudyBankUser> Users => Set<StudyBankUser>();
 
         public DbSet<Project> Projects => Set<Project>();
 

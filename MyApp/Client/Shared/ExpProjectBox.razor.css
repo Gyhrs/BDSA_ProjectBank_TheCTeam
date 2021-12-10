@@ -1,0 +1,33 @@
+.general-layout {
+  margin-top: 50px;
+
+  display: flex;
+  /* flex-flow: row wrap; */
+  justify-content: space-around;
+  align-content: flex-start;
+  margin-bottom: 2px;
+}
+
+.centering {
+  display: flex;
+  justify-content: space-around;
+  width: 850px;
+  /* background-color: aquamarine; */
+}
+
+.ExpProjectBox {
+  justify-content: space-evenly;
+  text-align: left;
+  width: 250px;
+  padding: 25px;
+
+  display: inline-block;
+}
+
+.MainBox {
+  width: 500px;
+}
+
+.Exp-Left-container {
+  width: 300px;
+}

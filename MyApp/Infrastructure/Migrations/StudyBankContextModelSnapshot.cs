@@ -73,7 +73,7 @@ namespace MyApp.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("StudyBankUser");
+                    b.ToTable("Users");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("StudyBankUser");
                 });

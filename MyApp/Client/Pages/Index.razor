@@ -1,4 +1,9 @@
 ﻿@page "/"
+@page "/feed"
 
 <PageTitle>Index</PageTitle>
 <ProjectFeed></ProjectFeed>
+
+@code {
+    public String _seachString { get; set; } = String.Empty;
+}

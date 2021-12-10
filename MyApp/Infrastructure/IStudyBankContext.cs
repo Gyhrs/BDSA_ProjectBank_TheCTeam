@@ -9,8 +9,9 @@ namespace MyApp.Infrastructure
 {
     public interface IStudyBankContext : IDisposable
     {
-        DbSet<Student> Students { get; }
-        DbSet<Supervisor> Supervisors { get; }
+        //DbSet<Student> Students { get; }
+        //DbSet<Supervisor> Supervisors { get; }
+        DbSet<StudyBankUser> Users { get; }
         DbSet<Project> Projects { get; }
         DbSet<Tag> Tags { get; }
 
