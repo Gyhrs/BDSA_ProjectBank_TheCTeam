@@ -28,8 +28,8 @@ class Program
 
         // Connect to server with connection string
         builder.Services.AddDbContext<StudyBankContext>(options => 
-        options.UseSqlServer(builder.Configuration.GetConnectionString("StudyBank"),
-        sqlServerOptionsAction: sqlOptions =>{sqlOptions.EnableRetryOnFailure();}
+            options.UseSqlServer(builder.Configuration.GetConnectionString("StudyBank"),
+            sqlServerOptionsAction: sqlOptions =>{sqlOptions.EnableRetryOnFailure();} //Handles transient faults
         ));
         builder.Services.AddScoped<IStudyBankContext, StudyBankContext>();
         builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
