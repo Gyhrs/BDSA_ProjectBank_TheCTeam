@@ -1,0 +1,23 @@
+
+.loading-screen-fullscreen {
+        width: 50vw;
+        min-height: 200px;
+        height: 65vh;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        opacity: 85%;
+}
+
+.loading-img {
+        max-height: 100px;
+}
+
+.loading-text {
+        max-height: 100px;
+        white-space: pre;
+}
+
