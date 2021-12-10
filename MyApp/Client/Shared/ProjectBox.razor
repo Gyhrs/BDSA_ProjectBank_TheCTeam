@@ -1,12 +1,14 @@
 @inject NavigationManager NavigationManager
+
 <div class="project-box mb-4 box-layout" @onclick="navigateToProject">
     <h2>@name</h2>
     @if (CreatedBy != null)
     {
         <h5>@CreatedBy</h5>
-    } else 
+    }
+    else
     {
-        <h5>No Author</h5>   
+        <h5>No Author</h5>
     }
     <br>
     <div class="descriptionBox">@description</div>
@@ -18,13 +20,14 @@
 </div>
 
 @code {
-    [Parameter] public int id {get; set;}
-    [Parameter] public string name {get; set;}
-    [Parameter] public string CreatedBy {get; set;}
-    [Parameter] public string description {get; set;}
-    public List<string> tags = new List<string>(){"123","123123"};
+    [Parameter] public int id { get; set; }
+    [Parameter] public string name { get; set; }
+    [Parameter] public string CreatedBy { get; set; }
+    [Parameter] public string description { get; set; }
+    public List<string> tags = new List<string>() { "123", "123123" };
 
-    public void navigateToProject() {
-        NavigationManager.NavigateTo("project/"+id);
+    public void navigateToProject()
+    {
+        NavigationManager.NavigateTo("project/" + id);
     }
 }

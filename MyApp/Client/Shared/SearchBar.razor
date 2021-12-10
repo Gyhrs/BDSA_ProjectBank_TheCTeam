@@ -27,12 +27,17 @@
     [Parameter]
     public String? _feedPage { get; set; }
 
-    public String _searchString = string.Empty;
+    public String _searchString { get; set; } = string.Empty;
 
     public void Search()
     {
 
         // TODO: Giv feed page a new selection string
         _feedPage = _feedPage + "";
+
+        if (_searchString != string.Empty)
+        {
+
+        }
     }
 }

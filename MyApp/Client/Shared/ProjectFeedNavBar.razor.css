@@ -13,13 +13,6 @@
   padding-right: 50px;
 }
 
-.colum-container {
-  justify-content: space-between;
-  display: table-column;
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
 .scrollable {
   overflow: hidden;
 
