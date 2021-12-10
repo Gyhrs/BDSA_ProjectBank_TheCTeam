@@ -1,3 +1,9 @@
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using MyApp.Shared
+@attribute [Authorize]
+@inject HttpClient Http
+
 <div class="tag-row">
     <div class="colum-container">
         <h6>Settings:</h6>
@@ -18,15 +24,15 @@
         <h6>Tags:</h6>
         <hr class="line" style="background-color: #47abb9;" />
         <div class="scrollable" id="tagbar">
-            <!-- @bind:event="onscroll" -->
-            <button class="button-like">C#</button>
-            <button class="button-like">Java</button>
-            <button class="button-like">AI</button>
-            <button class="button-like">Business</button>
-            <button class="button-like">Database</button>
-            <button class="button-like">Medicine</button>
-            <button class="button-like">Space Research</button>
-            <button class="button-like">UI</button>
+            @if (tags != null)
+            {
+                @foreach (var tag in tags)
+                {
+                    //<button class="button-like" onclick="@projectFeed.setProjectsFromTag(tag.Name)">@tag.Name</button>
+                    <button class="button-like">@tag.Name</button>
+
+                }
+            }
         </div>
     </div>
 
@@ -44,6 +50,8 @@
 
 @code {
     public int scrollvalue { get; set; } = 0;
+    private TagDTO[]? tags;
+    private ProjectFeed projectFeed;
 
     private void ScrollLeft()
     {
@@ -53,5 +61,17 @@
     private void ScrollRight()
     {
         scrollvalue -= 20;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            tags = await Http.GetFromJsonAsync<TagDTO[]>("api/Tags");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
     }
 }

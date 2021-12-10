@@ -27,12 +27,15 @@ class Program
         builder.Services.AddRazorPages();
 
         // Connect to server with connection string
-        builder.Services.AddDbContext<StudyBankContext>(options => 
+        builder.Services.AddDbContext<StudyBankContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("StudyBank"),
-            sqlServerOptionsAction: sqlOptions =>{sqlOptions.EnableRetryOnFailure();} //Handles transient faults
+            sqlServerOptionsAction: sqlOptions => { sqlOptions.EnableRetryOnFailure(); } //Handles transient faults
         ));
         builder.Services.AddScoped<IStudyBankContext, StudyBankContext>();
         builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<ITagRepository, TagRepository>();
+
 
         // builder.Services.Configure<JwtBearerOptions>(
         // JwtBearerDefaults.AuthenticationScheme, options =>
@@ -41,11 +44,11 @@ class Program
         // });
 
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen( c =>
-        {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyApp.Server", Version = "v1"});
-            c.UseInlineDefinitionsForEnums();
-        });
+        builder.Services.AddSwaggerGen(c =>
+       {
+           c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyApp.Server", Version = "v1" });
+           c.UseInlineDefinitionsForEnums();
+       });
 
 
         var app = builder.Build();

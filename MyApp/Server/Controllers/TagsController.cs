@@ -20,9 +20,7 @@ public class TagsController : ControllerBase
         _repository = repository;
     }
 
-    
     [AllowAnonymous]
-    
     [ProducesResponseType(StatusCodes.Status200OK)] 
     [HttpGet] 
     public async Task<ActionResult<IReadOnlyCollection<TagDTO>>> GetAll()
