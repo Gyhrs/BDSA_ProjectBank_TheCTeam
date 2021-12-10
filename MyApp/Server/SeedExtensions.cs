@@ -31,7 +31,6 @@ public static class SeedExtensions
         
         PopulateDatabase(context);
     }
-
     ///<summary> 
     ///Default version of PopulateDatabase method with 50 Supervisors, 200 Projects, and 1-7 Tags per Project. 
     ///Adds the 200 randomly generated Projects (with 50 randomly assigned Supervisors, and a number of Tags) and 
@@ -296,7 +295,6 @@ public static class SeedExtensions
         };
         List<string> domains = new List<string> { "@gmail.com", "@hotmail.com", "@outlook.com", "@outlook.dk"};
         List<string> fullName = new List<string>();
-
         fullName.Add(firstNames[r.Next(0, firstNames.Count - 1)]);
 
         while (fullName.Count < 3)

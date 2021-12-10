@@ -1,0 +1,25 @@
+.tag-row {
+  background-color: #f3f3f3;
+  background: #f3f3f3;
+  box-shadow: -1px 1px 5px 0.5px rgba(0, 0, 0, 0.2);
+
+  height: 110px;
+
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.scrollable {
+  overflow: hidden;
+
+  max-height: 43px;
+  width: 65vw;
+
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
