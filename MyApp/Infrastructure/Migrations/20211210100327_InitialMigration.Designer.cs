@@ -12,8 +12,8 @@ using MyApp.Infrastructure;
 namespace MyApp.Infrastructure.Migrations
 {
     [DbContext(typeof(StudyBankContext))]
-    [Migration("20211201134326_InitialMigrationN")]
-    partial class InitialMigrationN
+    [Migration("20211210100327_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,7 +75,7 @@ namespace MyApp.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("StudyBankUser");
+                    b.ToTable("Users");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("StudyBankUser");
                 });
