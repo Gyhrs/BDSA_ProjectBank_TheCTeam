@@ -26,21 +26,12 @@ else
     {
         try
         {
-            ProjectDTO[]? projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects"); ///tags/tag1#tag2#tag3/searchstring/....
+            project = await Http.GetFromJsonAsync<ProjectDTO>("api/Projects/id/" + id);
 
-            if (projects != null)
-            {
-                SetCurrentProject(projects);
-            }
         }
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
         }
-    }
-
-    private void SetCurrentProject(ProjectDTO[] projects)
-    {
-        project = projects.Where(pr => pr.Id == id).First();
     }
 }
