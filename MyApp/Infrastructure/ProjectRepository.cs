@@ -38,12 +38,9 @@ public class ProjectRepository : IProjectRepository
 
     ///<summary>
     /// GetProjectFromId finds a project in the datbase, with the given ID.
-    /// <para></para>
-    /// <param name="projectId">ProjectId is the projectId</param> 
     ///</summary>
     public async Task<ProjectDTO> GetProjectFromID(int projectId)
     {
-        await GetProjectFromID(projectId);
         var projects = from p in _context.Projects
                        where p.Id == projectId
                        select new ProjectDTO(

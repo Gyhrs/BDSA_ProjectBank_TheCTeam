@@ -128,14 +128,13 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData(2, "Algorithm")]
     [InlineData(3, "Supercomputer")]
     public async Task GetProjectFromID_Returns_Correct_Project(int id, string name)
-
     {
         // Arrange
         var expected = name;
 
         // Act
-        var actual = (await _repository.GetProjectFromID(id)).Name;
-
+        var project = await _repository.GetProjectFromID(id);
+        var actual = project.Name;
 
         // Assert
         Assert.Equal(expected, actual);

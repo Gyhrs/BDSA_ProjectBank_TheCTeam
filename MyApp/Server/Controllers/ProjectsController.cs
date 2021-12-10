@@ -125,7 +125,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
         if (tagList.Length == 0 || (tagList.Length == 1 && tagList.ElementAt(0) == "")
             || name.Length == 0 || name == null)
         {
-            return BadRequest("No tags provided");
+            return BadRequest("No tags / title provided");
         }
 
         var projects = await _repository.GetProjectsFromTagsAndName(tagList.ToList(), name);
