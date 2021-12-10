@@ -62,7 +62,7 @@ namespace MyApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -73,9 +73,9 @@ namespace MyApp.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Email);
+                    table.PrimaryKey("PK_Users", x => x.Email);
                     table.ForeignKey(
-                        name: "FK_User_Projects_ProjectId",
+                        name: "FK_Users_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id");
@@ -98,9 +98,9 @@ namespace MyApp.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProjectSupervisor_User_SupervisorsEmail",
+                        name: "FK_ProjectSupervisor_Users_SupervisorsEmail",
                         column: x => x.SupervisorsEmail,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Email",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -121,28 +121,28 @@ namespace MyApp.Infrastructure.Migrations
                 column: "TagsName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_Email",
-                table: "User",
+                name: "IX_Users_Email",
+                table: "Users",
                 column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_ProjectId",
-                table: "User",
+                name: "IX_Users_ProjectId",
+                table: "Users",
                 column: "ProjectId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Projects_User_CreatedByEmail",
+                name: "FK_Projects_Users_CreatedByEmail",
                 table: "Projects",
                 column: "CreatedByEmail",
-                principalTable: "User",
+                principalTable: "Users",
                 principalColumn: "Email");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Projects_User_CreatedByEmail",
+                name: "FK_Projects_Users_CreatedByEmail",
                 table: "Projects");
 
             migrationBuilder.DropTable(
@@ -155,7 +155,7 @@ namespace MyApp.Infrastructure.Migrations
                 name: "Tags");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Projects");

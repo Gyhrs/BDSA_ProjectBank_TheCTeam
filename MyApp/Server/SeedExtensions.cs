@@ -22,11 +22,11 @@ public static class SeedExtensions
     private static void SeedProjects(StudyBankContext context)
     {
         context.Database.Migrate();
-        context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
-        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
-        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
-        context.Database.ExecuteSqlRaw("DELETE dbo.StudyBankUser");
-        context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.Users");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
         //context.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.Projects', RESEED, 0)");
         
         PopulateDatabase(context);
