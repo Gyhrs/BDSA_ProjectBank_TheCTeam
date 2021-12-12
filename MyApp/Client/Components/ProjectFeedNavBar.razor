@@ -11,8 +11,6 @@
         <button class="button-like">Clear All</button>
     </div>
 
-
-
     <div class="colum-container">
         <h6 id="invisible">Hej ehj</h6>
         <hr class="invisible-line" id="invisible" />
@@ -28,9 +26,10 @@
             {
                 @foreach (var tag in tags)
                 {
-                    //<button class="button-like" onclick="@projectFeed.setProjectsFromTag(tag.Name)">@tag.Name</button>
-                    <button class="button-like">@tag.Name</button>
+                    <button class="button-like" onclick="@onTagButtonClicked(tag.Name)">@tag.Name</button>
+                    //<button class="button-like" onclick="@tag.Name">@tag.Name</button>
 
+                    //<button class="button-like">@tag.Name</button>
                 }
             }
         </div>
@@ -47,12 +46,14 @@
     <!-- <p>@scrollvalue</p> -->
 </div>
 
+<ProjectFeed @ref="projectFeed"></ProjectFeed>
+
+
 
 @code {
     public int scrollvalue { get; set; } = 0;
     private TagDTO[]? tags;
-    private ProjectFeed projectFeed;
-
+    public ProjectFeed projectFeed;
     private void ScrollLeft()
     {
         scrollvalue += 20;
@@ -61,6 +62,10 @@
     private void ScrollRight()
     {
         scrollvalue -= 20;
+    }
+
+    private async Task onTagButtonClicked(string tag) {
+        await projectFeed.setProjectsFromTag(tag);
     }
 
     protected override async Task OnInitializedAsync()

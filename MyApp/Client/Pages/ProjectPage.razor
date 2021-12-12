@@ -8,7 +8,7 @@
 @if (project != null)
 {
     <div>
-        <ExpProjectBox id="@project.Id" name="@project.Name" description="@project.Description"></ExpProjectBox>
+        <ExpProjectBox id="@project.Id" name="@project.Name" description="@project.Description" CreatedBy="@project.CreatedByEmail"></ExpProjectBox>
     </div>
 }
 else

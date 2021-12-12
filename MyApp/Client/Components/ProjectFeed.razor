@@ -9,7 +9,7 @@
     {
         @foreach (var item in projects)
         {
-            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"></ProjectBox>
+            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags" CreatedBy="@item.CreatedByEmail"></ProjectBox>
         }
         // Testing componets:
         // ...
@@ -37,6 +37,7 @@
 
     public async Task setProjectsFromTag(string tag) 
     {
+        System.Console.WriteLine("Set projects to tag: " + tag);
         try
         {
             projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
