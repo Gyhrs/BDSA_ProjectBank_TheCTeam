@@ -26,7 +26,7 @@
             {
                 @foreach (var tag in tags)
                 {
-                    <button class="button-like" onclick="@onTagButtonClicked(tag.Name)">@tag.Name</button>
+                    <button class="button-like" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
                     //<button class="button-like" onclick="@tag.Name">@tag.Name</button>
 
                     //<button class="button-like">@tag.Name</button>
@@ -65,7 +65,9 @@
     }
 
     private async Task onTagButtonClicked(string tag) {
+        System.Console.WriteLine("Tag has been pressed: " + tag);
         await projectFeed.setProjectsFromTag(tag);
+        projectFeed.Refresh();
     }
 
     protected override async Task OnInitializedAsync()

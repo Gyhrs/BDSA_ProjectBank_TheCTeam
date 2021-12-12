@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MyApp.Shared
@@ -22,7 +23,7 @@
 
 @code {
     private ProjectDTO[]? projects;
-    
+        
     protected override async Task OnInitializedAsync()
     {
         try
@@ -37,7 +38,6 @@
 
     public async Task setProjectsFromTag(string tag) 
     {
-        System.Console.WriteLine("Set projects to tag: " + tag);
         try
         {
             projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
@@ -46,6 +46,10 @@
         {
             exception.Redirect();
         }
+    }
+
+    public void Refresh() {
+        this.StateHasChanged();
     }
 
     
