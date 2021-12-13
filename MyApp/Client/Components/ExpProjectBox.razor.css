@@ -1,37 +1,48 @@
-.general-layout {
+.expandedlayout {
   margin-top: 50px;
-
   display: flex;
-  /* flex-flow: row wrap; */
-  justify-content: space-around;
+  flex-flow: row wrap;
+  justify-content: center;
   align-content: flex-start;
   margin-bottom: 2px;
+  flex-shrink: 10;
 }
 
-.centering {
-  display: flex;
-  justify-content: space-around;
-  width: 850px;
-  /* background-color: aquamarine; */
+.SmallBox {
+  width: 31%;
 }
 
 .ExpProjectBox {
   justify-content: space-evenly;
   text-align: left;
   width: 250px;
-  padding: 25px;
-
-  display: inline-block;
+  padding: 15px;
 }
 
 .MainBox {
   width: 500px;
+  margin-bottom: 40px;
+  margin-right: 30px;
+  padding: 25px;
 }
 
-.Exp-Left-container {
-  width: 300px;
+.Exp-small-container {
+  max-width: 360px;
+  margin-right: 30px;
 }
 
 .descriptionBox {
   white-space: pre-wrap;
+}
+
+@media screen and (max-width: 915px) {
+  .Exp-small-container {
+    width: 500px;
+    display: flex;
+    flex-wrap: row;
+    justify-content: space-between;
+  }
+  .SmallBox {
+    width: 45%;
+  }
 }

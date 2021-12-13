@@ -9,10 +9,8 @@
     {
         @foreach (var item in projects)
         {
-            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"></ProjectBox>
+            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags" CreatedBy="@item.CreatedBy"></ProjectBox>
         }
-        // Testing componets:
-        // ...
     }
     else
     {
