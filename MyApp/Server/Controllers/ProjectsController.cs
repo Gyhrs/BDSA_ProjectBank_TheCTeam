@@ -99,18 +99,25 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     [HttpGet("tags/{tags}")]
     public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetFromTags(string tags)
     {
+        Console.WriteLine("In controller with tags: " + tags);
         string[] tagList = tags.Split("_");
         if (tagList.Length == 0 || (tagList.Length == 1 && tagList.ElementAt(0) == ""))
         {
             return BadRequest("No tags provided");
         }
 
+        Console.WriteLine("Created list: " + tagList);
+
+
         var projects = await _repository.GetProjectsFromTags(tagList.ToList());
 
         if (projects.Count == 0)
         {
-            return NotFound("No Project with specified tags");
+            //TODO: Fix this. Apparently returning not found, results in exception in ProjectFeed.razor :(
+            //return NotFound("No Project with specified tags");
         }
+        Console.WriteLine("Found some projects ");
+
         return Ok(projects);
     }
 

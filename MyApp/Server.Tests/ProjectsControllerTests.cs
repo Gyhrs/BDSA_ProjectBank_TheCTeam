@@ -177,7 +177,7 @@ public class ProjectsControllerTests
                 new List<string> { "anton@hotmail.com", "nibu@hotmail.com" },
                 new List<string> { "andasdton@hotmail.com", "nibabjksdfu@hotmail.com" },
                 "createdby@hotmail.com",
-                new List<string> {"Blockchain"}
+                new List<string> {"Blockchain", "Business"}
             ),
             new ProjectDTO
             (
@@ -189,7 +189,7 @@ public class ProjectsControllerTests
                 new List<string> { "lasse@hotmail.com", "peter@hotmail.com" },
                 new List<string> { "hej@med.com", "dig@hotmail.com" },
                 "createdby@hotmail.com",
-                new List<string> { "Business"}
+                new List<string> { "Business", "BlockChain", "Fast"}
             )
         };
         repository.Setup(m => m.GetProjectsFromTags(new List<string> { "Business", "Blockchain"} )).ReturnsAsync(projects);
