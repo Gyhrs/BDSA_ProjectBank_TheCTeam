@@ -37,7 +37,7 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("email/{email}")]
-    public async Task<ActionResult<ProjectDTO>> GetFromEmail(string email)
+    public async Task<ActionResult<UserDTO>> GetFromEmail(string email)
     {
         if (email.Length == 0)
         {
@@ -61,7 +61,6 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
         return Ok(user);
     }
 
-    // Get projects from Name from DB
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -83,11 +82,10 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
         return Ok(students);
     }
 
-    // Get projects from Tags from DB
     [AllowAnonymous]
     [ProducesResponseType(404)]
     [ProducesResponseType(400)]
-    [ProducesResponseType(typeof(ProjectDTO), 200)]
+    [ProducesResponseType(typeof(UserDTO), 200)]
     [HttpGet("supervisors/{id}")]
     public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetSupervisorsFromProjectId(int id)
     {

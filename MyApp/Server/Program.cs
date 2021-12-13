@@ -33,6 +33,7 @@ class Program
         ));
         builder.Services.AddScoped<IStudyBankContext, StudyBankContext>();
         builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         // builder.Services.Configure<JwtBearerOptions>(
         // JwtBearerDefaults.AuthenticationScheme, options =>

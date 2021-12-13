@@ -1,3 +1,6 @@
+@using Shared;
+@inject HttpClient Http;
+
 <div class="expandedlayout">
         <div class="MainBox ExpProjectBox mb-4 box-layout">
             <h2>@name</h2>
@@ -15,21 +18,45 @@
 
         <div class="Exp-small-container">
             <div class="ExpProjectBox SmallBox mb-4 box-layout">
+                <p>Supervisors:</p>
+                @if (Supervisors != null)
+                {
+                    foreach (var sv in Supervisors) {
+                        <p>@sv.Name : @sv.Email</p>
+                    }   
+                } else {
+                    <p>No supervisors yet</p>
+                }
+                @if (Supervisors != null)
+                {
+                    foreach (var stu in Students) {
+                        <p>@stu.Name : @stu.Email</p>
+                    }   
+                } else {
+                    <p>No Students yet</p>
+                }
+            </div>
+            <div class="ExpProjectBox SmallBox mb-4 box-layout">
                 @foreach (var tag in tags)
                 {
                     <PassiveTag TagName="@tag"></PassiveTag>
                 }
-            </div>
-            <div class="ExpProjectBox SmallBox mb-4 box-layout">
-                <p>Contact Information Should go here with a small mail icon</p>
             </div>
         </div>
 </div>
 
 @code {
     [Parameter] public int id { get; set; }
-    [Parameter] public string name { get; set; }
-    [Parameter] public string CreatedBy { get; set; }
-    [Parameter] public string description { get; set; }
-    [Parameter] public List<string> tags {get; set;}
+    [Parameter] public string? name { get; set; }
+    [Parameter] public DateTime StartDate { get; set; }
+    [Parameter] public DateTime EndDate { get; set; }
+    [Parameter] public List<StudentDTO>? Students { get; set; }
+    [Parameter] public List<SupervisorDTO>? Supervisors { get; set;}
+    [Parameter] public string? CreatedBy { get; set; }
+    [Parameter] public string? description { get; set; }
+    [Parameter] public List<string>? tags {get; set;}
+    /*protected override async Task OnInitializedAsync() {
+        Students = await Http.GetFromJsonAsync<List<StudentDTO>>("api/Users/students/"+id);
+        Supervisors = await Http.GetFromJsonAsync<List<SupervisorDTO>>("api/Users/supervisors/"+id);
+    }*/
 }

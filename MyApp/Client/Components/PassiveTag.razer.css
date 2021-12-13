@@ -3,8 +3,6 @@
   padding-top: 6px;
   padding-bottom: 6px;
   */
-
-  height: 26px;
   padding-top: 2px;
   font-size: 12vw;
   justify-content: space-around;
@@ -21,6 +19,6 @@
   background-color: #fefefe;
 
   border-color: #2c3536;
-  border-width: 3px;
+  border-width: 2px;
   border-radius: 25px;
 }
