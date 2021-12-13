@@ -8,6 +8,8 @@ namespace MyApp.Server;
 
 public static class SeedExtensions
 {
+    private static List<string> existingEmails = new List<string>();
+
     public static IHost Seed(this IHost host)
     {
         using (var scope = host.Services.CreateScope())
@@ -22,13 +24,13 @@ public static class SeedExtensions
     private static void SeedProjects(StudyBankContext context)
     {
         //context.Database.Migrate();
-        context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
-        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
-        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
         context.Database.ExecuteSqlRaw("DELETE dbo.Users");
+        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
+        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
+        context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
         context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
         //context.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.Projects', RESEED, 0)");
-        
+
         PopulateDatabase(context);
     }
     ///<summary> 
@@ -36,7 +38,7 @@ public static class SeedExtensions
     ///Adds the 200 randomly generated Projects (with 50 randomly assigned Supervisors, and a number of Tags) and 
     ///Tags (that are assigned to the corresponding Projects) to the context, and saves the context.
     ///</summary>
-    public static void PopulateDatabase(StudyBankContext context) 
+    public static void PopulateDatabase(StudyBankContext context)
     {
         PopulateDatabase(context, 50, 200, 1, 7);
     }
@@ -52,19 +54,20 @@ public static class SeedExtensions
     ///<param name="maxTags">the maximum number of Tags per Project</param>
     public static void PopulateDatabase(StudyBankContext context, int sNum, int pNum, int minTags, int maxTags)
     {
+
         List<Supervisor> supervisors = GenerateSupervisors(sNum);
         List<Project> projects = GenerateProjects(pNum, supervisors);
         List<Tag> tags = GetTags();
 
         Random r = new Random();
 
-        foreach (var p in projects) 
+        foreach (var p in projects)
         {
             // Select a number of random tags for the project
-            for (int i = 0; i < r.Next(minTags, maxTags+1); i++)
+            for (int i = 0; i < r.Next(minTags, maxTags + 1); i++)
             {
                 Tag t = tags[r.Next(0, tags.Count - 1)];
-                p.Tags.Add(t); 
+                p.Tags.Add(t);
                 t.Projects.Add(p);
             }
 
@@ -85,13 +88,12 @@ public static class SeedExtensions
     private static List<Supervisor> GenerateSupervisors(int amount)
     {
         List<Supervisor> supervisors = new List<Supervisor>();
-        List<string> existingEmails = new List<string>();
 
         for (int i = 0; i < amount; i++)
         {
             supervisors.Add(GenerateRandomSupervisor(existingEmails));
         }
-        
+
         return supervisors;
     }
 
@@ -119,7 +121,7 @@ public static class SeedExtensions
         Project project = new Project();
         Random r = new Random();
 
-        List<string> randomWords = SelectTwoRandomBuzzwords(); 
+        List<string> randomWords = SelectTwoRandomBuzzwords();
         string title = GenerateTitle(randomWords);
 
         project.Name = title;
@@ -127,7 +129,7 @@ public static class SeedExtensions
         project.EndDate = DateTime.Parse("24/6/2022");
         project.CreatedBy = supervisors[r.Next(0, supervisors.Count - 1)];
         project.Description = GenerateRandomDescription(randomWords, title);
-        
+
         // Select 1-3 random supervisors for the project
         project.Supervisors = new List<Supervisor>();
         for (int i = 0; i < r.Next(1, 3); i++)
@@ -135,7 +137,67 @@ public static class SeedExtensions
             project.Supervisors.Add(supervisors[r.Next(0, supervisors.Count - 1)]);
         }
 
+        project.Students = new List<Student>();
+        for (int i = 0; i < r.Next(1, 3); i++)
+        {
+            var student = RandomStudent();
+
+            project.Students.Add(student);
+            student.Project = project;
+        }
+
         return project;
+    }
+
+    public static Student RandomStudent()
+    {
+        // Name is build up of 1 first name and 2 surnames
+        Random r = new Random();
+        Student student = new Student();
+
+        List<string> firstNames = new List<string>
+        {
+            "Alma", "Anton", "Asger", "Axel", "Dagmar", "Lasse", "Louise", "Lucas", "Mille", "Nikoline",
+            "Peter", "Philip", "Sofia", "Sofie", "Tue", "Vilhelm"
+        };
+
+        List<string> surnames = new List<string>
+        {
+            "Andersen", "Bertelsen", "Birch", "Burman", "Cronval", "Dyrholm", "Fuchs", "Gyhrs", "Hviid",
+            "Kjærgaard", "Klausen"
+        };
+
+        List<string> domains = new List<string> { "@gmail.com", "@hotmail.com", "@outlook.com", "@outlook.dk" };
+        List<string> fullName = new List<string>();
+
+        fullName.Add(firstNames[r.Next(0, firstNames.Count - 1)]);
+
+        while (fullName.Count < 3)
+        {
+            string word = surnames[r.Next(0, surnames.Count - 1)];
+            if (!fullName.Contains(word))
+            {
+                fullName.Add(word);
+            }
+        }
+
+        student.Name = string.Join(" ", fullName);
+
+        // Email is build up of firstname + first surname + @hotmail.com
+        var emailName = fullName[0] + fullName[1];
+
+        while (existingEmails.Contains(emailName))
+        {
+            emailName += r.Next(1, 99);
+        }
+        existingEmails.Add(emailName);
+
+        emailName += domains[r.Next(0, domains.Count - 1)];
+        student.Email = emailName;
+
+        student.Program = "Software development";
+
+        return student;
     }
 
     ///<summary>
@@ -145,18 +207,18 @@ public static class SeedExtensions
     {
         List<string> tagNames = new List<string>
         {
-            "AccessibleDesign", "Agile", "AI", "Algorithms", "Art", "Blazor", "Business", "C#", 
-            "Computing", "Consulting", "CSS", "Cyber-security", "Design", "Development", "Digital", 
-            "Discord", "Encryption", "F#", "GDPR", "Go", "Golang", "Hacking", "Hands-on", "Hashing", 
-            "HTML", "Innovation", "Integration", "Java", "Lean", "MachineLearning", "Microsoft", 
-            "NoSQL", "Online", "OS", "Partnership", "Profit", "Python", "SASS", "SCRUM", "Software", 
-            "SOLID", "SQL", "SqlLite", "Testdriven", "UI", "Usability", "UserFriendly", "UserInterface", 
+            "AccessibleDesign", "Agile", "AI", "Algorithms", "Art", "Blazor", "Business", "C#",
+            "Computing", "Consulting", "CSS", "Cyber-security", "Design", "Development", "Digital",
+            "Discord", "Encryption", "F#", "GDPR", "Go", "Golang", "Hacking", "Hands-on", "Hashing",
+            "HTML", "Innovation", "Integration", "Java", "Lean", "MachineLearning", "Microsoft",
+            "NoSQL", "Online", "OS", "Partnership", "Profit", "Python", "SASS", "SCRUM", "Software",
+            "SOLID", "SQL", "SqlLite", "Testdriven", "UI", "Usability", "UserFriendly", "UserInterface",
             "UX", "VideoGames", "XML", "Zoom"
         };
 
         List<Tag> tags = new List<Tag>();
 
-        foreach (string tagName in tagNames) 
+        foreach (string tagName in tagNames)
         {
             Tag t = new Tag();
             t.Name = tagName;
@@ -173,8 +235,8 @@ public static class SeedExtensions
         Random r = new Random();
         string company = GenerateRandomCompany();
 
-        List<string> intro = new List<string> 
-        { 
+        List<string> intro = new List<string>
+        {
             "Are you about to write your master’s thesis or a similar project and interested in exploring",
             "Have an interesting idea involving",
             "Do you wanna grow and explore the market of",
@@ -183,7 +245,7 @@ public static class SeedExtensions
         };
 
         List<string> workWithCompany = new List<string>
-        { 
+        {
             "Then join us at " + company + "! ",
             "We're interested in working with you! Help us at " + company + ". ",
             "We're looking for students to help us at " + company + ". ",
@@ -192,7 +254,7 @@ public static class SeedExtensions
         };
 
         List<string> workWithbuzzwords = new List<string>
-        { 
+        {
             "Work with " + buzzwords[0] + " and " + buzzwords[1] + " alongside talented individuals at " + company + " and help invent the future! ",
             "Do you wanna work with " + buzzwords[0] + " and " + buzzwords[1] + "?" ,
             "Can you see yourself working with " + buzzwords[0] + " and " + buzzwords[1] + "? ",
@@ -203,10 +265,10 @@ public static class SeedExtensions
 
         List<string> adjectives = new List<string>
         {
-            "adventurous", "ambitious", "audacious", "beautiful", "a straight-A student", "brainy", "bright", 
-            "clever", "creative", "curious", "enthusiastic", "fearless", "ferocious", "genius", 
-            "hardworking", "intelligent", "interesting", "likeable", "not stupid", "passionate", 
-            "perceptive", "savvy", "scientific", "self-driven", "sharp", "smart", "strong", "stylish", 
+            "adventurous", "ambitious", "audacious", "beautiful", "a straight-A student", "brainy", "bright",
+            "clever", "creative", "curious", "enthusiastic", "fearless", "ferocious", "genius",
+            "hardworking", "intelligent", "interesting", "likeable", "not stupid", "passionate",
+            "perceptive", "savvy", "scientific", "self-driven", "sharp", "smart", "strong", "stylish",
             "a team player"
         };
 
@@ -256,7 +318,7 @@ public static class SeedExtensions
         return string.Join(" ", fullDescription);
     }
 
-    
+
     /// <summary>
     /// Build a company name with 2 starters and 1 ending
     /// </summary>
@@ -264,12 +326,12 @@ public static class SeedExtensions
     {
         Random r = new Random();
         List<string> companyName = new List<string>();
-        
-        List<string> firstParts = new List<string>() 
+
+        List<string> firstParts = new List<string>()
         {
-            "All", "Bank", "Blue", "Blur", "Bus", "Charge", "Code", "Coffee", "Dev", "Easy", "Factory", 
-            "Fast", "Future", "Giraffe", "Gradient", "Green", "Hq", "Jay", "Just", "Lion", "Look", "Mind", 
-            "Modern", "Monkey", "Omni", "Optical", "Pad", "Page", "Path", "Polaroid", "Red", "Root", 
+            "All", "Bank", "Blue", "Blur", "Bus", "Charge", "Code", "Coffee", "Dev", "Easy", "Factory",
+            "Fast", "Future", "Giraffe", "Gradient", "Green", "Hq", "Jay", "Just", "Lion", "Look", "Mind",
+            "Modern", "Monkey", "Omni", "Optical", "Pad", "Page", "Path", "Polaroid", "Red", "Root",
             "Smooth", "Soft", "Software", "Super", "Swift", "Tex", "Tiger", "Web", "Widget"
         };
         List<string> lastParts = new List<string>() { "ApS", "AAT", "Co", "Inc", "LLC" };
@@ -296,17 +358,17 @@ public static class SeedExtensions
         // Name is build up of 1 first name and 2 surnames
         Random r = new Random();
         Supervisor supervisor = new Supervisor();
-        List<string> firstNames = new List<string> 
-        { 
-            "Alma", "Anton", "Asger", "Axel", "Dagmar", "Lasse", "Louise", "Lucas", "Mille", "Nikoline", 
+        List<string> firstNames = new List<string>
+        {
+            "Alma", "Anton", "Asger", "Axel", "Dagmar", "Lasse", "Louise", "Lucas", "Mille", "Nikoline",
             "Peter", "Philip", "Sofia", "Sofie", "Tue", "Vilhelm"
         };
-        List<string> surnames = new List<string> 
-        { 
-            "Andersen", "Bertelsen", "Birch", "Burman", "Cronval", "Dyrholm", "Fuchs", "Gyhrs", "Hviid", 
+        List<string> surnames = new List<string>
+        {
+            "Andersen", "Bertelsen", "Birch", "Burman", "Cronval", "Dyrholm", "Fuchs", "Gyhrs", "Hviid",
             "Kjærgaard", "Klausen"
         };
-        List<string> domains = new List<string> { "@gmail.com", "@hotmail.com", "@outlook.com", "@outlook.dk"};
+        List<string> domains = new List<string> { "@gmail.com", "@hotmail.com", "@outlook.com", "@outlook.dk" };
         List<string> fullName = new List<string>();
         fullName.Add(firstNames[r.Next(0, firstNames.Count - 1)]);
         while (fullName.Count < 3)
@@ -323,16 +385,14 @@ public static class SeedExtensions
         // Email is build up of firstname + first surname + @hotmail.com
         var emailName = fullName[0] + fullName[1];
 
-        while(existingEmails.Contains(emailName)){
+        while (existingEmails.Contains(emailName))
+        {
             emailName += r.Next(1, 99);
-            System.Console.WriteLine("FOUND A DUPLICATE!");
         }
-        System.Console.WriteLine(existingEmails.Count);
         existingEmails.Add(emailName);
 
         emailName += domains[r.Next(0, domains.Count - 1)];
         supervisor.Email = emailName;
-        System.Console.WriteLine(emailName);
 
         return supervisor;
     }
@@ -343,11 +403,11 @@ public static class SeedExtensions
     private static string GenerateTitle(List<string> buzzwords)
     {
         Random r = new Random();
-        List<string> projectTypes = new List<string> 
-        { 
+        List<string> projectTypes = new List<string>
+        {
             "Activity", "Entrepreneurship", "Program", "Project", "Study", "Thesis"
         };
-        
+
         return string.Join(" ", buzzwords) + " " + projectTypes[r.Next(0, projectTypes.Count - 1)];
     }
     /// <summary>
@@ -356,20 +416,20 @@ public static class SeedExtensions
     private static List<string> SelectTwoRandomBuzzwords()
     {
         Random r = new Random();
-        List<string> buzzwords = new List<string> 
-        { 
-            "Accessibility", "Agile and Lean", "Algorithm", "API", "Backend", "BitBucket", "Blazor", 
-            "Blockchain", "Bug-fixing", "Bugs", "Byzantine Generals Problem", "C#", "C++", "Cache", 
-            "Chess", "Code", "CSS", "Data", "Database Management", "Debugging", "Deployment", "Development", 
-            "DNA", "Documentation", "Domain", "Framework", "Frontend", "Git", "Github", "Golang", "gRPC", 
-            "HTML", "HTTPS", "Information Architecture", "Internet of things", "Java", "Javascript", "KTP", 
-            "Language", "Library", "LINQ", "Maximizing", "Metaverse", "Minification", "Mobilefirst", "MongoDB", 
-            "MVC", "MVVM", "MySQL", "NFT", "Operating System", "Performance enhancing", "Photoscanning", "PHP", 
-            "Plugin", "Profit Obtaining", "Research", "Responsive Design", "REST", "Rolling-Wave planning", 
-            "Smart", "Test Driven Development", "Testing", "UI", "Usability", "UX Design", "Version Control", 
+        List<string> buzzwords = new List<string>
+        {
+            "Accessibility", "Agile and Lean", "Algorithm", "API", "Backend", "BitBucket", "Blazor",
+            "Blockchain", "Bug-fixing", "Bugs", "Byzantine Generals Problem", "C#", "C++", "Cache",
+            "Chess", "Code", "CSS", "Data", "Database Management", "Debugging", "Deployment", "Development",
+            "DNA", "Documentation", "Domain", "Framework", "Frontend", "Git", "Github", "Golang", "gRPC",
+            "HTML", "HTTPS", "Information Architecture", "Internet of things", "Java", "Javascript", "KTP",
+            "Language", "Library", "LINQ", "Maximizing", "Metaverse", "Minification", "Mobilefirst", "MongoDB",
+            "MVC", "MVVM", "MySQL", "NFT", "Operating System", "Performance enhancing", "Photoscanning", "PHP",
+            "Plugin", "Profit Obtaining", "Research", "Responsive Design", "REST", "Rolling-Wave planning",
+            "Smart", "Test Driven Development", "Testing", "UI", "Usability", "UX Design", "Version Control",
             "Web", "Web", "Web 3", "Wi-Fi"
         };
-        List<string> chosenWords = new List<string> {};
+        List<string> chosenWords = new List<string> { };
         while (chosenWords.Count < 2)
         {
             string word = buzzwords[r.Next(0, buzzwords.Count - 1)];
@@ -378,7 +438,7 @@ public static class SeedExtensions
                 chosenWords.Add(word);
             }
         }
-        
+
         return chosenWords;
     }
 }
