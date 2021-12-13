@@ -31,6 +31,10 @@
   margin-right: 30px;
 }
 
+.descriptionBox {
+  white-space: pre-wrap;
+}
+
 @media screen and (max-width: 915px) {
   .Exp-small-container {
     width: 500px;
