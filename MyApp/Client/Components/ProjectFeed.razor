@@ -10,6 +10,7 @@ using System.Collections.Generic;
     {
         @if (_projects.Length == 0)
         {
+
             <p>No projects found</p>
         }
         else
@@ -64,6 +65,18 @@ using System.Collections.Generic;
                 Console.WriteLine("I am here :))))s");
                 //exception.Redirect();
             }
+        }
+    }
+
+    public async Task setProjectsFromSearchString(string searchString)
+    {
+        try
+        {
+            _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/name/" + searchString);
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
         }
     }
 
