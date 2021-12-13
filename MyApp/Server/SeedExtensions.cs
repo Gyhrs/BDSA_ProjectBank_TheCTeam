@@ -203,11 +203,11 @@ public static class SeedExtensions
 
         List<string> adjectives = new List<string>
         {
-            "adventurous", "ambitious", "audacious", "beautiful", "boy wonder", "brainy", "bright", 
+            "adventurous", "ambitious", "audacious", "beautiful", "a straight-A student", "brainy", "bright", 
             "clever", "creative", "curious", "enthusiastic", "fearless", "ferocious", "genius", 
             "hardworking", "intelligent", "interesting", "likeable", "not stupid", "passionate", 
-            "perceptive", "savvy", "scientist", "self-driven", "sharp", "smart", "strong", "stylish", 
-            "team player"
+            "perceptive", "savvy", "scientific", "self-driven", "sharp", "smart", "strong", "stylish", 
+            "a team player"
         };
 
         adjectives = adjectives.OrderBy(a => Guid.NewGuid()).ToList();
@@ -218,7 +218,7 @@ public static class SeedExtensions
             "We seek " + adjectives[0] + " and " + adjectives[2] + " students. ",
             "Are you a " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + " individual? ",
             "Do you see yourself as " + adjectives[0] + ", " + adjectives[1] + " and " + adjectives[2] + "? ",
-            adjectives[0] + ", " + adjectives[1] + ", " + adjectives[2] + ", " + adjectives[3] + ", " + adjectives[4] + ", " + adjectives[4] + "! These are just few of the attributes we expect you to have! "
+            adjectives[0] + ", " + adjectives[1] + ", " + adjectives[2] + ", " + adjectives[3] + ", " + adjectives[4] + ", " + adjectives[4] + "! These are just a few of the attributes we expect you to have! "
         };
 
         adjectives = adjectives.OrderBy(a => Guid.NewGuid()).ToList();
@@ -231,14 +231,27 @@ public static class SeedExtensions
             "Do you have a thesis idea that is focusing either on " + buzzwords[0] + " or " + buzzwords[1] + "? Please do not hesitate to reach out! Your research does not necessarily have to fit perfectly into one of our projects - if you have a good idea and you are " +  adjectives[1] + " and " + adjectives[2] + ", we would love to hear it and help you realise it! ",
         };
 
+        List<string> endingInvitation = new List<string>
+        {
+            "Join us at " + company + "!",
+            "Send us an application today!",
+            "We look forward to recieving your application!",
+            "We look forward to working with you!",
+            "Come join the " + company + " family!",
+            "We look forward to connecting with you!",
+            "We are open to be approached by students from different fields.",
+            "No prior knowledge in the field is required."
+        };
+
         List<string> fullDescription = new List<string>();
 
         fullDescription.Add(intro[r.Next(0, intro.Count - 1)]);
         fullDescription.Add(buzzwords[0] + " and " + buzzwords[1] + "? ");
         fullDescription.Add(workWithCompany[r.Next(0, workWithCompany.Count - 1)]);
-        fullDescription.Add(workWithbuzzwords[r.Next(0, workWithbuzzwords.Count - 1)]);
+        fullDescription.Add("\n\n" + workWithbuzzwords[r.Next(0, workWithbuzzwords.Count - 1)]);
         fullDescription.Add(aboutYou[r.Next(0, aboutYou.Count - 1)]);
         fullDescription.Add(wannaWorkIn[r.Next(0, wannaWorkIn.Count - 1)]);
+        fullDescription.Add("\n\n" + endingInvitation[r.Next(0, endingInvitation.Count - 1)]);
 
         return string.Join(" ", fullDescription);
     }
