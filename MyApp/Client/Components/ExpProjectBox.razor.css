@@ -31,3 +31,7 @@
 .Exp-Left-container {
   width: 300px;
 }
+
+.descriptionBox {
+  white-space: pre-wrap;
+}
