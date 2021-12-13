@@ -11,7 +11,7 @@ using System.Collections.Generic;
         @foreach (var item in _projects)
         {
             <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"
-            CreatedBy="@item.CreatedByEmail"></ProjectBox>
+        CreatedBy="@item.CreatedByEmail"></ProjectBox>
         }
         // Testing componets:
         // ...
@@ -42,6 +42,18 @@ using System.Collections.Generic;
         try
         {
             _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    public async Task setProjectsFromSearchString(string searchString)
+    {
+        try
+        {
+            _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/name/" + searchString);
         }
         catch (AccessTokenNotAvailableException exception)
         {
