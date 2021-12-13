@@ -2,33 +2,14 @@
   margin-top: 50px;
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
-  align-content: flex-start;
+  justify-content: space-around;
+  align-items: center;
   margin-bottom: 2px;
   flex-shrink: 10;
 }
 
-.SmallBox {
-  width: 31%;
-}
-
-.ExpProjectBox {
-  justify-content: space-evenly;
-  text-align: left;
-  width: 250px;
-  padding: 15px;
-}
-
-.MainBox {
-  width: 500px;
-  margin-bottom: 40px;
-  margin-right: 30px;
-  padding: 25px;
-}
-
-.Exp-small-container {
-  max-width: 360px;
-  margin-right: 30px;
+.Small-Container {
+  flex-flow: column;
 }
 
 .descriptionBox {
@@ -36,13 +17,8 @@
 }
 
 @media screen and (max-width: 915px) {
-  .Exp-small-container {
-    width: 500px;
-    display: flex;
-    flex-wrap: row;
-    justify-content: space-between;
-  }
-  .SmallBox {
-    width: 45%;
+  
+  .expandedlayout {
+    flex-flow: column;
   }
 }
