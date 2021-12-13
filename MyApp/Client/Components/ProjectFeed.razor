@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using MyApp.Shared
@@ -5,11 +6,19 @@
 @inject HttpClient Http
 
 <div class="project-feed">
-    @if (projects != null)
+    @if (_projects != null)
     {
-        @foreach (var item in projects)
+        @if (_projects.Length == 0)
         {
-            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags" CreatedBy="@item.CreatedBy"></ProjectBox>
+            <p>No projects found</p>
+        }
+        else
+        {
+            @foreach (var item in _projects)
+            {
+                <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"
+        CreatedBy="@item.CreatedByEmail"></ProjectBox>
+            }
         }
     }
     else
@@ -19,17 +28,61 @@
 </div>
 
 @code {
-    private ProjectDTO[]? projects;
+    private ProjectDTO[]? _projects;
 
     protected override async Task OnInitializedAsync()
     {
+        await GetAllProjects();
+    }
+
+    public async Task GetAllProjects()
+    {
         try
         {
-            projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects");
+            _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects");
         }
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
         }
     }
+
+    public async Task setProjectsFromTag(string tag)
+    {
+        if (tag.Length == 0)
+        {
+            GetAllProjects();
+        }
+        else
+        {
+            try
+            {
+                _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("I am here :))))s");
+                //exception.Redirect();
+            }
+        }
+    }
+
+    public async Task setProjectsFromSearchString(string searchString)
+    {
+        try
+        {
+            _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/name/" + searchString);
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    public void Refresh()
+    {
+        this.StateHasChanged();
+    }
+
+
 }

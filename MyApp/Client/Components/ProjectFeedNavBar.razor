@@ -1,3 +1,9 @@
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using MyApp.Shared
+@attribute [Authorize]
+@inject HttpClient Http
+
 <div class="tag-row">
     <div class="colum-container">
         <h6>Settings:</h6>
@@ -5,53 +11,93 @@
         <button class="button-like">Clear All</button>
     </div>
 
-
-
     <div class="colum-container">
         <h6 id="invisible">Hej ehj</h6>
         <hr class="invisible-line" id="invisible" />
-        <button class="button-like" id="round-bnt"
-            onclick="document.getElementById('tagbar').scrollLeft -= 40 ({behavior:'smooth'})"> ⮜ </button>
+        <button class="button-like" id="round-bnt" onclick="document.getElementById('tagbar').scrollLeft -= 40"> ⮜
+        </button>
     </div>
 
     <div class="colum-container">
         <h6>Tags:</h6>
         <hr class="line" style="background-color: #47abb9;" />
         <div class="scrollable" id="tagbar">
-            <!-- @bind:event="onscroll" -->
-            <button class="button-like">C#</button>
-            <button class="button-like">Java</button>
-            <button class="button-like">AI</button>
-            <button class="button-like">Business</button>
-            <button class="button-like">Database</button>
-            <button class="button-like">Medicine</button>
-            <button class="button-like">Space Research</button>
-            <button class="button-like">UI</button>
+            @if (_tags != null)
+            {
+                @foreach (var tag in _tags)
+                {
+                    <button class="button-like" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
+                }
+            }
         </div>
     </div>
 
     <div class="colum-container">
-        <h6 id="invisible">Settings:</h6>
+        <h6 id="invisible">filling</h6>
         <hr class="invisible-line" id="invisible" />
-        <button class="button-like" id="round-bnt"
-            onclick="document.getElementById('tagbar').scrollLeft += 40 ({behavior:'smooth'})"> ⮞
+        <button class="button-like" id="round-bnt" onclick="document.getElementById('tagbar').scrollLeft += 40"> ⮞
         </button>
     </div>
 
-    <!-- <p>@scrollvalue</p> -->
+    <div class="colum-container">
+        <h6 id="invisible">filling</h6>
+        <hr class="invisible-line" id="invisible" />
+        <SearchBar @ref="_searchBar" parrentSearch="SearchAsync"></SearchBar>
+    </div>
+
+    <p>@test</p>
+
 </div>
+
+<ProjectFeed @ref="_projectFeed"></ProjectFeed>
+
 
 
 @code {
     public int scrollvalue { get; set; } = 0;
+    private TagDTO[]? _tags;
+    private ProjectFeed _projectFeed;
 
-    private void ScrollLeft()
+    private SearchBar _searchBar;
+    private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
+
+    private String test;
+
+    private async Task onTagButtonClicked(string tag)
     {
-        scrollvalue += 20;
+        System.Console.WriteLine("Tag has been pressed: " + tag);
+
+        activeTags[tag] = !activeTags[tag];
+
+        var searchTags = string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());
+        Console.WriteLine(searchTags);
+
+        await _projectFeed.setProjectsFromTag(searchTags);
+        _projectFeed.Refresh();
     }
 
-    private void ScrollRight()
+    protected override async Task OnInitializedAsync()
     {
-        scrollvalue -= 20;
+        try
+        {
+            _tags = await Http.GetFromJsonAsync<TagDTO[]>("api/Tags");
+
+            foreach (var t in _tags)
+            {
+                activeTags.Add(t.Name, false);
+            }
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    public async void SearchAsync()
+    {
+        test = _searchBar._searchString;
+
+        await _projectFeed.setProjectsFromSearchString(_searchBar._searchString);
+        _projectFeed.Refresh();
     }
 }

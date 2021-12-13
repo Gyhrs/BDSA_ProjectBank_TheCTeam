@@ -155,8 +155,8 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData("UI", 2)]
     [InlineData("Business", 1)]
     [InlineData("Consulting", 2)]
-    [InlineData("Consulting#Business", 3)]
-    [InlineData("Consulting#Business#UI", 3)]
+    [InlineData("UI#Business", 1)]
+    [InlineData("Consulting#Business#UI", 0)]
     [InlineData("Fast", 0)]
 
     public async Task GetProjectsFromTags_Returns_Correct_Projects(string tags, int expected)
