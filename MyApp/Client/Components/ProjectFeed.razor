@@ -6,11 +6,12 @@ using System.Collections.Generic;
 @inject HttpClient Http
 
 <div class="project-feed">
-    @if (projects != null)
+    @if (_projects != null)
     {
-        @foreach (var item in projects)
+        @foreach (var item in _projects)
         {
-            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags" CreatedBy="@item.CreatedByEmail"></ProjectBox>
+            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"
+            CreatedBy="@item.CreatedByEmail"></ProjectBox>
         }
         // Testing componets:
         // ...
@@ -22,13 +23,13 @@ using System.Collections.Generic;
 </div>
 
 @code {
-    private ProjectDTO[]? projects;
-        
+    private ProjectDTO[]? _projects;
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects");
+            _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects");
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -36,11 +37,11 @@ using System.Collections.Generic;
         }
     }
 
-    public async Task setProjectsFromTag(string tag) 
+    public async Task setProjectsFromTag(string tag)
     {
         try
         {
-            projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
+            _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -48,9 +49,10 @@ using System.Collections.Generic;
         }
     }
 
-    public void Refresh() {
+    public void Refresh()
+    {
         this.StateHasChanged();
     }
 
-    
+
 }

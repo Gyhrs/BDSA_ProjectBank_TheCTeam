@@ -196,7 +196,7 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromTags("Business#Blockchain");
+        var actual = await controller.GetFromTags("Business_Blockchain");
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);

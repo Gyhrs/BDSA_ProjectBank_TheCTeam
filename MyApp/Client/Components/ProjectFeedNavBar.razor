@@ -22,9 +22,9 @@
         <h6>Tags:</h6>
         <hr class="line" style="background-color: #47abb9;" />
         <div class="scrollable" id="tagbar">
-            @if (tags != null)
+            @if (_tags != null)
             {
-                @foreach (var tag in tags)
+                @foreach (var tag in _tags)
                 {
                     <button class="button-like" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
                     //<button class="button-like" onclick="@tag.Name">@tag.Name</button>
@@ -46,14 +46,15 @@
     <!-- <p>@scrollvalue</p> -->
 </div>
 
-<ProjectFeed @ref="projectFeed"></ProjectFeed>
+<ProjectFeed @ref="_projectFeed"></ProjectFeed>
 
 
 
 @code {
     public int scrollvalue { get; set; } = 0;
-    private TagDTO[]? tags;
-    public ProjectFeed projectFeed;
+    private TagDTO[]? _tags;
+    private ProjectFeed _projectFeed;
+    private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
     private void ScrollLeft()
     {
         scrollvalue += 20;
@@ -66,15 +67,19 @@
 
     private async Task onTagButtonClicked(string tag) {
         System.Console.WriteLine("Tag has been pressed: " + tag);
-        await projectFeed.setProjectsFromTag(tag);
-        projectFeed.Refresh();
+
+        activeTags.Add(tag, true);
+
+
+        await _projectFeed.setProjectsFromTag(tag);
+        _projectFeed.Refresh();
     }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            tags = await Http.GetFromJsonAsync<TagDTO[]>("api/Tags");
+            _tags = await Http.GetFromJsonAsync<TagDTO[]>("api/Tags");
         }
         catch (AccessTokenNotAvailableException exception)
         {
