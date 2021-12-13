@@ -106,7 +106,7 @@ public class ProjectRepository : IProjectRepository
     {
         var projects = await (
                         from p in _context.Projects
-                        where p.Name == name
+                        where p.Name.Contains(name)
                         select new ProjectDTO(
                             p.Id,
                             p.Name,

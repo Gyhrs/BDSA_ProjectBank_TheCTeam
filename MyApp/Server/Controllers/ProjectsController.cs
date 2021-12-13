@@ -113,7 +113,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
 
         if (projects.Count == 0)
         {
-            //TODO: Fix this. Apparently returning not found, results in exception in ProjectFeed.razor :(
+            //FIXME: Apparently returning not found, results in exception in ProjectFeed.razor :(
             //return NotFound("No Project with specified tags");
         }
         Console.WriteLine("Found some projects ");
