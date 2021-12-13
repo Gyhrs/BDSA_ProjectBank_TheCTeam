@@ -73,6 +73,7 @@ public class ProjectRepository : IProjectRepository
                                     p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
                                     p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
                                     p.CreatedBy != null ? p.CreatedBy.Email : null,
+                                    p.CreatedBy != null ? p.CreatedBy.Name : null,
                                     p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                                 )).ToListAsync();
 
