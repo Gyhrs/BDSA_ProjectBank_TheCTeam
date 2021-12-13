@@ -1,4 +1,6 @@
 @inject NavigationManager NavigationManager
+@inject HttpClient Http
+
 <div class="project-box mb-4 box-layout" @onclick="navigateToProject">
     <h2>@name</h2>
     @if (CreatedBy != null)
@@ -22,6 +24,7 @@
     [Parameter] public int id {get; set;}
     [Parameter] public string? name {get; set;}
     [Parameter] public string? CreatedBy {get; set;}
+    [Parameter] public string? CreatedByEmail {get; set;}
     [Parameter] public string? description {get; set;}
     [Parameter] public List<string>? tags {get; set;}
 

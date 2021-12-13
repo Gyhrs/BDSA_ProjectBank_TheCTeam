@@ -81,6 +81,7 @@ public class ProjectsControllerTests
             new List<string> { "anton@hotmail.com", "nibu@hotmail.com" },
             new List<string> { "andasdton@hotmail.com", "nibabjksdfu@hotmail.com" },
             "createdby@hotmail.com",
+            "Lars",
             new List<string> { "Business", "Blockchain"}
         );
         repository.Setup(m => m.GetProjectFromID(1)).ReturnsAsync(project);
@@ -145,7 +146,8 @@ public class ProjectsControllerTests
             "This is a amazing project working with talented people.",
             new List<string> { "anton@hotmail.com", "nibu@hotmail.com" },
             new List<string> { "andasdton@hotmail.com", "nibabjksdfu@hotmail.com" },
-            "createdby@hotmail.com",
+            "createdby@hotmail.com", 
+            "Lars",
             new List<string> { "Business", "Blockchain"}
         );
         repository.Setup(m => m.GetProjectsFromName("Blockchain")).ReturnsAsync(new List<ProjectDTO> { project });
@@ -177,7 +179,9 @@ public class ProjectsControllerTests
                 new List<string> { "anton@hotmail.com", "nibu@hotmail.com" },
                 new List<string> { "andasdton@hotmail.com", "nibabjksdfu@hotmail.com" },
                 "createdby@hotmail.com",
+                "Lars",
                 new List<string> {"Blockchain", "Business"}
+
             ),
             new ProjectDTO
             (
@@ -189,7 +193,9 @@ public class ProjectsControllerTests
                 new List<string> { "lasse@hotmail.com", "peter@hotmail.com" },
                 new List<string> { "hej@med.com", "dig@hotmail.com" },
                 "createdby@hotmail.com",
+                "Lars",
                 new List<string> { "Business", "BlockChain", "Fast"}
+
             )
         };
         repository.Setup(m => m.GetProjectsFromTags(new List<string> { "Business", "Blockchain"} )).ReturnsAsync(projects);

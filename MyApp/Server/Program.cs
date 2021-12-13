@@ -36,7 +36,6 @@ class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<ITagRepository, TagRepository>();
 
-
         // builder.Services.Configure<JwtBearerOptions>(
         // JwtBearerDefaults.AuthenticationScheme, options =>
         // {

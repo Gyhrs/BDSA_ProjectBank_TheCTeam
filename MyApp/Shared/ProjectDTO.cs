@@ -10,5 +10,6 @@ public record ProjectDTO
     List<string>? StudentEmails,
     List<string>? SupervisorsEmails,
     string? CreatedByEmail,
+    string? CreatedBy,
     List<string>? Tags
 );

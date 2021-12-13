@@ -3,13 +3,11 @@
   padding-top: 6px;
   padding-bottom: 6px;
   */
-
-  height: 34px;
   padding-top: 2px;
-  min-width: 36px;
-
-  padding-left: 15px;
-  padding-right: 15px;
+  font-size: 12vw;
+  justify-content: space-around;
+  padding-left: 10px;
+  padding-right: 10px;
 
   margin: 5px;
 
@@ -21,6 +19,6 @@
   background-color: #fefefe;
 
   border-color: #2c3536;
-  border-width: 3px;
+  border-width: 2px;
   border-radius: 25px;
 }

@@ -30,6 +30,7 @@ public class ProjectRepository : IProjectRepository
                             p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
                             p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
                             p.CreatedBy != null ? p.CreatedBy.Email : null,
+                            p.CreatedBy != null ? p.CreatedBy.Name : null,
                             p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                         )).ToListAsync();
         return projects.AsReadOnly();
@@ -51,6 +52,7 @@ public class ProjectRepository : IProjectRepository
                            p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
                            p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
                            p.CreatedBy != null ? p.CreatedBy.Email : null,
+                           p.CreatedBy != null ? p.CreatedBy.Name : null,
                            p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                        );
         return await projects.FirstOrDefaultAsync();
@@ -73,8 +75,6 @@ public class ProjectRepository : IProjectRepository
                                     p.CreatedBy != null ? p.CreatedBy.Email : null,
                                     p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                                 )).ToListAsync();
-
-
 
         foreach (var item in searchTags)
         {
@@ -116,6 +116,7 @@ public class ProjectRepository : IProjectRepository
                             p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
                             p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
                             p.CreatedBy != null ? p.CreatedBy.Email : null,
+                            p.CreatedBy != null ? p.CreatedBy.Name : null,
                             p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                         )).ToListAsync();
 
@@ -136,6 +137,7 @@ public class ProjectRepository : IProjectRepository
                             p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
                             p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
                             p.CreatedBy != null ? p.CreatedBy.Email : null,
+                            p.CreatedBy != null ? p.CreatedBy.Name : null,
                             p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                         )).ToListAsync();
         return projects.AsReadOnly();
