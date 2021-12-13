@@ -24,7 +24,6 @@ namespace MyApp.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudyBankUser>().HasIndex(e => e.Email).IsUnique();
-
         }
     }
 }

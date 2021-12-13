@@ -3,22 +3,22 @@
 
 <div class="expandedlayout">
         <div class="MainBox ExpProjectBox mb-4 box-layout">
-            <h2>@name</h2>
-            @if (CreatedBy != null)
+            <h2>@project.Name</h2>
+            @if (project.CreatedBy != null)
             {
-                <h5>@CreatedBy</h5>
+                <h5>@project.CreatedBy</h5>
             }
             else
             {
                 <h5>No Author</h5>
             }
             <br>
-            <div class="descriptionBox">@description</div>
+            <div class="descriptionBox">@project.Description</div>
         </div>
 
         <div class="Exp-small-container">
             <div class="ExpProjectBox SmallBox mb-4 box-layout">
-                <p>Supervisors:</p>
+                <p><b>Supervisors:</b></p>
                 @if (Supervisors != null)
                 {
                     foreach (var sv in Supervisors) {
@@ -27,7 +27,8 @@
                 } else {
                     <p>No supervisors yet</p>
                 }
-                @if (Supervisors != null)
+                <p><b>Students:</b></p>
+                @if (Students != null)
                 {
                     foreach (var stu in Students) {
                         <p>@stu.Name : @stu.Email</p>
@@ -37,7 +38,7 @@
                 }
             </div>
             <div class="ExpProjectBox SmallBox mb-4 box-layout">
-                @foreach (var tag in tags)
+                @foreach (var tag in project.Tags)
                 {
                     <PassiveTag TagName="@tag"></PassiveTag>
                 }
@@ -46,17 +47,14 @@
 </div>
 
 @code {
-    [Parameter] public int id { get; set; }
-    [Parameter] public string? name { get; set; }
-    [Parameter] public DateTime StartDate { get; set; }
-    [Parameter] public DateTime EndDate { get; set; }
+
+    [Parameter] public ProjectDTO project { get; set; }
+
     [Parameter] public List<StudentDTO>? Students { get; set; }
     [Parameter] public List<SupervisorDTO>? Supervisors { get; set;}
-    [Parameter] public string? CreatedBy { get; set; }
-    [Parameter] public string? description { get; set; }
-    [Parameter] public List<string>? tags {get; set;}
-    /*protected override async Task OnInitializedAsync() {
-        Students = await Http.GetFromJsonAsync<List<StudentDTO>>("api/Users/students/"+id);
-        Supervisors = await Http.GetFromJsonAsync<List<SupervisorDTO>>("api/Users/supervisors/"+id);
-    }*/
+
+    protected override async Task OnInitializedAsync() {
+        Students = await Http.GetFromJsonAsync<List<StudentDTO>>("api/Users/students/"+project.Id);
+        Supervisors = await Http.GetFromJsonAsync<List<SupervisorDTO>>("api/Users/supervisors/"+project.Id);
+    }
 }
