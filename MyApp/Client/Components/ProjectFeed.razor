@@ -11,8 +11,6 @@
         {
             <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"></ProjectBox>
         }
-        // Testing componets:
-        // ...
     }
     else
     {
@@ -21,13 +19,22 @@
 </div>
 
 @code {
+
+    [Parameter] public String searchString { get; set; } = String.Empty;
     private ProjectDTO[]? projects;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects");
+            if (searchString != String.Empty)
+            {
+                projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects");
+            }
+            else
+            {
+                projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/name/" + "Algorithm HTTPS Program"); // searchstring
+            }
         }
         catch (AccessTokenNotAvailableException exception)
         {

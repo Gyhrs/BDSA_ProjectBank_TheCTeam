@@ -247,7 +247,7 @@ a,
 }
 
 .nav-link {
-  align-items: flex-start;
+  flex-grow: 0;
   font-style: normal;
   font-weight: bold;
   font-size: 16px;

@@ -5,7 +5,7 @@
 <div id="search-bar-field">
     <input class="button-like" id="search-bar" @bind="_searchString" @bind:event="oninput" placeholder="Search..." />
 
-    <button class="button-like" id="search-bnt">
+    <button class="button-like" id="search-bnt" onclick="@Search">
         <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M9.76169 11.1535C8.93912 11.6284 8.09096 11.8709 7.2172 11.8808C6.33878 11.8826 5.51858 11.6627 4.75658 11.221C4.00235 10.7748 3.39013 10.1445 2.91992 9.33013C2.44972 8.51571 2.20998 7.67037 2.20071 6.7941C2.19921 5.91336 2.42118 5.09711 2.86664 4.34536C3.30744 3.58555 3.93912 2.96819 4.76169 2.49328C5.5765 2.02285 6.42311 1.78672 7.30152 1.78488C8.17528 1.77498 8.98928 1.99311 9.74352 2.43926C10.4931 2.87736 11.1053 3.50765 11.5802 4.33013C12.055 5.15261 12.2971 6.00198 12.3064 6.87825C12.311 7.74645 12.0929 8.56046 11.6521 9.32027C11.2066 10.072 10.5765 10.6831 9.76169 11.1535ZM9.14018 10.0771C9.73771 9.73207 10.1917 9.28182 10.5021 8.72629C10.8203 8.16629 10.9732 7.56195 10.9608 6.91326C10.9515 6.25203 10.77 5.615 10.4162 5.00217C10.0623 4.38934 9.60376 3.91763 9.04041 3.58705C8.48017 3.24392 7.87802 3.07013 7.23395 3.06568C6.59764 3.05675 5.98072 3.22478 5.3832 3.56976C4.78567 3.91475 4.32394 4.36948 3.99799 4.93396C3.67981 5.49396 3.52536 6.10458 3.53463 6.76581C3.54702 7.4145 3.73012 8.04525 4.08393 8.65808C4.43775 9.27091 4.89478 9.74889 5.45503 10.092C6.01837 10.4226 6.62208 10.5901 7.26615 10.5946C7.91798 10.5945 8.54265 10.422 9.14018 10.0771Z"
@@ -15,21 +15,23 @@
     </button>
 </div>
 
-<!-- Check om string gives vidre
 @if (!string.IsNullOrEmpty(_searchString))
 {
-    <p>@_searchString</p>
+    <p>@_searchString @testString</p>
 }
--->
+
 
 @code {
     public String _searchString { get; set; } = string.Empty;
+
+    private String testString = string.Empty;
 
     public void Search()
     {
         if (_searchString != string.Empty)
         {
             NavigationManager.NavigateTo("feed/" + _searchString);
+            testString = "lols";
         }
     }
 }

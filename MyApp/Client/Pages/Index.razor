@@ -1,9 +1,12 @@
 ﻿@page "/"
 @page "/feed"
+@page "/feed/{searchString}"
 
+<p>@searchString</p>
 <PageTitle>Index</PageTitle>
-<ProjectFeed></ProjectFeed>
+<ProjectFeed searchString="searchString"></ProjectFeed>
+<p>@searchString</p>
 
 @code {
-    public String _seachString { get; set; } = String.Empty;
+    [Parameter] public String? searchString { get; set; } = String.Empty;
 }
