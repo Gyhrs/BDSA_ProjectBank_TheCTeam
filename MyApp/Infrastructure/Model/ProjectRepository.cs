@@ -32,7 +32,6 @@ public class ProjectRepository : IProjectRepository
                             p.CreatedBy != null ? p.CreatedBy.Email : null,
                             p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                         )).ToListAsync();
-
         return projects.AsReadOnly();
     }
 
@@ -59,29 +58,55 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTags(List<string> searchTags)
     {
-        var projects = await (
-                        from p in _context.Projects
-                        where p.Tags.Any(t => searchTags.Contains(t.Name)) // If any projecttag is contained in list of searchtags, return true
-                        select new ProjectDTO(
-                            p.Id,
-                            p.Name,
-                            p.StartDate,
-                            p.EndDate,
-                            p.Description,
-                            p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
-                            p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
-                            p.CreatedBy != null ? p.CreatedBy.Email : null,
-                            p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
-                        )).ToListAsync();
+        List<ProjectDTO> projectDTOs = new List<ProjectDTO>();
 
-        return projects.AsReadOnly();
+        var projects = await (
+                                from p in _context.Projects
+                                select new ProjectDTO(
+                                    p.Id,
+                                    p.Name,
+                                    p.StartDate,
+                                    p.EndDate,
+                                    p.Description,
+                                    p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
+                                    p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
+                                    p.CreatedBy != null ? p.CreatedBy.Email : null,
+                                    p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
+                                )).ToListAsync();
+
+
+
+        foreach (var item in searchTags)
+        {
+            Console.WriteLine("  SearchTag: " + item);
+        }
+
+        foreach (var p in projects)
+        {
+            Console.WriteLine("Looking at " + p.Name);
+            Console.WriteLine("p.Tag count" + p.Tags.Count);
+
+            foreach (var item in p.Tags)
+            {
+                Console.WriteLine("  Tag: " + item);
+            }
+            // Finds if any elements in searchTags doesnt exist in p.tags. 
+            // Returns false if does, therefore we negate it.
+            if (!searchTags.Except(p.Tags).Any())
+            {
+                Console.WriteLine("---- Project tags contains all searchTags ----");
+
+                projectDTOs.Add(p);
+            }
+        }
+        return projectDTOs.AsReadOnly();
     }
 
     public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromName(string name)
     {
         var projects = await (
                         from p in _context.Projects
-                        where p.Name == name
+                        where p.Name.Contains(name)
                         select new ProjectDTO(
                             p.Id,
                             p.Name,

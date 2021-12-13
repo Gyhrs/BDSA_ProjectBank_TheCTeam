@@ -67,10 +67,12 @@
     {
         System.Console.WriteLine("Tag has been pressed: " + tag);
 
-        activeTags.Add(tag, true);
+        activeTags[tag] = !activeTags[tag];
 
+        var searchTags = string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());
+        Console.WriteLine(searchTags);
 
-        await _projectFeed.setProjectsFromTag(tag);
+        await _projectFeed.setProjectsFromTag(searchTags);
         _projectFeed.Refresh();
     }
 
@@ -79,6 +81,11 @@
         try
         {
             _tags = await Http.GetFromJsonAsync<TagDTO[]>("api/Tags");
+
+            foreach (var t in _tags)
+            {
+                activeTags.Add(t.Name, false);
+            }
         }
         catch (AccessTokenNotAvailableException exception)
         {

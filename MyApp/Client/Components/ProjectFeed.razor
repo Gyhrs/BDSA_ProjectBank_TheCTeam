@@ -8,13 +8,19 @@ using System.Collections.Generic;
 <div class="project-feed">
     @if (_projects != null)
     {
-        @foreach (var item in _projects)
+        @if (_projects.Length == 0)
         {
-            <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"
-        CreatedBy="@item.CreatedByEmail"></ProjectBox>
+
+            <p>No projects found</p>
         }
-        // Testing componets:
-        // ...
+        else
+        {
+            @foreach (var item in _projects)
+            {
+                <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"
+        CreatedBy="@item.CreatedByEmail"></ProjectBox>
+            }
+        }
     }
     else
     {
@@ -26,6 +32,11 @@ using System.Collections.Generic;
     private ProjectDTO[]? _projects;
 
     protected override async Task OnInitializedAsync()
+    {
+        await GetAllProjects();
+    }
+
+    public async Task GetAllProjects()
     {
         try
         {
@@ -39,13 +50,21 @@ using System.Collections.Generic;
 
     public async Task setProjectsFromTag(string tag)
     {
-        try
+        if (tag.Length == 0)
         {
-            _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
+            GetAllProjects();
         }
-        catch (AccessTokenNotAvailableException exception)
+        else
         {
-            exception.Redirect();
+            try
+            {
+                _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("I am here :))))s");
+                //exception.Redirect();
+            }
         }
     }
 
