@@ -76,11 +76,11 @@
 
     private string ReturnColor(string tag)
     {
-        if (activeTags[tag]) { return "lightblue"; } 
-        
+        if (activeTags[tag]) { return "lightblue"; }
+
         return "none";
     }
-      
+
     private async Task onTagButtonClicked(string tag)
     {
         System.Console.WriteLine("Tag has been pressed: " + tag);
@@ -94,14 +94,14 @@
 
     private async Task onClearAllButtonClicked()
     {
+        _projectFeed.ClearAllProjects();
+        
         foreach (var t in _tags)
         {
             activeTags[t.Name] = false;
         }
 
         _searchBar._searchString = "";
-
-        
 
         await _projectFeed.GetAllProjects();
         _projectFeed.Refresh();
@@ -136,6 +136,7 @@
         var searchName = _searchBar._searchString;
         var activeTags = GetSearchTags();
 
+
         if (searchName.Length == 0)
         {
             // SearchName is empty but tags isnt - search only on tags
@@ -145,6 +146,7 @@
             }
             else
             {
+                _projectFeed.ClearAllProjects();
                 await _projectFeed.GetAllProjects();
             }
         }
