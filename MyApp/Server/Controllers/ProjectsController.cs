@@ -111,8 +111,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
 
         if (projects.Count == 0)
         {
-            //FIXME: Apparently returning not found, results in exception in ProjectFeed.razor :(
-            //return NotFound("No Project with specified tags");
+            return NotFound("No Project with specified tags");
         }
         watch.Stop();
         Console.ForegroundColor = ConsoleColor.Red;

@@ -59,10 +59,13 @@
             {
                 _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
             }
+            catch (AccessTokenNotAvailableException exception)
+            {
+                exception.Redirect();
+            }
             catch (Exception exception)
             {
-                Console.WriteLine("I am here :))))s");
-                //exception.Redirect();
+                _projects = Array.Empty<ProjectDTO>();
             }
         }
     }
@@ -77,6 +80,10 @@
         {
             exception.Redirect();
         }
+        catch (Exception exception)
+        {
+            _projects = Array.Empty<ProjectDTO>();
+        }
     }
 
     public async Task setProjectsFromTagsAndString(string searchString)
@@ -89,12 +96,20 @@
         {
             exception.Redirect();
         }
+        catch (Exception exception)
+        {
+            _projects = Array.Empty<ProjectDTO>();
+        }
+    }
+
+    public void ClearAllProjects()
+    {
+        _projects = null;
+        Refresh();
     }
 
     public void Refresh()
     {
         this.StateHasChanged();
     }
-
-
 }
