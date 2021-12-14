@@ -2,7 +2,7 @@
 @inject HttpClient Http;
 
 <div class="expandedlayout">
-        <div class="MainBox ExpProjectBox mb-4 box-layout">
+        <div class="MainBox m-4 box-layout col-7 col-md-6 p-2">
             <h2>@project.Name</h2>
             @if (project.CreatedBy != null)
             {
@@ -16,8 +16,8 @@
             <div class="descriptionBox">@project.Description</div>
         </div>
 
-        <div class="Exp-small-container">
-            <div class="ExpProjectBox SmallBox mb-4 box-layout">
+        <div class="Small-Container d-flex justify-space-between col-7 col-md-auto">
+            <div class="Smallbox my-4 box-layout p-2">
                 <p><b>Supervisors:</b></p>
                 @if (Supervisors != null)
                 {
@@ -37,11 +37,19 @@
                     <p>No Students yet</p>
                 }
             </div>
-            <div class="ExpProjectBox SmallBox mb-4 box-layout">
+            <div class="Smallbox my-4 box-layout p-2">
                 @foreach (var tag in project.Tags)
                 {
                     <PassiveTag TagName="@tag"></PassiveTag>
                 }
+            </div>
+            <div class="inviscontainer">
+                <div class="btn-highlighted p-2 w-25">
+                    <strong>Apply</strong>
+                </div>
+                <div class="btn-highlighted p-2 w-25">
+                    <strong>Message</strong>
+                </div>
             </div>
         </div>
 </div>
