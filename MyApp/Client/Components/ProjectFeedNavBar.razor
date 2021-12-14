@@ -27,7 +27,6 @@
                 @foreach (var tag in _tags)
                 {
                     <button class="button-like focusable" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
-
                     @* <input type="checkbox" class="button-like focusable" @onclick="() => onTagButtonClicked(tag.Name)" value=@tag.Name/> *@
                 }
             }
