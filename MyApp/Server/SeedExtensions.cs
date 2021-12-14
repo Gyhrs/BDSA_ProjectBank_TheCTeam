@@ -23,15 +23,18 @@ public static class SeedExtensions
 
     private static void SeedProjects(StudyBankContext context)
     {
-        //context.Database.Migrate();
-        context.Database.ExecuteSqlRaw("DELETE dbo.Users");
-        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
-        context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
-        context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
-        context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
-        //context.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('dbo.Projects', RESEED, 0)");
+        // If the DB doesn't contain any projects, populate it with data. Otherwise keep the old data.
+        // Use the startup.ps1 if changes have been made to the seeding algorithm / Entities.
+        if (!context.Projects.Any())
+        { //These sql queries doesnt work, because of some foreign key entity core problems :(
+        // context.Database.ExecuteSqlRaw("DELETE dbo.Users");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
+        // context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
 
         PopulateDatabase(context);
+        }
     }
     ///<summary> 
     ///Default version of PopulateDatabase method with 50 Supervisors, 200 Projects, and 1-7 Tags per Project. 

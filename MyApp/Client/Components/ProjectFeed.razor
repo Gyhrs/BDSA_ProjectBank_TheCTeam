@@ -79,6 +79,18 @@
         }
     }
 
+    public async Task setProjectsFromTagsAndString(string searchString)
+    {
+        try
+        {
+            _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + searchString);
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
     public void Refresh()
     {
         this.StateHasChanged();
