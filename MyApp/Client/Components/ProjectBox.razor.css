@@ -3,6 +3,7 @@
   text-align: left;
   width: 380px;
   padding: 25px;
+  margin: 15px;
 
   /* flex-direction: column; */
   display: inline-block;
@@ -12,9 +13,7 @@
 .project-box:hover {
   background-color: #fefefebe;
   border-color: #fefefebe;
-  width: 400px;
-  padding: 25px;
-  box-shadow: -4px 4px 7px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: -5px 5px 9px 1px rgba(0, 0, 0, 0.15);
 }
 
 .descriptionBox {

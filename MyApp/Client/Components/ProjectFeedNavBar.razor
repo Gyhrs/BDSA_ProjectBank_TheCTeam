@@ -4,6 +4,7 @@
 @attribute [Authorize]
 @inject HttpClient Http
 
+
 <div class="tag-row">
     <div class="colum-container">
         <h6>Settings:</h6>
@@ -35,7 +36,8 @@
     <div class="colum-container">
         <h6 id="invisible">filling</h6>
         <hr class="invisible-line" id="invisible" />
-        <button class="button-like" id="round-bnt" onclick="document.getElementById('tagbar').scrollLeft += 40"> ⮞
+        <button class="button-like" id="round-bnt" onclick="document.getElementById('tagbar').scrollLeft += 40" active>
+            ⮞
         </button>
     </div>
 
@@ -45,23 +47,19 @@
         <SearchBar @ref="_searchBar" parrentSearch="SearchAsync"></SearchBar>
     </div>
 
-    <p>@test</p>
-
 </div>
-
-<ProjectFeed @ref="_projectFeed"></ProjectFeed>
-
+<div class="">
+    <ProjectFeed @ref="_projectFeed"></ProjectFeed>
+</div>
 
 
 @code {
     public int scrollvalue { get; set; } = 0;
     private TagDTO[]? _tags;
-    private ProjectFeed _projectFeed;
+    private ProjectFeed? _projectFeed;
 
-    private SearchBar _searchBar;
+    private SearchBar? _searchBar;
     private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
-
-    private String test;
 
     private async Task onTagButtonClicked(string tag)
     {
@@ -95,8 +93,6 @@
 
     public async void SearchAsync()
     {
-        test = _searchBar._searchString;
-
         await _projectFeed.setProjectsFromSearchString(_searchBar._searchString);
         _projectFeed.Refresh();
     }
