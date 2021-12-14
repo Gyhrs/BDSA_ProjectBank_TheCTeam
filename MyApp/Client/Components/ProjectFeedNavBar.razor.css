@@ -21,10 +21,6 @@
   white-space: nowrap;
 }
 
-.focusable:focus {
-  background-color: rgb(0, 255, 213);
-}
-
 ::-webkit-scrollbar {
   width: 0;
   height: 0;

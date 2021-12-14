@@ -26,8 +26,9 @@
             {
                 @foreach (var tag in _tags)
                 {
-                    <button class="button-like focusable" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
+                    <button class="button-like" style="background-color:@ReturnColor(tag.Name)" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
                     @* <input type="checkbox" class="button-like focusable" @onclick="() => onTagButtonClicked(tag.Name)" value=@tag.Name/> *@
+                    
                 }
             }
         </div>
@@ -53,22 +54,28 @@
 <ProjectFeed @ref="_projectFeed"></ProjectFeed>
 
 
-
 @code {
     public int scrollvalue { get; set; } = 0;
     private TagDTO[]? _tags;
     private ProjectFeed _projectFeed;
-
     private SearchBar _searchBar;
     private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
 
     private String test;
+
+    private string ReturnColor(string tag)
+    {
+        if (activeTags[tag]) { return "lightblue"; } 
+        
+        return "none";
+    }
 
     private async Task onTagButtonClicked(string tag)
     {
         System.Console.WriteLine("Tag has been pressed: " + tag);
 
         activeTags[tag] = !activeTags[tag];
+        
 
         var searchTags = string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());
         Console.WriteLine(searchTags);
@@ -80,6 +87,11 @@
     private async Task onClearAllButtonClicked()
     {
         System.Console.WriteLine("\"Clear all\" button has been pressed");
+
+        foreach (var t in _tags)
+            {
+                activeTags[t.Name] = false;
+            }
 
         await _projectFeed.GetAllProjects();
 
