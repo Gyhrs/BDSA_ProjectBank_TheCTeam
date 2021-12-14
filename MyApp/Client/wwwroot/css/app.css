@@ -190,7 +190,7 @@ h1:focus {
   background: #43b4f3;
   background-color: #43b4f3;
 
-  box-shadow: 0px 0px 14px 0.5px rgba(0, 162, 255, 0.644);
+  box-shadow: 0px 0px 8px 0.5px rgba(0, 162, 255, 0.644);
 }
 button:hover {
   background: #ffffff;

@@ -60,6 +60,8 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTags(List<string> searchTags)
     {
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+
         List<ProjectDTO> projectDTOs = new List<ProjectDTO>();
 
         var projects = await (
@@ -100,11 +102,19 @@ public class ProjectRepository : IProjectRepository
                 projectDTOs.Add(p);
             }
         }
+
+        watch.Stop();
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("---- GetProjectsFromTags (ProjectRepository) ended in: " + watch.ElapsedMilliseconds + " ms ----");
+        Console.ForegroundColor = ConsoleColor.White;
+
         return projectDTOs.AsReadOnly();
     }
 
     public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromName(string name)
     {
+        
+
         var projects = await (
                         from p in _context.Projects
                         where p.Name.Contains(name)
@@ -121,6 +131,7 @@ public class ProjectRepository : IProjectRepository
                             p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                         )).ToListAsync();
 
+       
         return projects.AsReadOnly();
     }
 
