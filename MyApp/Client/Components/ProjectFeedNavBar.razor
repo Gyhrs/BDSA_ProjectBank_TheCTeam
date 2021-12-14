@@ -42,7 +42,7 @@
     <div class="colum-container">
         <h6 id="invisible">filling</h6>
         <hr class="invisible-line" id="invisible" />
-        <SearchBar @ref="_searchBar" parrentSearch="SearchAsync"></SearchBar>
+        <SearchBar @ref="_searchBar" parentSearch="SearchAsync"></SearchBar>
     </div>
 
     <p>@test</p>
@@ -69,11 +69,14 @@
 
         activeTags[tag] = !activeTags[tag];
 
-        var searchTags = string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());
-        Console.WriteLine(searchTags);
-
-        await _projectFeed.setProjectsFromTag(searchTags);
+        SearchAsync();
         _projectFeed.Refresh();
+    }
+
+    public string GetSearchTags()
+    {
+        return string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());
+
     }
 
     protected override async Task OnInitializedAsync()
@@ -95,9 +98,33 @@
 
     public async void SearchAsync()
     {
-        test = _searchBar._searchString;
+        var searchName = _searchBar._searchString;
+        var activeTags = GetSearchTags();
 
-        await _projectFeed.setProjectsFromSearchString(_searchBar._searchString);
+        if (searchName.Length == 0)
+        {
+            // SearchName is empty but tags isnt - search only on tags
+            if (activeTags.Length != 0)
+            {
+                await _projectFeed.setProjectsFromTag(activeTags);
+            }
+            else
+            {
+                await _projectFeed.GetAllProjects();
+            }
+        }
+        else
+        {
+            // SearchName and tags are not empty - search on both
+            if (activeTags.Length != 0)
+            {
+                await _projectFeed.setProjectsFromTagsAndString(activeTags + "/" + searchName);
+            }
+            else // SearchName isnt empty, but tags are - search only on searchname
+            {
+                await _projectFeed.setProjectsFromSearchString(searchName);
+            }
+        }
         _projectFeed.Refresh();
     }
 }
