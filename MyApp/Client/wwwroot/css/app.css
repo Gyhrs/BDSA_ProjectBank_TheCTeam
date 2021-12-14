@@ -9,6 +9,21 @@ body {
   background-color: #eeebeb;
 }
 
+.body-layout {
+  margin-top: 50px;
+  margin-left: 80px;
+  margin-right: 80px;
+  margin-bottom: 10px;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-content: flex-start;
+  margin-bottom: 2px;
+
+  background-color: blue;
+}
+
 h1,
 h2,
 h3,
