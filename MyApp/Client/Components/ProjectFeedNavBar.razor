@@ -8,7 +8,7 @@
     <div class="colum-container">
         <h6>Settings:</h6>
         <hr class="line" />
-        <button class="button-like" @onclick="() => onClearAllButtonClicked()">Clear All</button>
+        <button class="button-like" @onclick="() => onClearAllButtonClicked()">Clear</button>
     </div>
 
     <div class="colum-container">
@@ -26,14 +26,18 @@
             {
                 @foreach (var tag in _tags)
                 {
-                    @if ((activeTags[tag.Name])){
-                        <button class="button-like" style="background-color:@ReturnColor(tag.Name)" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
+                    @if ((activeTags[tag.Name]))
+                    {
+                        <button class="button-like" style="background-color: #43b4f3; color: white"
+                @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
                     }
                 }
                 @foreach (var tag in _tags)
                 {
-                    @if (!(activeTags[tag.Name])){
-                        <button class="button-like" style="background-color:@ReturnColor(tag.Name)" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
+                    @if (!(activeTags[tag.Name]))
+                    {
+                        <button class="button-like" style="background-color: none; color: black"
+                @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
                     }
                 }
             }
@@ -69,19 +73,12 @@
 
     private String test;
 
-    private string ReturnColor(string tag)
-    {
-        if (activeTags[tag]) { return "lightblue"; } 
-        
-        return "none";
-    }
-
     private async Task onTagButtonClicked(string tag)
     {
         System.Console.WriteLine("Tag has been pressed: " + tag);
 
         activeTags[tag] = !activeTags[tag];
-        
+
 
         SearchAsync();
         _projectFeed.Refresh();
@@ -89,18 +86,19 @@
 
     private async Task onClearAllButtonClicked()
     {
-        System.Console.WriteLine("\"Clear all\" button has been pressed");
-
         foreach (var t in _tags)
-            {
-                activeTags[t.Name] = false;
-            }
+        {
+            activeTags[t.Name] = false;
+        }
+
+        _searchBar._searchString = "";
+
+        
 
         await _projectFeed.GetAllProjects();
-
         _projectFeed.Refresh();
     }
-      
+
     public string GetSearchTags()
     {
         return string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());

@@ -99,15 +99,13 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     [HttpGet("tags/{tags}")]
     public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetFromTags(string tags)
     {
-        Console.WriteLine("In controller with tags: " + tags);
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+
         string[] tagList = tags.Split("_");
         if (tagList.Length == 0 || (tagList.Length == 1 && tagList.ElementAt(0) == ""))
         {
             return BadRequest("No tags provided");
         }
-
-        Console.WriteLine("Created list: " + tagList);
-
 
         var projects = await _repository.GetProjectsFromTags(tagList.ToList());
 
@@ -116,8 +114,10 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
             //FIXME: Apparently returning not found, results in exception in ProjectFeed.razor :(
             //return NotFound("No Project with specified tags");
         }
-        Console.WriteLine("Found some projects ");
-
+        watch.Stop();
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("---- GetFromTags (ProjectsController) ended in: " + watch.ElapsedMilliseconds + " ms ----");
+        Console.ForegroundColor = ConsoleColor.White;
         return Ok(projects);
     }
 
