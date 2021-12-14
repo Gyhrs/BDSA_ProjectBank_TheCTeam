@@ -8,8 +8,26 @@
   flex-shrink: 10;
 }
 
+.inviscontainer {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .Small-Container {
   flex-flow: column;
+}
+
+.bbutton {
+  width: 20%;
+  color: rgb(255, 255, 255);
+  background-color: #43b4f3;
+  box-shadow: -4px 4px 7px 1px rgba(0, 0, 0, 0.1);
+  transition-duration: 0.3s;
+}
+
+.bbutton:hover {
+  width: 25%;
+  box-shadow: -4px 4px 7px 1px #43b4f3;
 }
 
 .descriptionBox {
