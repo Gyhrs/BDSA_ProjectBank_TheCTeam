@@ -3,7 +3,7 @@
 @inject HttpClient Http
 
 <div id="search-bar-field">
-    <input class="button-like" id="search-bar" @bind="_searchString" @bind:event="oninput" placeholder="Search..." />
+    <input class="button-like" id="search-bar" @oninput="onInput" placeholder="Search..." />
 
     <button class="button-like" id="search-bnt" @onclick="SearchAsync">
         <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -19,11 +19,17 @@
     public String _searchString { get; set; } = string.Empty;
 
     [Parameter]
-    public EventCallback parrentSearch { get; set; }
+    public EventCallback parentSearch { get; set; }
+
+    private void onInput(ChangeEventArgs args)
+    {
+        _searchString = args.Value.ToString();
+        System.Console.WriteLine("The searchName is: " + _searchString);
+        SearchAsync();
+    }
 
     protected async Task SearchAsync()
     {
-        if (_searchString != string.Empty)
-            await parrentSearch.InvokeAsync();
+        await parentSearch.InvokeAsync();
     }
 }
