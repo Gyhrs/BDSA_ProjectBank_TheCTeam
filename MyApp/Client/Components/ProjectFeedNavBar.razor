@@ -26,9 +26,15 @@
             {
                 @foreach (var tag in _tags)
                 {
-                    <button class="button-like" style="background-color:@ReturnColor(tag.Name)" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
-                    @* <input type="checkbox" class="button-like focusable" @onclick="() => onTagButtonClicked(tag.Name)" value=@tag.Name/> *@
-                    
+                    @if ((activeTags[tag.Name])){
+                        <button class="button-like" style="background-color:@ReturnColor(tag.Name)" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
+                    }
+                }
+                @foreach (var tag in _tags)
+                {
+                    @if (!(activeTags[tag.Name])){
+                        <button class="button-like" style="background-color:@ReturnColor(tag.Name)" @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
+                    }
                 }
             }
         </div>
