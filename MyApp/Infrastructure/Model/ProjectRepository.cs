@@ -128,9 +128,47 @@ public class ProjectRepository : IProjectRepository
 
         return tagProjects.Where(t => t.Name.ToLower().Contains(title.ToLower())).ToList().AsReadOnly();
     }
-
-    public async Task<ProjectDTO> CreateProject(ProjectCreateDTO create)
+    private async Task<List<Student>> GetStudentsFromList(List<string> userEmails)
     {
+        List<Student> users = new List<Student>();
+        foreach (var item in userEmails)
+        {
+            var user = await _context.Users.OfType<Student>().Where(u => u.Email == item).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                users.Add(user);
+            }
+        }
+        return users;
+    }
+
+
+    public async Task<(Status, ProjectDTO)> CreateProject(ProjectCreateDTO create)
+    {
+        var conflict = await _context.Projects.Where
+        (
+            p => p.Description == create.Description &&
+            p.Name == create.Name &&
+            p.StartDate == create.StartDate &&
+            p.EndDate == create.EndDate
+            ).Select(p => new ProjectDTO(
+                            p.Id,
+                            p.Name,
+                            p.StartDate,
+                            p.EndDate,
+                            p.Description,
+                            p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
+                            p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
+                            p.CreatedBy != null ? p.CreatedBy.Email : null,
+                            p.CreatedBy != null ? p.CreatedBy.Name : null,
+                            p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
+                        )).FirstOrDefaultAsync();
+
+        if (conflict != null)
+        {
+            return (Status.Conflict, conflict);
+        }
+
         var entity = new Project
         {
             Name = create.Name,
@@ -146,7 +184,7 @@ public class ProjectRepository : IProjectRepository
         _context.Projects.Add(entity);
         await _context.SaveChangesAsync();
 
-        return new ProjectDTO(
+        return (Status.Created, new ProjectDTO(
             entity.Id,
             entity.Name,
             entity.StartDate,
@@ -157,21 +195,44 @@ public class ProjectRepository : IProjectRepository
             entity.CreatedBy.Email,
             entity.CreatedBy.Name,
             entity.Tags.Select(t => t.Name).ToList()
-        );
+        ));
     }
-    private async Task<List<Student>> GetStudentsFromList(List<string> userEmails)
+
+    public async Task<Status> UpdateProject(int id, ProjectUpdateDTO project)
     {
-        List<Student> users = new List<Student>();
-        foreach (var item in userEmails)
+        var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
+        if (entity == null)
         {
-            var user = await _context.Users.OfType<Student>().Where(u => u.Email == item).FirstOrDefaultAsync();
-            if (user != null)
-            {
-                users.Add(user);
-            }
+            return Status.NotFound;
         }
-        return users;
+        entity.Name = project.Name;
+        entity.CreatedBy = await GetUserFromEmail(project.CreatedByEmail);
+        entity.Description = project.Description;
+        entity.StartDate = project.StartDate;
+        entity.EndDate = project.EndDate;
+        entity.Students = await GetStudentsFromList(project.StudentEmails);
+        entity.Supervisors = await GetSupervisorsFromList(project.SupervisorsEmails);
+        entity.Tags = await GetTagsFromStringList(project.Tags);
+
+        await _context.SaveChangesAsync();
+
+        return Status.Updated;
     }
+    
+    public async Task<Status> DeleteProject(int projectId)
+    {
+        var entity = await _context.Projects.FindAsync(projectId);
+
+        if (entity == null)
+        {
+            return Status.NotFound;
+        }
+
+        _context.Projects.Remove(entity);
+        await _context.SaveChangesAsync();
+        return Status.Deleted;
+    }
+
     private async Task<List<Supervisor>> GetSupervisorsFromList(List<string> userEmails)
     {
         List<Supervisor> users = new List<Supervisor>();
@@ -202,34 +263,5 @@ public class ProjectRepository : IProjectRepository
         }
         return list;
     }
-    
-    public async Task<ProjectDTO> UpdateProject(int id, ProjectUpdateDTO project)
-    {
-        var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
-        if (entity != null)
-        {
-            entity.Name = project.Name;
-            entity.CreatedBy = await GetUserFromEmail(project.CreatedByEmail);
-            entity.Description = project.Description;
-            entity.StartDate = project.StartDate;
-            entity.EndDate = project.EndDate;
-            entity.Students = await GetStudentsFromList(project.StudentEmails);
-            entity.Supervisors = await GetSupervisorsFromList(project.SupervisorsEmails);
-            entity.Tags = await GetTagsFromStringList(project.Tags);
-            await _context.SaveChangesAsync();
-        }
-        return new ProjectDTO
-        (
-            entity.Id,
-            entity.Name,
-            entity.StartDate,
-            entity.EndDate,
-            entity.Description,
-            entity.Students.Select(s => s.Email).ToList(),
-            entity.Supervisors.Select(s => s.Email).ToList(),
-            entity.CreatedBy.Email,
-            entity.CreatedBy.Name,
-            entity.Tags.Select(t => t.Name).ToList()
-        );
-    }
+
 }

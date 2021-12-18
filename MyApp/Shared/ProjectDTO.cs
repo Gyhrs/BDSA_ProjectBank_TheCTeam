@@ -25,7 +25,6 @@ public record ProjectCreateDTO
     public List<string>? StudentEmails {get; set;}
     public List<string>? SupervisorsEmails {get; set;}
     public string? CreatedByEmail {get; set;}
-    public string? CreatedBy {get; set;}
     public List<string>? Tags {get; set;}
 }
 public record ProjectUpdateDTO : ProjectCreateDTO

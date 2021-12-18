@@ -271,24 +271,22 @@ public class ProjectRepositoryTests : IDisposable
         // Arrange
         var inputProject = new ProjectCreateDTO()
         {
-            CreatedBy = "Anton",
             CreatedByEmail = "AntonBertelsen@hotmail.com",
             Description = "A project made by Lars",
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Name = "Lars Project",
-            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
-            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
-            Tags = new List<string>() {"UI", "Business"}
+            StudentEmails = new List<string>() { "nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk" },
+            SupervisorsEmails = new List<string>() { "phcr@itu.dk", "palo@itu.dk" },
+            Tags = new List<string>() { "UI", "Business" }
         };
 
         // Act
-        var actualMethod = await _repository.CreateProject(inputProject);
+        var (actualStatus, actualMethod) = await _repository.CreateProject(inputProject);
 
         var actualDB = _context.Projects.Where(p => p.CreatedBy.Name == "Anton" && p.Name == "Lars Project").FirstOrDefault();
 
         // Assert
-        Assert.Equal(inputProject.CreatedBy, actualDB.CreatedBy.Name);
         Assert.Equal(inputProject.CreatedByEmail, actualDB.CreatedBy.Email);
         Assert.Equal(inputProject.Name, actualDB.Name);
         Assert.Equal(inputProject.Description, actualDB.Description);
@@ -306,23 +304,22 @@ public class ProjectRepositoryTests : IDisposable
         // Arrange
         var inputProject = new ProjectCreateDTO()
         {
-            CreatedBy = "Anton",
             CreatedByEmail = "AntonBertelsen@hotmail.com",
             Description = "A project made by Lars",
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Name = "Lars Project",
-            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
-            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
-            Tags = new List<string>() {"Business", "UI"}
+            StudentEmails = new List<string>() { "nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk" },
+            SupervisorsEmails = new List<string>() { "phcr@itu.dk", "palo@itu.dk" },
+            Tags = new List<string>() { "Business", "UI" }
         };
+
         // Act
-        var actualMethod = await _repository.CreateProject(inputProject);
+        var (actualStatus, actualMethod) = await _repository.CreateProject(inputProject);
 
         var actualDB = _context.Projects.Where(p => p.CreatedBy.Name == "Anton" && p.Name == "Lars Project").FirstOrDefault();
 
         // Assert
-        Assert.Equal(inputProject.CreatedBy, actualMethod.CreatedBy);
         Assert.Equal(inputProject.CreatedByEmail, actualMethod.CreatedByEmail);
         Assert.Equal(inputProject.Name, actualMethod.Name);
         Assert.Equal(inputProject.Description, actualMethod.Description);
@@ -332,6 +329,7 @@ public class ProjectRepositoryTests : IDisposable
         Assert.Equal(inputProject.SupervisorsEmails, actualMethod.SupervisorsEmails);
         Assert.Equal(inputProject.Tags, actualMethod.Tags);
         Assert.Equal(5, actualMethod.Id);
+        Assert.Equal(Status.Created, actualStatus);
     }
     [Fact]
     public async Task UpdateProject_Updates_All_Values_In_Correct_Project()
@@ -339,16 +337,15 @@ public class ProjectRepositoryTests : IDisposable
         // Arrange
         var updateProject = new ProjectUpdateDTO()
         {
-            Id  = 1,
-            CreatedBy = "Anton",
+            Id = 1,
             CreatedByEmail = "AntonBertelsen@hotmail.com",
             Description = "A project made by Lars",
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Name = "Lars Project",
-            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
-            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
-            Tags = new List<string>() {"Business", "UI"}
+            StudentEmails = new List<string>() { "nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk" },
+            SupervisorsEmails = new List<string>() { "phcr@itu.dk", "palo@itu.dk" },
+            Tags = new List<string>() { "Business", "UI" }
         };
         // Act
         var expected = await _repository.UpdateProject(1, updateProject);
@@ -356,7 +353,6 @@ public class ProjectRepositoryTests : IDisposable
 
         // Assert
         Assert.Equal(updateProject.Name, actual.Name);
-        Assert.Equal(updateProject.CreatedBy, actual.CreatedBy.Name);
         Assert.Equal(updateProject.CreatedByEmail, actual.CreatedBy.Email);
         Assert.Equal(updateProject.Description, actual.Description);
         Assert.Equal(updateProject.StartDate, actual.StartDate);
@@ -364,6 +360,25 @@ public class ProjectRepositoryTests : IDisposable
         Assert.Equal(updateProject.StudentEmails, actual.Students.Select(s => s.Email).ToList());
         Assert.Equal(updateProject.SupervisorsEmails, actual.Supervisors.Select(s => s.Email).ToList());
         Assert.Equal(updateProject.Tags, actual.Tags.Select(t => t.Name).ToList());
+    }
+
+    [Fact]
+    public async Task DeleteProject_Given_Nonexisting_Id_Returns_NotFound()
+    {
+        var response = await _repository.DeleteProject(42);
+
+        Assert.Equal(Status.NotFound, response);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_deletes_and_returns_Deleted()
+    {
+        var response = await _repository.DeleteProject(2);
+
+        var entity = await _context.Projects.FindAsync(2);
+
+        Assert.Equal(Status.Deleted, response);
+        Assert.Null(entity);
     }
 
     public void Dispose()

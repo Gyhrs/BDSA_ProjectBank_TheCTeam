@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Globalization;
 using System.Collections.Generic;
+using MyApp.Infrastructure;
 
 public class ProjectsControllerTests
 {
@@ -253,7 +254,6 @@ public class ProjectsControllerTests
 
         var inputProject = new ProjectCreateDTO()
         {
-            CreatedBy = "Anton",
             CreatedByEmail = "AntonBertelsen@hotmail.com",
             Description = "A project made by Lars",
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
@@ -278,7 +278,7 @@ public class ProjectsControllerTests
             new List<string>() {"UI", "Business"}
         );
 
-        repository.Setup(m => m.CreateProject(inputProject)).ReturnsAsync(outputProject);
+        repository.Setup(m => m.CreateProject(inputProject)).ReturnsAsync((Status.Created, outputProject));
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -297,7 +297,6 @@ public class ProjectsControllerTests
 
         var inputProject = new ProjectCreateDTO()
         {
-            CreatedBy = "",
             CreatedByEmail = "",
             Description = "",
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
@@ -322,7 +321,7 @@ public class ProjectsControllerTests
             new List<string>() {"UI", "Business"}
         );
 
-        repository.Setup(m => m.CreateProject(inputProject)).ReturnsAsync(outputProject);
+        repository.Setup(m => m.CreateProject(inputProject)).ReturnsAsync((Status.Created, outputProject));
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -332,7 +331,7 @@ public class ProjectsControllerTests
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
     [Fact]
-    public async Task UpdateProject_Returns_BadRequest()
+    public async Task UpdateProject_Returns_BadRequest_Given_Bad_Input()
     {
         //Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -341,7 +340,6 @@ public class ProjectsControllerTests
         var inputProject = new ProjectUpdateDTO()
         {
             Id = 20,
-            CreatedBy = "",
             CreatedByEmail = "",
             Description = "",
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
@@ -352,7 +350,7 @@ public class ProjectsControllerTests
             Tags = new List<string>() {"UI", "Business"}
         };
 
-        repository.Setup(m => m.UpdateProject(20, inputProject)).ReturnsAsync(default(ProjectDTO));
+        repository.Setup(m => m.UpdateProject(20, inputProject)).ReturnsAsync(Status.BadRequest);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         //Act
@@ -362,17 +360,95 @@ public class ProjectsControllerTests
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
     [Fact]
-    public void UpdateProject_Returns_NotFound_Given_Invalid_ID()
+    public async Task UpdateProject_Returns_NotFound_Given_Invalid_ID()
     {
-        //Arrange
-        //Act
-        //Assert
+        // Arrange
+        var logger = new Mock<ILogger<ProjectsController>>();
+        var repository = new Mock<IProjectRepository>();
+
+        var inputProject = new ProjectUpdateDTO()
+        {
+            Id = 42,
+            CreatedByEmail = "anton@bertelsen.com",
+            Description = "Project by Anton",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
+            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            Tags = new List<string>() {"UI", "Business"}
+        };
+
+        repository.Setup(m => m.UpdateProject(42, inputProject)).ReturnsAsync(Status.NotFound);
+        var controller = new ProjectsController(logger.Object, repository.Object);
+
+        // Act
+        var actual = await controller.UpdateProject(42, inputProject);
+
+        // Assert
+        Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
     [Fact]
-    public void UpdateProject_Returns_OK_Given_Valid_Parameters()
+    public async Task UpdateProject_Returns_OK_Given_Valid_Parameters()
     {
-        //Arrange
-        //Act
-        //Assert
+        // Arrange
+        var logger = new Mock<ILogger<ProjectsController>>();
+        var repository = new Mock<IProjectRepository>();
+
+        var inputProject = new ProjectUpdateDTO()
+        {
+            Id = 42,
+            CreatedByEmail = "anton@bertelsen.com",
+            Description = "Project by Anton",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
+            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            Tags = new List<string>() {"UI", "Business"}
+        };
+
+        repository.Setup(m => m.UpdateProject(42, inputProject)).ReturnsAsync(Status.Updated);
+        var controller = new ProjectsController(logger.Object, repository.Object);
+
+        // Act
+        var actual = await controller.UpdateProject(42, inputProject);
+
+        // Assert
+        Assert.IsType<OkResult>(actual.Result);
+    }
+
+    [Fact]
+    public async Task DeleteProject_Returns_NotFound_Given_Nonexisting_Project()
+    {
+        // Arrange
+        var logger = new Mock<ILogger<ProjectsController>>();
+        var repository = new Mock<IProjectRepository>();
+
+        repository.Setup(m => m.DeleteProject(42)).ReturnsAsync(Status.NotFound);
+        var controller = new ProjectsController(logger.Object, repository.Object);
+
+        // Act
+        var actual = await controller.Delete(42);
+
+        // Assert
+        Assert.IsType<NotFoundObjectResult>(actual.Result);
+    }
+
+    [Fact]
+    public async Task DeleteProject_Returns_Ok_Given_Existing_Project()
+    {
+        // Arrange
+        var logger = new Mock<ILogger<ProjectsController>>();
+        var repository = new Mock<IProjectRepository>();
+
+        repository.Setup(m => m.DeleteProject(42)).ReturnsAsync(Status.Deleted);
+        var controller = new ProjectsController(logger.Object, repository.Object);
+
+        // Act
+        var actual = await controller.Delete(42);
+
+        // Assert
+        Assert.IsType<OkResult>(actual.Result);
     }
 }
