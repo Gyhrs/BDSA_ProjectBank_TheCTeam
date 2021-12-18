@@ -60,7 +60,7 @@
     </div>
 
 </div>
-<div class="">
+<div>
     <ProjectFeed @ref="_projectFeed"></ProjectFeed>
 </div>
 
@@ -71,9 +71,6 @@
     private SearchBar _searchBar;
     private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
 
-    private String test;
-
-
     private string ReturnColor(string tag)
     {
         if (activeTags[tag]) { return "lightblue"; }
@@ -83,10 +80,7 @@
 
     private async Task onTagButtonClicked(string tag)
     {
-        System.Console.WriteLine("Tag has been pressed: " + tag);
-
         activeTags[tag] = !activeTags[tag];
-
 
         SearchAsync();
         _projectFeed.Refresh();
@@ -110,8 +104,6 @@
     public string GetSearchTags()
     {
         return string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());
-
-
     }
 
     protected override async Task OnInitializedAsync()

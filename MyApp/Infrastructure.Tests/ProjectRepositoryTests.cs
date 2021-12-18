@@ -347,7 +347,7 @@ public class ProjectRepositoryTests : IDisposable
             StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Name = "Lars Project",
             StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
-            SupervisorEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
             Tags = new List<string>() {"Business", "UI"}
         };
         // Act
@@ -362,7 +362,7 @@ public class ProjectRepositoryTests : IDisposable
         Assert.Equal(updateProject.StartDate, actual.StartDate);
         Assert.Equal(updateProject.EndDate, actual.EndDate);
         Assert.Equal(updateProject.StudentEmails, actual.Students.Select(s => s.Email).ToList());
-        Assert.Equal(updateProject.SupervisorEmails, actual.Supervisors.Select(s => s.Email).ToList());
+        Assert.Equal(updateProject.SupervisorsEmails, actual.Supervisors.Select(s => s.Email).ToList());
         Assert.Equal(updateProject.Tags, actual.Tags.Select(t => t.Name).ToList());
     }
 
