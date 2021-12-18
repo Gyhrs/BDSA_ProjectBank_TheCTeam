@@ -23,7 +23,7 @@ public record ProjectCreateDTO
     public DateTime EndDate {get; set;}
     public string Description {get; set;}
     public List<string>? StudentEmails {get; set;}
-    public List<string>? SupervisorEmails {get; set;}
+    public List<string>? SupervisorsEmails {get; set;}
     public string? CreatedByEmail {get; set;}
     public string? CreatedBy {get; set;}
     public List<string>? Tags {get; set;}

@@ -142,7 +142,7 @@ public class ProjectRepository : IProjectRepository
             EndDate = create.EndDate,
             Description = create.Description,
             Students = await GetStudentsFromList(create.StudentEmails),
-            Supervisors = await GetSupervisorsFromList(create.SupervisorEmails),
+            Supervisors = await GetSupervisorsFromList(create.SupervisorsEmails),
             CreatedBy = await GetUserFromEmail(create.CreatedByEmail),
             Tags = await GetTagsFromStringList(create.Tags)
         };
@@ -191,12 +191,7 @@ public class ProjectRepository : IProjectRepository
     }
     private async Task<StudyBankUser> GetUserFromEmail(string userEmail)
     {
-        var user = await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync();
-        if (user != null)
-        {
-            return user;
-        }
-        return null;
+        return await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync();
     }
     private async Task<List<Tag>> GetTagsFromStringList(List<string> tags)
     {

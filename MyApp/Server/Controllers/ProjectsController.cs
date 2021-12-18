@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
@@ -144,12 +145,45 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     }
 
     [AllowAnonymous]
-    [ProducesResponseType(404)]
     [ProducesResponseType(400)]
+    [ProducesResponseType(409)]
     [ProducesResponseType(typeof(ProjectDTO), 201)]
     [HttpPost]
-    public async Task<ActionResult<ProjectDTO>> CreateProject(ProjectCreateDTO project)
+    public async Task<ActionResult<ProjectDTO>> CreateProject(ProjectCreateDTO inputProject)
     {
-        
+        if (inputProject.Name.Length == 0
+        || inputProject.StartDate == null
+        || inputProject.EndDate == null
+        || inputProject.Description.Length == 0)
+        {
+            return BadRequest("Not correct input");
+
+        }
+
+        var created = await _repository.CreateProject(inputProject);
+
+        var outputProject = new ProjectCreateDTO
+        {
+            CreatedBy = inputProject.CreatedBy,
+            CreatedByEmail = inputProject.CreatedByEmail,
+            Description = inputProject.Description,
+            EndDate = inputProject.EndDate,
+            StartDate = inputProject.StartDate,
+            Name = inputProject.Name,
+            StudentEmails = inputProject.StudentEmails,
+            SupervisorsEmails = inputProject.SupervisorsEmails,
+            Tags = inputProject.Tags
+        };
+
+        if (inputProject == outputProject)
+        {
+            // Somehow a URI needs to be sent back with the Created action response.
+            // This is a wild guess that worked :^)
+            return Created(new Uri("/api/Projects", UriKind.Relative), created);
+        }
+        else
+        {
+            return Conflict("Something went wrong when creating the project");
+        }
     }
 }

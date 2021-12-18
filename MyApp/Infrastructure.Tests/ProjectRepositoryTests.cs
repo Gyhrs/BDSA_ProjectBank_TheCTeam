@@ -278,7 +278,7 @@ public class ProjectRepositoryTests : IDisposable
             StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Name = "Lars Project",
             StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
-            SupervisorEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
             Tags = new List<string>() {"UI", "Business"}
         };
 
@@ -295,7 +295,7 @@ public class ProjectRepositoryTests : IDisposable
         Assert.Equal(inputProject.EndDate, actualDB.EndDate);
         Assert.Equal(inputProject.StartDate, actualDB.StartDate);
         Assert.Equal(inputProject.StudentEmails, actualDB.Students.Select(s => s.Email).ToList());
-        Assert.Equal(inputProject.SupervisorEmails, actualDB.Supervisors.Select(s => s.Email).ToList());
+        Assert.Equal(inputProject.SupervisorsEmails, actualDB.Supervisors.Select(s => s.Email).ToList());
         Assert.Equal(inputProject.Tags, actualDB.Tags.Select(s => s.Name).ToList());
         Assert.Equal(5, actualDB.Id);
     }
@@ -313,7 +313,7 @@ public class ProjectRepositoryTests : IDisposable
             StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Name = "Lars Project",
             StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
-            SupervisorEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
             Tags = new List<string>() {"Business", "UI"}
         };
         // Act
@@ -329,7 +329,7 @@ public class ProjectRepositoryTests : IDisposable
         Assert.Equal(inputProject.EndDate, actualMethod.EndDate);
         Assert.Equal(inputProject.StartDate, actualMethod.StartDate);
         Assert.Equal(inputProject.StudentEmails, actualMethod.StudentEmails);
-        Assert.Equal(inputProject.SupervisorEmails, actualMethod.SupervisorsEmails);
+        Assert.Equal(inputProject.SupervisorsEmails, actualMethod.SupervisorsEmails);
         Assert.Equal(inputProject.Tags, actualMethod.Tags);
         Assert.Equal(5, actualMethod.Id);
     }
