@@ -60,27 +60,14 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTags(List<string> searchTags)
     {
-        var watch = System.Diagnostics.Stopwatch.StartNew();
-
         // Finds all tags that contain a searchTag. E.g. if you have searched for "UI" and "AI" we find [UI, AI]
         // which points to respective lists (UI -> [p1, p2, p3], etc.) 
         var tags = await _context.Tags.Where(t => searchTags.Any(ttag => ttag == t.Name)).Include(t => t.Projects).ToListAsync();
 
-        Console.ForegroundColor = ConsoleColor.Cyan;
-
-        System.Console.WriteLine("Found tag: " + tags.FirstOrDefault().Name);
-
-        foreach (var item in tags.FirstOrDefault().Projects)
-        {
-            System.Console.WriteLine("Found project: " + item.Name);
-        }
-
-        Console.ForegroundColor = ConsoleColor.White;
-
         var projects = new List<ProjectDTO>();
 
         // If any tags were found, do this. Otherwise return an empty list.
-        if (tags.Count > 0) 
+        if (tags.Count > 0)
         {
             // Add the first tag's list of projects to a list.
             List<Project> list = new List<Project>(tags.First().Projects.ToList());
@@ -90,8 +77,6 @@ public class ProjectRepository : IProjectRepository
             {
                 list = list.Intersect(tags.ElementAt(i).Projects).ToList();
             }
-
-            System.Console.WriteLine("Tags in project");
 
             // For all Project -> ProjectDTO in list.
             projects = list.Select(p => new ProjectDTO(
@@ -105,16 +90,11 @@ public class ProjectRepository : IProjectRepository
                                 p.CreatedBy != null ? p.CreatedBy.Email : null,
                                 p.CreatedBy != null ? p.CreatedBy.Name : null,
                                 // FIXME: ProjectDTO gets only one tag, loosing some of its orignals.
-                                // Makes it weird in UI, but works when clicking on projectBox.
-                                p.Tags != null ? _context.Projects.Find(p.Id).Tags.Select(t => t.Name).ToList() : null
+                                // Makes it weird in UI, but works when clicking on projectBox. I dont know why below doesnt work. (.Where). It seems to only return 1 tag
+                                //p.Tags != null ? _context.Projects.Where(w => w.Id == p.Id).First().Tags.Select(t => t.Name).ToList() : null
+                                p.Tags != null ? GetProjectFromID(p.Id).Result.Tags : null
                             )).ToList();
         }
-
-        watch.Stop();
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("---- GetProjectsFromTags (ProjectRepository) ended in: " + watch.ElapsedMilliseconds + " ms ----");
-        Console.ForegroundColor = ConsoleColor.White;
-
         return projects.AsReadOnly();
     }
 
@@ -149,8 +129,9 @@ public class ProjectRepository : IProjectRepository
         return tagProjects.Where(t => t.Name.ToLower().Contains(title.ToLower())).ToList().AsReadOnly();
     }
 
-    public async Task<ProjectDTO> CreateProject(ProjectCreateDTO create) {
-        var entity = new Project 
+    public async Task<ProjectDTO> CreateProject(ProjectCreateDTO create)
+    {
+        var entity = new Project
         {
             Name = create.Name,
             StartDate = create.StartDate,
@@ -164,7 +145,7 @@ public class ProjectRepository : IProjectRepository
 
         _context.Projects.Add(entity);
         await _context.SaveChangesAsync();
-        
+
         return new ProjectDTO(
             entity.Id,
             entity.Name,
@@ -221,7 +202,7 @@ public class ProjectRepository : IProjectRepository
         }
         return list;
     }
-    
+
     public async Task<ProjectDTO> UpdateProject(ProjectUpdateDTO project)
     {
         var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
