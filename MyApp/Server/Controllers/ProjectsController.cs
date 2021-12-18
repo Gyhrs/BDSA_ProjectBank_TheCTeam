@@ -150,6 +150,6 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     [HttpPost]
     public async Task<ActionResult<ProjectDTO>> CreateProject(ProjectCreateDTO project)
     {
-        
+        return null;
     }
 }

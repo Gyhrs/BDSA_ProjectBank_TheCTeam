@@ -212,7 +212,7 @@ public class ProjectRepository : IProjectRepository
         return list;
     }
     
-    private async Task<ProjectDTO> UpdateProject(ProjectUpdateDTO project)
+    public async Task<ProjectDTO> UpdateProject(ProjectUpdateDTO project)
     {
         var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
         if (entity != null)
