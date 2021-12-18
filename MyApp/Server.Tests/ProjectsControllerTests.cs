@@ -331,5 +331,48 @@ public class ProjectsControllerTests
         // Assert
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
-    
+    [Fact]
+    public async Task UpdateProject_Returns_BadRequest()
+    {
+        //Arrange
+        var logger = new Mock<ILogger<ProjectsController>>();
+        var repository = new Mock<IProjectRepository>();
+
+        var inputProject = new ProjectUpdateDTO()
+        {
+            Id = 20,
+            CreatedBy = "",
+            CreatedByEmail = "",
+            Description = "",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
+            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            Tags = new List<string>() {"UI", "Business"}
+        };
+
+        repository.Setup(m => m.UpdateProject(20, inputProject)).ReturnsAsync(default(ProjectDTO));
+        var controller = new ProjectsController(logger.Object, repository.Object);
+
+        //Act
+        var actual = await controller.UpdateProject(20, inputProject);
+
+        //Assert
+        Assert.IsType<BadRequestObjectResult>(actual.Result);
+    }
+    [Fact]
+    public void UpdateProject_Returns_NotFound_Given_Invalid_ID()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
+    [Fact]
+    public void UpdateProject_Returns_OK_Given_Valid_Parameters()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
 }

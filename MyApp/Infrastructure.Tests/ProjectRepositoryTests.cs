@@ -351,7 +351,7 @@ public class ProjectRepositoryTests : IDisposable
             Tags = new List<string>() {"Business", "UI"}
         };
         // Act
-        var expected = await _repository.UpdateProject(updateProject);
+        var expected = await _repository.UpdateProject(1, updateProject);
         var actual = _context.Projects.Where(p => p.Id == 1).FirstOrDefault();
 
         // Assert

@@ -202,8 +202,8 @@ public class ProjectRepository : IProjectRepository
         }
         return list;
     }
-
-    public async Task<ProjectDTO> UpdateProject(ProjectUpdateDTO project)
+    
+    public async Task<ProjectDTO> UpdateProject(int id, ProjectUpdateDTO project)
     {
         var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
         if (entity != null)
