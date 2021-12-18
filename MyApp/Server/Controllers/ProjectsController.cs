@@ -186,4 +186,25 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
             return Conflict("Something went wrong when creating the project");
         }
     }
+    [AllowAnonymous]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(409)]
+    [ProducesResponseType(typeof(ProjectDTO), 201)]
+    [HttpPut("id/{id}")]
+    public async Task<ActionResult<ProjectDTO>> UpdateProject(int id, [FromBody] ProjectUpdateDTO inputProject)
+    {
+        if (inputProject.Name.Length == 0
+        || inputProject.StartDate == null
+        || inputProject.EndDate == null
+        || inputProject.Description.Length == 0)
+        {
+            return BadRequest("Not correct input");
+        }
+        if (_repository.GetProjectFromID(id) == null)
+        {
+            return NotFound("Could not find project with given id");
+        }
+        var created = await _repository.UpdateProject(inputProject.Id, inputProject);
+        return Ok(created);
+    }
 }

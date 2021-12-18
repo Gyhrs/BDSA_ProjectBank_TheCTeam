@@ -375,4 +375,25 @@ public class ProjectsControllerTests
     //     // Assert
     //     Assert.IsType<CreatedResult>(actual.Result);
     // }
+    [Fact]
+    public void UpdateProject_Returns_BadRequest()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
+    [Fact]
+    public void UpdateProject_Returns_NotFound_Given_Invalid_ID()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
+    [Fact]
+    public void UpdateProject_Returns_OK_Given_Valid_Parameters()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
 }

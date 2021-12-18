@@ -207,7 +207,7 @@ public class ProjectRepository : IProjectRepository
         return list;
     }
     
-    public async Task<ProjectDTO> UpdateProject(ProjectUpdateDTO project)
+    public async Task<ProjectDTO> UpdateProject(int id, ProjectUpdateDTO project)
     {
         var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
         if (entity != null)
@@ -218,7 +218,7 @@ public class ProjectRepository : IProjectRepository
             entity.StartDate = project.StartDate;
             entity.EndDate = project.EndDate;
             entity.Students = await GetStudentsFromList(project.StudentEmails);
-            entity.Supervisors = await GetSupervisorsFromList(project.SupervisorEmails);
+            entity.Supervisors = await GetSupervisorsFromList(project.SupervisorsEmails);
             entity.Tags = await GetTagsFromStringList(project.Tags);
             await _context.SaveChangesAsync();
         }
