@@ -66,6 +66,17 @@ public class ProjectRepository : IProjectRepository
         // which points to respective lists (UI -> [p1, p2, p3], etc.) 
         var tags = await _context.Tags.Where(t => searchTags.Any(ttag => ttag == t.Name)).Include(t => t.Projects).ToListAsync();
 
+        Console.ForegroundColor = ConsoleColor.Cyan;
+
+        System.Console.WriteLine("Found tag: " + tags.FirstOrDefault().Name);
+
+        foreach (var item in tags.FirstOrDefault().Projects)
+        {
+            System.Console.WriteLine("Found project: " + item.Name);
+        }
+
+        Console.ForegroundColor = ConsoleColor.White;
+
         var projects = new List<ProjectDTO>();
 
         // If any tags were found, do this. Otherwise return an empty list.
@@ -80,6 +91,8 @@ public class ProjectRepository : IProjectRepository
                 list = list.Intersect(tags.ElementAt(i).Projects).ToList();
             }
 
+            System.Console.WriteLine("Tags in project");
+
             // For all Project -> ProjectDTO in list.
             projects = list.Select(p => new ProjectDTO(
                                 p.Id,
@@ -91,7 +104,9 @@ public class ProjectRepository : IProjectRepository
                                 p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
                                 p.CreatedBy != null ? p.CreatedBy.Email : null,
                                 p.CreatedBy != null ? p.CreatedBy.Name : null,
-                                p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
+                                // FIXME: ProjectDTO gets only one tag, loosing some of its orignals.
+                                // Makes it weird in UI, but works when clicking on projectBox.
+                                p.Tags != null ? _context.Projects.Find(p.Id).Tags.Select(t => t.Name).ToList() : null
                             )).ToList();
         }
 

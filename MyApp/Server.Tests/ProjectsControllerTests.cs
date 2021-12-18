@@ -297,9 +297,9 @@ public class ProjectsControllerTests
 
         var inputProject = new ProjectCreateDTO()
         {
-            CreatedBy = "Anton",
-            CreatedByEmail = "AntonBertelsen@hotmail.com",
-            Description = "A project made by Lars",
+            CreatedBy = "",
+            CreatedByEmail = "",
+            Description = "",
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Name = "Lars Project",
@@ -329,58 +329,37 @@ public class ProjectsControllerTests
         var actual = await controller.CreateProject(inputProject);
 
         // Assert
-        Assert.IsType<CreatedResult>(actual.Result);
+        Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
-
-    // [Fact]
-    // public async Task CreateProject_Returns_BadRequest_Given_Invalid_Data()
-    // {
-    //     // Arrange
-    //     var logger = new Mock<ILogger<ProjectsController>>();
-    //     var repository = new Mock<IProjectRepository>();
-
-    //     var inputProject = new ProjectCreateDTO()
-    //     {
-    //         CreatedBy = "Anton",
-    //         CreatedByEmail = "AntonBertelsen@hotmail.com",
-    //         Description = "A project made by Lars",
-    //         EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-    //         StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-    //         Name = "Lars Project",
-    //         StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
-    //         SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
-    //         Tags = new List<string>() {"UI", "Business"}
-    //     };
-
-    //     var outputProject = new ProjectDTO
-    //     (
-    //         5, 
-    //         "Lars Project", 
-    //         DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-    //         DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-    //         "A project made by Lars",
-    //         new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
-    //         new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
-    //         "AntonBertelsen@hotmail.com",
-    //         "Anton",
-    //         new List<string>() {"UI", "Business"}
-    //     );
-
-    //     repository.Setup(m => m.CreateProject(inputProject)).ReturnsAsync(outputProject);
-    //     var controller = new ProjectsController(logger.Object, repository.Object);
-
-    //     // Act
-    //     var actual = await controller.CreateProject(inputProject);
-
-    //     // Assert
-    //     Assert.IsType<CreatedResult>(actual.Result);
-    // }
     [Fact]
-    public void UpdateProject_Returns_BadRequest()
+    public async Task UpdateProject_Returns_BadRequest()
     {
         //Arrange
+        var logger = new Mock<ILogger<ProjectsController>>();
+        var repository = new Mock<IProjectRepository>();
+
+        var inputProject = new ProjectUpdateDTO()
+        {
+            Id = 20,
+            CreatedBy = "",
+            CreatedByEmail = "",
+            Description = "",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
+            SupervisorsEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            Tags = new List<string>() {"UI", "Business"}
+        };
+
+        repository.Setup(m => m.UpdateProject(20, inputProject)).ReturnsAsync(default(ProjectDTO));
+        var controller = new ProjectsController(logger.Object, repository.Object);
+
         //Act
+        var actual = await controller.UpdateProject(20, inputProject);
+
         //Assert
+        Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
     [Fact]
     public void UpdateProject_Returns_NotFound_Given_Invalid_ID()

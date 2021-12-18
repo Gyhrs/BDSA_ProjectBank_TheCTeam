@@ -157,34 +157,14 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
         || inputProject.Description.Length == 0)
         {
             return BadRequest("Not correct input");
-
         }
 
         var created = await _repository.CreateProject(inputProject);
 
-        var outputProject = new ProjectCreateDTO
-        {
-            CreatedBy = inputProject.CreatedBy,
-            CreatedByEmail = inputProject.CreatedByEmail,
-            Description = inputProject.Description,
-            EndDate = inputProject.EndDate,
-            StartDate = inputProject.StartDate,
-            Name = inputProject.Name,
-            StudentEmails = inputProject.StudentEmails,
-            SupervisorsEmails = inputProject.SupervisorsEmails,
-            Tags = inputProject.Tags
-        };
+        // Somehow a URI needs to be sent back with the Created action response.
+        // This is a wild guess that worked :^)
+        return Created(new Uri("/api/Projects", UriKind.Relative), created);
 
-        if (inputProject == outputProject)
-        {
-            // Somehow a URI needs to be sent back with the Created action response.
-            // This is a wild guess that worked :^)
-            return Created(new Uri("/api/Projects", UriKind.Relative), created);
-        }
-        else
-        {
-            return Conflict("Something went wrong when creating the project");
-        }
     }
     [AllowAnonymous]
     [ProducesResponseType(400)]
