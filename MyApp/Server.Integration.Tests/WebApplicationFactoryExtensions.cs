@@ -1,6 +1,8 @@
-//Taken from https://gunnarpeipman.com/aspnet-core-integration-tests-users-roles/ and inspired from group LitExplore
+//This class has been taken from https://gunnarpeipman.com/aspnet-core-integration-tests-users-roles/
 
-namespace Server.Integration.Tests;
+using System.Net.Http.Headers;
+
+namespace MyApp.Server.Integration.Tests;
 public static class WebApplicationFactoryExtensions
 {
     public static WebApplicationFactory<T> WithAuthentication<T>(this WebApplicationFactory<T> factory, TestClaimsProvider claimsProvider) where T : class

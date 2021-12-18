@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace MyApp.Server.Integration.Tests;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
@@ -90,7 +92,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             Name = "Blockchain",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> { u1, u2 },
+            Supervisors = new List<Supervisor> { sup1, sup2 },
             Tags = new List<Tag> { t1, t2 }
         };
 
@@ -102,7 +104,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             Name = "Algorithm",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> { u1, u2 },
+            Supervisors = new List<Supervisor> { sup1, sup2 },
             Tags = new List<Tag> { t3 }
         };
 
@@ -114,7 +116,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             Name = "Supercomputer",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> { u1, u2 },
+            Supervisors = new List<Supervisor> { sup1, sup2 },
             Tags = new List<Tag> { t1, t3 }
         };
 
@@ -126,7 +128,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             Name = "Blockchain",
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            Supervisors = new List<Supervisor> { u1, u2 },
+            Supervisors = new List<Supervisor> { sup1, sup2 },
         };
 
         context.Projects.AddRange(

@@ -1,5 +1,5 @@
 //This class has been taken from https://gunnarpeipman.com/aspnet-core-integration-tests-users-roles/ and inspired from group LitExplore
-namespace Server.Integration.Tests;
+namespace MyApp.Server.Integration.Tests;
 
 public class TestClaimsProvider
 {

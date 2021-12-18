@@ -12,7 +12,7 @@ using MyApp.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
+//builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
 
 // Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -27,8 +27,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             builder.Configuration.Bind("AzureAd", options);
         });
 
+
+
+// builder.Services.Configure<JwtBearerOptions>(
+//     JwtBearerDefaults.AuthenticationScheme, options =>
+//     {
+//         options.TokenValidationParameters.NameClaimType = "name";
+//     });
 builder.Services.AddControllersWithViews();
+
+
+
 builder.Services.AddRazorPages();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyApp.Server", Version = "v1" });
+    c.UseInlineDefinitionsForEnums();
+});
 
 // Connect to server with connection string
 builder.Services.AddDbContext<StudyBankContext>(options =>
@@ -46,12 +63,7 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 //     options.TokenValidationParameters.NameClaimType = "name";
 // });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyApp.Server", Version = "v1" });
-    c.UseInlineDefinitionsForEnums();
-});
+
 
 
 var app = builder.Build();
