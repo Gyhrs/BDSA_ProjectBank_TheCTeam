@@ -333,6 +333,38 @@ public class ProjectRepositoryTests : IDisposable
         Assert.Equal(inputProject.Tags, actualMethod.Tags);
         Assert.Equal(5, actualMethod.Id);
     }
+    [Fact]
+    public async Task UpdateProject_Updates_All_Values_In_Correct_Project()
+    {
+        // Arrange
+        var updateProject = new ProjectUpdateDTO()
+        {
+            Id  = 1,
+            CreatedBy = "Anton",
+            CreatedByEmail = "AntonBertelsen@hotmail.com",
+            Description = "A project made by Lars",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
+            SupervisorEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            Tags = new List<string>() {"Business", "UI"}
+        };
+        // Act
+        var expected = await _repository.UpdateProject(updateProject);
+        var actual = _context.Projects.Where(p => p.Id == 1).FirstOrDefault();
+
+        // Assert
+        Assert.Equal(updateProject.Name, actual.Name);
+        Assert.Equal(updateProject.CreatedBy, actual.CreatedBy.Name);
+        Assert.Equal(updateProject.CreatedByEmail, actual.CreatedBy.Email);
+        Assert.Equal(updateProject.Description, actual.Description);
+        Assert.Equal(updateProject.StartDate, actual.StartDate);
+        Assert.Equal(updateProject.EndDate, actual.EndDate);
+        Assert.Equal(updateProject.StudentEmails, actual.Students.Select(s => s.Email).ToList());
+        Assert.Equal(updateProject.SupervisorEmails, actual.Supervisors.Select(s => s.Email).ToList());
+        Assert.Equal(updateProject.Tags, actual.Tags.Select(t => t.Name).ToList());
+    }
 
     public void Dispose()
     {

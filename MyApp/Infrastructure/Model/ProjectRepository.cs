@@ -206,4 +206,34 @@ public class ProjectRepository : IProjectRepository
         }
         return list;
     }
+    
+    public async Task<ProjectDTO> UpdateProject(ProjectUpdateDTO project)
+    {
+        var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
+        if (entity != null)
+        {
+            entity.Name = project.Name;
+            entity.CreatedBy = await GetUserFromEmail(project.CreatedByEmail);
+            entity.Description = project.Description;
+            entity.StartDate = project.StartDate;
+            entity.EndDate = project.EndDate;
+            entity.Students = await GetStudentsFromList(project.StudentEmails);
+            entity.Supervisors = await GetSupervisorsFromList(project.SupervisorEmails);
+            entity.Tags = await GetTagsFromStringList(project.Tags);
+            await _context.SaveChangesAsync();
+        }
+        return new ProjectDTO
+        (
+            entity.Id,
+            entity.Name,
+            entity.StartDate,
+            entity.EndDate,
+            entity.Description,
+            entity.Students.Select(s => s.Email).ToList(),
+            entity.Supervisors.Select(s => s.Email).ToList(),
+            entity.CreatedBy.Email,
+            entity.CreatedBy.Name,
+            entity.Tags.Select(t => t.Name).ToList()
+        );
+    }
 }
