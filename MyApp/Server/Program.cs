@@ -63,9 +63,6 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 //     options.TokenValidationParameters.NameClaimType = "name";
 // });
 
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

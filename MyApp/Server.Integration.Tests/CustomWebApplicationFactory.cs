@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace MyApp.Server.Integration.Tests;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>

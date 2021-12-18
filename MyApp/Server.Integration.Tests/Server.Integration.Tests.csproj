@@ -25,9 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Server\MyApp.Server.csproj" />
-    <ProjectReference Include="..\Client\MyApp.Client.csproj" />
-    <ProjectReference Include="..\Infrastructure\MyApp.Infrastructure.csproj" />
-    <ProjectReference Include="..\Shared\MyApp.Shared.csproj" />
   </ItemGroup>
 
 </Project>

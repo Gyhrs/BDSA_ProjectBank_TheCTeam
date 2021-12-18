@@ -1,6 +1,5 @@
 //Group TeamLitExplore helped with this class
 
-
 namespace MyApp.Server.Integration.Tests;
 
 internal sealed class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
@@ -11,7 +10,8 @@ internal sealed class TestAuthHandler : AuthenticationHandler<AuthenticationSche
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        ISystemClock clock, TestClaimsProvider claimsProvider) : base(options, logger, encoder, clock)
+        ISystemClock clock, 
+        TestClaimsProvider claimsProvider) : base(options, logger, encoder, clock)
     {
         _claims = claimsProvider.Claims;
     }

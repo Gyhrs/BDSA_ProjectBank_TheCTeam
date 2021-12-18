@@ -1,6 +1,4 @@
-//This class has been taken from https://gunnarpeipman.com/aspnet-core-integration-tests-users-roles/
-
-using System.Net.Http.Headers;
+//This class has been taken from https://gunnarpeipman.com/aspnet-core-integration-tests-users-roles/ and inspired from group TeamLitExplorer
 
 namespace MyApp.Server.Integration.Tests;
 public static class WebApplicationFactoryExtensions
