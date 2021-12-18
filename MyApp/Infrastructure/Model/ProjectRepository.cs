@@ -133,4 +133,82 @@ public class ProjectRepository : IProjectRepository
 
         return tagProjects.Where(t => t.Name.ToLower().Contains(title.ToLower())).ToList().AsReadOnly();
     }
+
+    public async Task<ProjectDTO> CreateProject(ProjectCreateDTO create) {
+        var entity = new Project 
+        {
+            Name = create.Name,
+            StartDate = create.StartDate,
+            EndDate = create.EndDate,
+            Description = create.Description,
+            Students = await GetStudentsFromList(create.StudentEmails),
+            Supervisors = await GetSupervisorsFromList(create.SupervisorEmails),
+            CreatedBy = await GetUserFromEmail(create.CreatedByEmail),
+            Tags = await GetTagsFromStringList(create.Tags)
+        };
+
+        _context.Projects.Add(entity);
+        await _context.SaveChangesAsync();
+        
+        return new ProjectDTO(
+            entity.Id,
+            entity.Name,
+            entity.StartDate,
+            entity.EndDate,
+            entity.Description,
+            entity.Students.Select(s => s.Email).ToList(),
+            entity.Supervisors.Select(s => s.Email).ToList(),
+            entity.CreatedBy.Email,
+            entity.CreatedBy.Name,
+            entity.Tags.Select(t => t.Name).ToList()
+        );
+    }
+    private async Task<List<Student>> GetStudentsFromList(List<string> userEmails)
+    {
+        List<Student> users = new List<Student>();
+        foreach (var item in userEmails)
+        {
+            var user = await _context.Users.OfType<Student>().Where(u => u.Email == item).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                users.Add(user);
+            }
+        }
+        return users;
+    }
+    private async Task<List<Supervisor>> GetSupervisorsFromList(List<string> userEmails)
+    {
+        List<Supervisor> users = new List<Supervisor>();
+        foreach (var item in userEmails)
+        {
+            var user = await _context.Users.OfType<Supervisor>().Where(u => u.Email == item).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                users.Add(user);
+            }
+        }
+        return users;
+    }
+    private async Task<StudyBankUser> GetUserFromEmail(string userEmail)
+    {
+        var user = await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync();
+        if (user != null)
+        {
+            return user;
+        }
+        return null;
+    }
+    private async Task<List<Tag>> GetTagsFromStringList(List<string> tags)
+    {
+        List<Tag> list = new List<Tag>();
+        foreach (var tag in tags)
+        {
+            var ta = await _context.Tags.Where(t => t.Name == tag).FirstOrDefaultAsync();
+            if (ta != null)
+            {
+                list.Add(ta);
+            }
+        }
+        return list;
+    }
 }

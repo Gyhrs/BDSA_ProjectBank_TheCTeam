@@ -215,7 +215,7 @@ public class ProjectRepositoryTests : IDisposable
     public async Task GetProjectsFromTagsAndName_Returns_Correct_Projects()
     {
         // Arrange
-        var tags = new List<string> {"UI"};
+        var tags = new List<string> { "UI" };
         var title = "Supercomputer";
 
         var expected = 3;
@@ -226,6 +226,32 @@ public class ProjectRepositoryTests : IDisposable
 
         // Assert
         Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public async Task CreateProject_Adds_Project_To_DB()
+    {
+        // Arrange
+        var inputProject = new ProjectCreateDTO()
+        {
+            CreatedBy = "Lars Larsen",
+            CreatedByEmail = "Lars@itu.dk",
+            Description = "A project made by Lars",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() {"nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk"},
+            SupervisorEmails = new List<string>() {"phcr@itu.dk", "palo@itu.dk"},
+            Tags = new List<string>() {"Blockchain", "AI"}
+        };
+        // Act
+        var actual = await _repository.CreateProject(inputProject);
+
+        var expected = _context.Projects.Where(p => p.CreatedBy.Name == "Lars Larsen" && p.Name == "Lars Project").FirstOrDefault();
+
+        // Assert
+        Assert.Equal(inputProject.CreatedBy, actual.CreatedBy);
+        Assert.Equal(inputProject.Name, actual.Name);
     }
 
     public void Dispose()

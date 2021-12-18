@@ -11,4 +11,7 @@ public interface IProjectRepository
     Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTagsAndName(List<string> tags, string title);
 
     Task<IReadOnlyCollection<ProjectDTO>> GetAllProjects();
+
+    Task<ProjectDTO> CreateProject(ProjectCreateDTO create);
+
 }
