@@ -142,4 +142,14 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
         }
         return Ok(projects);
     }
+
+    [AllowAnonymous]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(typeof(ProjectDTO), 201)]
+    [HttpPost]
+    public async Task<ActionResult<ProjectDTO>> CreateProject(ProjectCreateDTO project)
+    {
+        
+    }
 }
