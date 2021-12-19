@@ -210,9 +210,9 @@ public static class SeedExtensions
     {
         List<string> tagNames = new List<string>
         {
-            "AccessibleDesign", "Agile", "AI", "Algorithms", "Art", "Blazor", "Business", "C#",
+            "AccessibleDesign", "Agile", "AI", "Algorithms", "Art", "Blazor", "Business", "CSharp",
             "Computing", "Consulting", "CSS", "Cyber-security", "Design", "Development", "Digital",
-            "Discord", "Encryption", "F#", "GDPR", "Go", "Golang", "Hacking", "Hands-on", "Hashing",
+            "Discord", "Encryption", "FSharp", "GDPR", "Go", "Golang", "Hacking", "Hands-on", "Hashing",
             "HTML", "Innovation", "Integration", "Java", "Lean", "MachineLearning", "Microsoft",
             "NoSQL", "Online", "OS", "Partnership", "Profit", "Python", "SASS", "SCRUM", "Software",
             "SOLID", "SQL", "SqlLite", "Testdriven", "UI", "Usability", "UserFriendly", "UserInterface",
