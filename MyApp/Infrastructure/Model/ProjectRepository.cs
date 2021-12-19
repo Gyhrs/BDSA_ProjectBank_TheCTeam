@@ -60,8 +60,6 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTags(List<string> searchTags)
     {
-        var watch = System.Diagnostics.Stopwatch.StartNew();
-
         // Finds all tags that contain a searchTag. E.g. if you have searched for "UI" and "AI" we find [UI, AI]
         // which points to respective lists (UI -> [p1, p2, p3], etc.) 
         var tags = await _context.Tags.Where(t => searchTags.Any(ttag => ttag == t.Name)).Include(t => t.Projects).ToListAsync();
@@ -69,7 +67,7 @@ public class ProjectRepository : IProjectRepository
         var projects = new List<ProjectDTO>();
 
         // If any tags were found, do this. Otherwise return an empty list.
-        if (tags.Count > 0) 
+        if (tags.Count > 0)
         {
             // Add the first tag's list of projects to a list.
             List<Project> list = new List<Project>(tags.First().Projects.ToList());
@@ -91,15 +89,12 @@ public class ProjectRepository : IProjectRepository
                                 p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
                                 p.CreatedBy != null ? p.CreatedBy.Email : null,
                                 p.CreatedBy != null ? p.CreatedBy.Name : null,
-                                p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
+                                // FIXME: ProjectDTO gets only one tag, loosing some of its orignals.
+                                // Makes it weird in UI, but works when clicking on projectBox. I dont know why below doesnt work. (.Where). It seems to only return 1 tag
+                                //p.Tags != null ? _context.Projects.Where(w => w.Id == p.Id).First().Tags.Select(t => t.Name).ToList() : null
+                                p.Tags != null ? GetProjectFromID(p.Id).Result.Tags : null
                             )).ToList();
         }
-
-        watch.Stop();
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("---- GetProjectsFromTags (ProjectRepository) ended in: " + watch.ElapsedMilliseconds + " ms ----");
-        Console.ForegroundColor = ConsoleColor.White;
-
         return projects.AsReadOnly();
     }
 
@@ -133,4 +128,140 @@ public class ProjectRepository : IProjectRepository
 
         return tagProjects.Where(t => t.Name.ToLower().Contains(title.ToLower())).ToList().AsReadOnly();
     }
+    private async Task<List<Student>> GetStudentsFromList(List<string> userEmails)
+    {
+        List<Student> users = new List<Student>();
+        foreach (var item in userEmails)
+        {
+            var user = await _context.Users.OfType<Student>().Where(u => u.Email == item).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                users.Add(user);
+            }
+        }
+        return users;
+    }
+
+
+    public async Task<(Status, ProjectDTO)> CreateProject(ProjectCreateDTO create)
+    {
+        var conflict = await _context.Projects.Where
+        (
+            p => p.Description == create.Description &&
+            p.Name == create.Name &&
+            p.StartDate == create.StartDate &&
+            p.EndDate == create.EndDate
+            ).Select(p => new ProjectDTO(
+                            p.Id,
+                            p.Name,
+                            p.StartDate,
+                            p.EndDate,
+                            p.Description,
+                            p.Students != null ? p.Students.Select(s => s.Email).ToList() : null,
+                            p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
+                            p.CreatedBy != null ? p.CreatedBy.Email : null,
+                            p.CreatedBy != null ? p.CreatedBy.Name : null,
+                            p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
+                        )).FirstOrDefaultAsync();
+
+        if (conflict != null)
+        {
+            return (Status.Conflict, conflict);
+        }
+
+        var entity = new Project
+        {
+            Name = create.Name,
+            StartDate = create.StartDate,
+            EndDate = create.EndDate,
+            Description = create.Description,
+            Students = await GetStudentsFromList(create.StudentEmails),
+            Supervisors = await GetSupervisorsFromList(create.SupervisorsEmails),
+            CreatedBy = await GetUserFromEmail(create.CreatedByEmail),
+            Tags = await GetTagsFromStringList(create.Tags)
+        };
+
+        _context.Projects.Add(entity);
+        await _context.SaveChangesAsync();
+
+        return (Status.Created, new ProjectDTO(
+            entity.Id,
+            entity.Name,
+            entity.StartDate,
+            entity.EndDate,
+            entity.Description,
+            entity.Students.Select(s => s.Email).ToList(),
+            entity.Supervisors.Select(s => s.Email).ToList(),
+            entity.CreatedBy.Email,
+            entity.CreatedBy.Name,
+            entity.Tags.Select(t => t.Name).ToList()
+        ));
+    }
+
+    public async Task<Status> UpdateProject(int id, ProjectUpdateDTO project)
+    {
+        var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
+        if (entity == null)
+        {
+            return Status.NotFound;
+        }
+        entity.Name = project.Name;
+        entity.CreatedBy = await GetUserFromEmail(project.CreatedByEmail);
+        entity.Description = project.Description;
+        entity.StartDate = project.StartDate;
+        entity.EndDate = project.EndDate;
+        entity.Students = await GetStudentsFromList(project.StudentEmails);
+        entity.Supervisors = await GetSupervisorsFromList(project.SupervisorsEmails);
+        entity.Tags = await GetTagsFromStringList(project.Tags);
+
+        await _context.SaveChangesAsync();
+
+        return Status.Updated;
+    }
+    
+    public async Task<Status> DeleteProject(int projectId)
+    {
+        var entity = await _context.Projects.FindAsync(projectId);
+
+        if (entity == null)
+        {
+            return Status.NotFound;
+        }
+
+        _context.Projects.Remove(entity);
+        await _context.SaveChangesAsync();
+        return Status.Deleted;
+    }
+
+    private async Task<List<Supervisor>> GetSupervisorsFromList(List<string> userEmails)
+    {
+        List<Supervisor> users = new List<Supervisor>();
+        foreach (var item in userEmails)
+        {
+            var user = await _context.Users.OfType<Supervisor>().Where(u => u.Email == item).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                users.Add(user);
+            }
+        }
+        return users;
+    }
+    private async Task<StudyBankUser> GetUserFromEmail(string userEmail)
+    {
+        return await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync();
+    }
+    private async Task<List<Tag>> GetTagsFromStringList(List<string> tags)
+    {
+        List<Tag> list = new List<Tag>();
+        foreach (var tag in tags)
+        {
+            var ta = await _context.Tags.Where(t => t.Name == tag).FirstOrDefaultAsync();
+            if (ta != null)
+            {
+                list.Add(ta);
+            }
+        }
+        return list;
+    }
+
 }
