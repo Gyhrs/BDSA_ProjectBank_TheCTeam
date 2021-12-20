@@ -62,7 +62,12 @@ public class ProjectRepository : IProjectRepository
     {
         // Finds all tags that contain a searchTag. E.g. if you have searched for "UI" and "AI" we find [UI, AI]
         // which points to respective lists (UI -> [p1, p2, p3], etc.) 
-        var tags = await _context.Tags.Where(t => searchTags.Any(ttag => ttag == t.Name)).Include(t => t.Projects).ToListAsync();
+        var tags = await _context.Tags.Where(t => searchTags.Any(ttag => ttag == t.Name))
+        .Include(t => t.Projects)
+            .ThenInclude(p => p.CreatedBy)
+        .Include( t => t.Projects)
+            .ThenInclude(p => p.Tags)
+        .ToListAsync();
 
         var projects = new List<ProjectDTO>();
 
@@ -89,10 +94,7 @@ public class ProjectRepository : IProjectRepository
                                 p.Supervisors != null ? p.Supervisors.Select(s => s.Email).ToList() : null,
                                 p.CreatedBy != null ? p.CreatedBy.Email : null,
                                 p.CreatedBy != null ? p.CreatedBy.Name : null,
-                                // FIXME: ProjectDTO gets only one tag, loosing some of its orignals.
-                                // Makes it weird in UI, but works when clicking on projectBox. I dont know why below doesnt work. (.Where). It seems to only return 1 tag
-                                //p.Tags != null ? _context.Projects.Where(w => w.Id == p.Id).First().Tags.Select(t => t.Name).ToList() : null
-                                p.Tags != null ? GetProjectFromID(p.Id).Result.Tags : null
+                                p.Tags != null ? p.Tags.Select(t => t.Name).ToList() : null
                             )).ToList();
         }
         return projects.AsReadOnly();
