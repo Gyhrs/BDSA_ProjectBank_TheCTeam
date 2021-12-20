@@ -18,7 +18,7 @@ public class TagsControllerTests
         // Arrange
         var logger = new Mock<ILogger<TagsController>>();
         var repository = new Mock<ITagRepository>();
-        repository.Setup(m => m.GetAllTags()).ReturnsAsync(Array.Empty<TagDTO>());
+        repository.Setup(m => m.GetAllTagsAsync()).ReturnsAsync(Array.Empty<TagDTO>());
         var controller = new TagsController(logger.Object, repository.Object);
         // Act
         var actual = await controller.GetAll();

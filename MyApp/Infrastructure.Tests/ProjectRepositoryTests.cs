@@ -153,7 +153,7 @@ public class ProjectRepositoryTests : IDisposable
         var expected = 4;
 
         // Act
-        var list = await _repository.GetAllProjects();
+        var list = await _repository.GetAllProjectsAsync();
         var actual = list.Count;
 
         // Assert
@@ -170,7 +170,7 @@ public class ProjectRepositoryTests : IDisposable
         var expected = name;
 
         // Act
-        var project = await _repository.GetProjectFromID(id);
+        var project = await _repository.GetProjectFromIDAsync(id);
         var actual = project.Name;
 
         // Assert
@@ -182,7 +182,7 @@ public class ProjectRepositoryTests : IDisposable
     {
         // Arrange
         // Act
-        var actual = await _repository.GetProjectFromID(27);
+        var actual = await _repository.GetProjectFromIDAsync(27);
 
         // Assert
         Assert.Null(actual);
@@ -203,7 +203,7 @@ public class ProjectRepositoryTests : IDisposable
         var list = tags.Split("#");
 
         // Act
-        var actual = (await _repository.GetProjectsFromTags(list.ToList())).Count;
+        var actual = (await _repository.GetProjectsFromTagsAsync(list.ToList())).Count;
 
 
         // Assert
@@ -214,7 +214,7 @@ public class ProjectRepositoryTests : IDisposable
     public async Task GetProjectsFromTags_Returns_Empty_Given_Nonexisting_Tag()
     {
         // Act
-        var actual = await _repository.GetProjectsFromTags(new List<string> { "J#" });
+        var actual = await _repository.GetProjectsFromTagsAsync(new List<string> { "J#" });
 
         // Assert
         Assert.Empty(actual);
@@ -258,7 +258,7 @@ public class ProjectRepositoryTests : IDisposable
         var expected = 3;
 
         // Act
-        var projects = await _repository.GetProjectsFromTagsAndName(tags, title);
+        var projects = await _repository.GetProjectsFromTagsAndNameAsync(tags, title);
         var actual = projects.ElementAt(0).Id;
 
         // Assert
@@ -282,7 +282,7 @@ public class ProjectRepositoryTests : IDisposable
         };
 
         // Act
-        var (actualStatus, actualMethod) = await _repository.CreateProject(inputProject);
+        var (actualStatus, actualMethod) = await _repository.CreateProjectAsync(inputProject);
 
         var actualDB = _context.Projects.Where(p => p.CreatedBy.Name == "Anton" && p.Name == "Lars Project").FirstOrDefault();
 
@@ -315,7 +315,7 @@ public class ProjectRepositoryTests : IDisposable
         };
 
         // Act
-        var (actualStatus, actualMethod) = await _repository.CreateProject(inputProject);
+        var (actualStatus, actualMethod) = await _repository.CreateProjectAsync(inputProject);
 
         var actualDB = _context.Projects.Where(p => p.CreatedBy.Name == "Anton" && p.Name == "Lars Project").FirstOrDefault();
 
@@ -348,7 +348,7 @@ public class ProjectRepositoryTests : IDisposable
             Tags = new List<string>() { "Business", "UI" }
         };
         // Act
-        var expected = await _repository.UpdateProject(1, updateProject);
+        var expected = await _repository.UpdateProjectAsync(1, updateProject);
         var actual = _context.Projects.Where(p => p.Id == 1).FirstOrDefault();
 
         // Assert
@@ -365,7 +365,7 @@ public class ProjectRepositoryTests : IDisposable
     [Fact]
     public async Task DeleteProject_Given_Nonexisting_Id_Returns_NotFound()
     {
-        var response = await _repository.DeleteProject(42);
+        var response = await _repository.DeleteProjectAsync(42);
 
         Assert.Equal(Status.NotFound, response);
     }
@@ -373,7 +373,7 @@ public class ProjectRepositoryTests : IDisposable
     [Fact]
     public async Task DeleteAsync_deletes_and_returns_Deleted()
     {
-        var response = await _repository.DeleteProject(2);
+        var response = await _repository.DeleteProjectAsync(2);
 
         var entity = await _context.Projects.FindAsync(2);
 

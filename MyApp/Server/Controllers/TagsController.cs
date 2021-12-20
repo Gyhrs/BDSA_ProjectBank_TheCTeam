@@ -25,7 +25,7 @@ public class TagsController : ControllerBase
     [HttpGet] 
     public async Task<ActionResult<IReadOnlyCollection<TagDTO>>> GetAll()
     {
-        var tags = await _repository.GetAllTags();
+        var tags = await _repository.GetAllTagsAsync();
         return Ok(tags); 
     }
 }
