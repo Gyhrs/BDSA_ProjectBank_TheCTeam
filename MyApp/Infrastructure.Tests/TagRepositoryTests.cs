@@ -116,7 +116,7 @@ public class TagRepositoryTests : IDisposable
         var expectedTags = new List<string> { "UI", "Business", "Consulting"};
 
         // Act
-        var actualTags = await _repository.GetAllTags();
+        var actualTags = await _repository.GetAllTagsAsync();
         var actualCount = actualTags.Count;
 
         //Assert

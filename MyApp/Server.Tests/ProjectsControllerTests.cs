@@ -19,7 +19,7 @@ public class ProjectsControllerTests
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
-        repository.Setup(m => m.GetAllProjects()).ReturnsAsync(Array.Empty<ProjectDTO>());
+        repository.Setup(m => m.GetAllProjectsAsync()).ReturnsAsync(Array.Empty<ProjectDTO>());
         var controller = new ProjectsController(logger.Object, repository.Object);
 
 
@@ -37,7 +37,7 @@ public class ProjectsControllerTests
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
-        repository.Setup(m => m.GetProjectFromID(101)).ReturnsAsync(default(ProjectDTO)); // "For a reference-type it returns null"
+        repository.Setup(m => m.GetProjectFromIDAsync(101)).ReturnsAsync(default(ProjectDTO)); // "For a reference-type it returns null"
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -54,7 +54,7 @@ public class ProjectsControllerTests
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
-        repository.Setup(m => m.GetProjectFromID(-1)).ReturnsAsync(default(ProjectDTO)); // "For a reference-type it returns null"
+        repository.Setup(m => m.GetProjectFromIDAsync(-1)).ReturnsAsync(default(ProjectDTO)); // "For a reference-type it returns null"
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -85,7 +85,7 @@ public class ProjectsControllerTests
             "Lars",
             new List<string> { "Business", "Blockchain"}
         );
-        repository.Setup(m => m.GetProjectFromID(1)).ReturnsAsync(project);
+        repository.Setup(m => m.GetProjectFromIDAsync(1)).ReturnsAsync(project);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -199,7 +199,7 @@ public class ProjectsControllerTests
 
             )
         };
-        repository.Setup(m => m.GetProjectsFromTags(new List<string> { "Business", "Blockchain"} )).ReturnsAsync(projects);
+        repository.Setup(m => m.GetProjectsFromTagsAsync(new List<string> { "Business", "Blockchain"} )).ReturnsAsync(projects);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -217,7 +217,7 @@ public class ProjectsControllerTests
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
 
-        repository.Setup(m => m.GetProjectsFromTags(new List<string> { "" } )).ReturnsAsync(Array.Empty<ProjectDTO>);
+        repository.Setup(m => m.GetProjectsFromTagsAsync(new List<string> { "" } )).ReturnsAsync(Array.Empty<ProjectDTO>);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -235,7 +235,7 @@ public class ProjectsControllerTests
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
 
-        repository.Setup(m => m.GetProjectsFromTags(new List<string> { "Testing" })).ReturnsAsync(Array.Empty<ProjectDTO>);
+        repository.Setup(m => m.GetProjectsFromTagsAsync(new List<string> { "Testing" })).ReturnsAsync(Array.Empty<ProjectDTO>);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -278,7 +278,7 @@ public class ProjectsControllerTests
             new List<string>() {"UI", "Business"}
         );
 
-        repository.Setup(m => m.CreateProject(inputProject)).ReturnsAsync((Status.Created, outputProject));
+        repository.Setup(m => m.CreateProjectAsync(inputProject)).ReturnsAsync((Status.Created, outputProject));
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -321,7 +321,7 @@ public class ProjectsControllerTests
             new List<string>() {"UI", "Business"}
         );
 
-        repository.Setup(m => m.CreateProject(inputProject)).ReturnsAsync((Status.Created, outputProject));
+        repository.Setup(m => m.CreateProjectAsync(inputProject)).ReturnsAsync((Status.Created, outputProject));
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -350,7 +350,7 @@ public class ProjectsControllerTests
             Tags = new List<string>() {"UI", "Business"}
         };
 
-        repository.Setup(m => m.UpdateProject(20, inputProject)).ReturnsAsync(Status.BadRequest);
+        repository.Setup(m => m.UpdateProjectAsync(20, inputProject)).ReturnsAsync(Status.BadRequest);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         //Act
@@ -379,7 +379,7 @@ public class ProjectsControllerTests
             Tags = new List<string>() {"UI", "Business"}
         };
 
-        repository.Setup(m => m.UpdateProject(42, inputProject)).ReturnsAsync(Status.NotFound);
+        repository.Setup(m => m.UpdateProjectAsync(42, inputProject)).ReturnsAsync(Status.NotFound);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -408,7 +408,7 @@ public class ProjectsControllerTests
             Tags = new List<string>() {"UI", "Business"}
         };
 
-        repository.Setup(m => m.UpdateProject(42, inputProject)).ReturnsAsync(Status.Updated);
+        repository.Setup(m => m.UpdateProjectAsync(42, inputProject)).ReturnsAsync(Status.Updated);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -425,7 +425,7 @@ public class ProjectsControllerTests
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
 
-        repository.Setup(m => m.DeleteProject(42)).ReturnsAsync(Status.NotFound);
+        repository.Setup(m => m.DeleteProjectAsync(42)).ReturnsAsync(Status.NotFound);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
@@ -442,7 +442,7 @@ public class ProjectsControllerTests
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
 
-        repository.Setup(m => m.DeleteProject(42)).ReturnsAsync(Status.Deleted);
+        repository.Setup(m => m.DeleteProjectAsync(42)).ReturnsAsync(Status.Deleted);
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act

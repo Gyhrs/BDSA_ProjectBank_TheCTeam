@@ -34,7 +34,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     // necessary to use ActionResult<T>. 
     public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetAll()
     {
-        var projects = await _repository.GetAllProjects();
+        var projects = await _repository.GetAllProjectsAsync();
         return Ok(projects);
     }
 
@@ -51,7 +51,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
             return BadRequest("ids can't be negative");
         }
 
-        var project = await _repository.GetProjectFromID(id);
+        var project = await _repository.GetProjectFromIDAsync(id);
 
         if (project == null)
         {
@@ -96,7 +96,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
             return BadRequest("No tags provided");
         }
 
-        var projects = await _repository.GetProjectsFromTags(tagList.ToList());
+        var projects = await _repository.GetProjectsFromTagsAsync(tagList.ToList());
 
         if (projects.Count == 0)
         {
@@ -120,7 +120,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
             return BadRequest("No tags / title provided");
         }
 
-        var projects = await _repository.GetProjectsFromTagsAndName(tagList.ToList(), name);
+        var projects = await _repository.GetProjectsFromTagsAndNameAsync(tagList.ToList(), name);
 
         if (projects.Count == 0)
         {
@@ -144,7 +144,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
             return BadRequest("Not correct input");
         }
 
-        var (statuscode, created) = await _repository.CreateProject(inputProject);
+        var (statuscode, created) = await _repository.CreateProjectAsync(inputProject);
 
         switch (statuscode)
         {
@@ -172,7 +172,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
             return BadRequest("Not correct input");
         }
 
-        var status = await _repository.UpdateProject(inputProject.Id, inputProject);
+        var status = await _repository.UpdateProjectAsync(inputProject.Id, inputProject);
 
         switch (status)
         {
@@ -191,7 +191,7 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     [HttpDelete("id/{id}")]
     public async Task<ActionResult<ProjectDTO>> Delete(int id)
     {
-        var status = await _repository.DeleteProject(id);
+        var status = await _repository.DeleteProjectAsync(id);
 
         if (status == Status.NotFound)
         {

@@ -12,7 +12,7 @@ public class TagRepository : ITagRepository
     {
         _context = context;
     }
-    public async Task<IReadOnlyCollection<TagDTO>> GetAllTags()
+    public async Task<IReadOnlyCollection<TagDTO>> GetAllTagsAsync()
     {
         var tags = await (
             from p in _context.Tags
