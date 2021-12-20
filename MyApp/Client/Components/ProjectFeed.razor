@@ -10,14 +10,14 @@
     {
         @if (_projects.Length == 0)
         {
-            <p>No projects found</p>
+            <p>No projects were found</p>
         }
         else
         {
             @foreach (var item in _projects)
             {
                 <ProjectBox id="@item.Id" name="@item.Name" description="@item.Description" tags="@item.Tags"
-        CreatedBy="@item.CreatedByEmail"></ProjectBox>
+                CreatedBy="@item.CreatedByEmail"></ProjectBox>
             }
         }
     }
@@ -59,10 +59,13 @@
             {
                 _projects = await Http.GetFromJsonAsync<ProjectDTO[]>("api/Projects/tags/" + tag);
             }
+            catch (AccessTokenNotAvailableException exception)
+            {
+                exception.Redirect();
+            }
             catch (Exception exception)
             {
-                Console.WriteLine("I am here :))))s");
-                //exception.Redirect();
+                _projects = Array.Empty<ProjectDTO>();
             }
         }
     }
@@ -77,6 +80,10 @@
         {
             exception.Redirect();
         }
+        catch (Exception exception)
+        {
+            _projects = Array.Empty<ProjectDTO>();
+        }
     }
 
     public async Task setProjectsFromTagsAndString(string searchString)
@@ -89,12 +96,20 @@
         {
             exception.Redirect();
         }
+        catch (Exception exception)
+        {
+            _projects = Array.Empty<ProjectDTO>();
+        }
+    }
+
+    public void ClearAllProjects()
+    {
+        _projects = null;
+        Refresh();
     }
 
     public void Refresh()
     {
         this.StateHasChanged();
     }
-
-
 }

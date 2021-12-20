@@ -12,7 +12,6 @@ public class TagRepository : ITagRepository
     {
         _context = context;
     }
-
     public async Task<IReadOnlyCollection<TagDTO>> GetAllTags()
     {
         var tags = await (

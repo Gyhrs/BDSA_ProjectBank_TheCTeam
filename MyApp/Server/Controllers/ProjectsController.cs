@@ -1,6 +1,8 @@
+using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using MyApp.Infrastructure;
 using MyApp.Shared;
 
 namespace MyApp.Server.Controllers;
@@ -28,23 +30,12 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     [HttpGet] // Lets the web API know this is a get method. I.e we want to use the HTTP request method "get"
     // ActionResults represent various HTTP status codes. 
     // ControllerBase has "convenience methods" like Ok(), BadRequest(), etc. which is a shorthand for return new BadRequestResult();
-
-
     // C# doesn't support implicit cast operators on interfaces. Consequently, conversion of the interface to a concrete type is
     // necessary to use ActionResult<T>. 
     public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetAll()
     {
         var projects = await _repository.GetAllProjects();
-        return Ok(projects); // Before ASP.NET Core 2.1, the return product; line had to be return Ok(product). 
-                             // Documentation claims ActionResult<> cannot contain an interace like here, so this might not work
-
-        /*
-        if (!_repository.TryGetProduct(id, out var product))
-        {
-            return NotFound();
-        }
-        return Ok(product);
-        */
+        return Ok(projects);
     }
 
     // Get project from projectID from DB
@@ -99,8 +90,6 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
     [HttpGet("tags/{tags}")]
     public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetFromTags(string tags)
     {
-        var watch = System.Diagnostics.Stopwatch.StartNew();
-
         string[] tagList = tags.Split("_");
         if (tagList.Length == 0 || (tagList.Length == 1 && tagList.ElementAt(0) == ""))
         {
@@ -111,13 +100,9 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
 
         if (projects.Count == 0)
         {
-            //FIXME: Apparently returning not found, results in exception in ProjectFeed.razor :(
-            //return NotFound("No Project with specified tags");
+            return NotFound("No Project with specified tags");
         }
-        watch.Stop();
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("---- GetFromTags (ProjectsController) ended in: " + watch.ElapsedMilliseconds + " ms ----");
-        Console.ForegroundColor = ConsoleColor.White;
+
         return Ok(projects);
     }
 
@@ -142,5 +127,79 @@ public class ProjectsController : ControllerBase // Inherits from ControllerBase
             return NotFound("No Project with specified tags");
         }
         return Ok(projects);
+    }
+
+    [Authorize]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(409)]
+    [ProducesResponseType(typeof(ProjectDTO), 201)]
+    [HttpPost]
+    public async Task<ActionResult<ProjectDTO>> CreateProject(ProjectCreateDTO inputProject)
+    {
+        if (inputProject.Name.Length == 0
+        || inputProject.StartDate == null
+        || inputProject.EndDate == null
+        || inputProject.Description.Length == 0)
+        {
+            return BadRequest("Not correct input");
+        }
+
+        var (statuscode, created) = await _repository.CreateProject(inputProject);
+
+        switch (statuscode)
+        {
+            case Status.Conflict:
+                return Conflict(created);
+            case Status.Created:
+                return Created(new Uri("/api/Projects", UriKind.Relative), created);
+            default:
+                return BadRequest();
+        }
+    }
+
+    [Authorize]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(409)]
+    [ProducesResponseType(200)]
+    [HttpPut("id/{id}")]
+    public async Task<ActionResult<ProjectDTO>> UpdateProject(int id, [FromBody] ProjectUpdateDTO inputProject)
+    {
+        if (inputProject.Name.Length == 0
+        || inputProject.StartDate == null
+        || inputProject.EndDate == null
+        || inputProject.Description.Length == 0)
+        {
+            return BadRequest("Not correct input");
+        }
+
+        var status = await _repository.UpdateProject(inputProject.Id, inputProject);
+
+        switch (status)
+        {
+            case Status.NotFound:
+                return NotFound("Project not found");
+            case Status.Updated:
+                return Ok();
+            default:
+                return BadRequest();
+        }
+    }
+
+    [Authorize]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(200)]
+    [HttpDelete("id/{id}")]
+    public async Task<ActionResult<ProjectDTO>> Delete(int id)
+    {
+        var status = await _repository.DeleteProject(id);
+
+        if (status == Status.NotFound)
+        {
+            return NotFound("The project wasnt found");
+        }
+        else
+        {
+            return Ok();
+        }
     }
 }

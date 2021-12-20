@@ -73,7 +73,7 @@
     </div>
 
 </div>
-<div class="">
+<div>
     <ProjectFeed @ref="_projectFeed"></ProjectFeed>
 </div>
 
@@ -86,7 +86,6 @@
     private String? _lastSearchName;
     private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
 
-
     private string ReturnColor(string tag)
     {
         if (activeTags[tag]) { return "lightblue"; }
@@ -96,10 +95,7 @@
 
     private async Task onTagButtonClicked(string tag)
     {
-        System.Console.WriteLine("Tag has been pressed: " + tag);
-
         activeTags[tag] = !activeTags[tag];
-
 
         SearchAsync();
         _projectFeed.Refresh();
@@ -107,6 +103,8 @@
 
     private async Task onClearAllButtonClicked()
     {
+        _projectFeed.ClearAllProjects();
+        
         foreach (var t in _tags)
         {
             activeTags[t.Name] = false;
@@ -114,6 +112,7 @@
 
         _desktopSearchBar._searchString = "";
         _mobileSearchBar._searchString = "";
+
 
         await _projectFeed.GetAllProjects();
         _projectFeed.Refresh();
@@ -138,6 +137,10 @@
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
+        }
+        catch (Exception exc) 
+        {
+            _projectFeed.ClearAllProjects();
         }
     }
 
@@ -167,6 +170,7 @@
         var searchName = getLastChangedSearchName();
         var activeTags = GetSearchTags();
 
+
         if (searchName.Length == 0)
         {
             // SearchName is empty but tags isnt - search only on tags
@@ -176,6 +180,7 @@
             }
             else
             {
+                _projectFeed.ClearAllProjects();
                 await _projectFeed.GetAllProjects();
             }
         }

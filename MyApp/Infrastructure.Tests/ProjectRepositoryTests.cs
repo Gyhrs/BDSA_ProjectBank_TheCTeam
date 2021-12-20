@@ -36,6 +36,39 @@ public class ProjectRepositoryTests : IDisposable
             Name = "Lasse"
         };
 
+        Student s1 = new Student
+        {
+            Email = "nibu@itu.dk",
+            Name = "Nikoline Burman",
+            Program = "SWU",
+        };
+
+        Student s2 = new Student
+        {
+            Email = "lakl@itu.dk",
+            Name = "Lasse Klausen",
+            Program = "SWU",
+        };
+
+        Student s3 = new Student
+        {
+            Email = "tugy@itu.dk",
+            Name = "Tue Gyhrs",
+            Program = "SWU",
+        };
+
+        Supervisor s4 = new Supervisor
+        {
+            Email = "phcr@itu.dk",
+            Name = "Philip Cronval"
+        };
+
+        Supervisor s5 = new Supervisor
+        {
+            Email = "palo@itu.dk",
+            Name = "Paolo"
+        };
+
         Tag t1 = new Tag
         {
             Name = "UI",
@@ -100,6 +133,10 @@ public class ProjectRepositoryTests : IDisposable
 
         context.Projects.AddRange(
             p1, p2, p3, p4
+        );
+
+        context.Users.AddRange(
+            s1, s2, s3, s4, s5
         );
 
         context.SaveChanges();
@@ -215,7 +252,7 @@ public class ProjectRepositoryTests : IDisposable
     public async Task GetProjectsFromTagsAndName_Returns_Correct_Projects()
     {
         // Arrange
-        var tags = new List<string> {"UI"};
+        var tags = new List<string> { "UI" };
         var title = "Supercomputer";
 
         var expected = 3;
@@ -226,6 +263,122 @@ public class ProjectRepositoryTests : IDisposable
 
         // Assert
         Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public async Task CreateProject_Adds_Project_To_DB()
+    {
+        // Arrange
+        var inputProject = new ProjectCreateDTO()
+        {
+            CreatedByEmail = "AntonBertelsen@hotmail.com",
+            Description = "A project made by Lars",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() { "nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk" },
+            SupervisorsEmails = new List<string>() { "phcr@itu.dk", "palo@itu.dk" },
+            Tags = new List<string>() { "UI", "Business" }
+        };
+
+        // Act
+        var (actualStatus, actualMethod) = await _repository.CreateProject(inputProject);
+
+        var actualDB = _context.Projects.Where(p => p.CreatedBy.Name == "Anton" && p.Name == "Lars Project").FirstOrDefault();
+
+        // Assert
+        Assert.Equal(inputProject.CreatedByEmail, actualDB.CreatedBy.Email);
+        Assert.Equal(inputProject.Name, actualDB.Name);
+        Assert.Equal(inputProject.Description, actualDB.Description);
+        Assert.Equal(inputProject.EndDate, actualDB.EndDate);
+        Assert.Equal(inputProject.StartDate, actualDB.StartDate);
+        Assert.Equal(inputProject.StudentEmails, actualDB.Students.Select(s => s.Email).ToList());
+        Assert.Equal(inputProject.SupervisorsEmails, actualDB.Supervisors.Select(s => s.Email).ToList());
+        Assert.Equal(inputProject.Tags, actualDB.Tags.Select(s => s.Name).ToList());
+        Assert.Equal(5, actualDB.Id);
+    }
+
+    [Fact]
+    public async Task CreateProject_Adds_Project_To_DB_Returns_Correct_DTO()
+    {
+        // Arrange
+        var inputProject = new ProjectCreateDTO()
+        {
+            CreatedByEmail = "AntonBertelsen@hotmail.com",
+            Description = "A project made by Lars",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() { "nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk" },
+            SupervisorsEmails = new List<string>() { "phcr@itu.dk", "palo@itu.dk" },
+            Tags = new List<string>() { "Business", "UI" }
+        };
+
+        // Act
+        var (actualStatus, actualMethod) = await _repository.CreateProject(inputProject);
+
+        var actualDB = _context.Projects.Where(p => p.CreatedBy.Name == "Anton" && p.Name == "Lars Project").FirstOrDefault();
+
+        // Assert
+        Assert.Equal(inputProject.CreatedByEmail, actualMethod.CreatedByEmail);
+        Assert.Equal(inputProject.Name, actualMethod.Name);
+        Assert.Equal(inputProject.Description, actualMethod.Description);
+        Assert.Equal(inputProject.EndDate, actualMethod.EndDate);
+        Assert.Equal(inputProject.StartDate, actualMethod.StartDate);
+        Assert.Equal(inputProject.StudentEmails, actualMethod.StudentEmails);
+        Assert.Equal(inputProject.SupervisorsEmails, actualMethod.SupervisorsEmails);
+        Assert.Equal(inputProject.Tags, actualMethod.Tags);
+        Assert.Equal(5, actualMethod.Id);
+        Assert.Equal(Status.Created, actualStatus);
+    }
+    [Fact]
+    public async Task UpdateProject_Updates_All_Values_In_Correct_Project()
+    {
+        // Arrange
+        var updateProject = new ProjectUpdateDTO()
+        {
+            Id = 1,
+            CreatedByEmail = "AntonBertelsen@hotmail.com",
+            Description = "A project made by Lars",
+            EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            StartDate = DateTime.ParseExact("23/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
+            Name = "Lars Project",
+            StudentEmails = new List<string>() { "nibu@itu.dk", "lakl@itu.dk", "tugy@itu.dk" },
+            SupervisorsEmails = new List<string>() { "phcr@itu.dk", "palo@itu.dk" },
+            Tags = new List<string>() { "Business", "UI" }
+        };
+        // Act
+        var expected = await _repository.UpdateProject(1, updateProject);
+        var actual = _context.Projects.Where(p => p.Id == 1).FirstOrDefault();
+
+        // Assert
+        Assert.Equal(updateProject.Name, actual.Name);
+        Assert.Equal(updateProject.CreatedByEmail, actual.CreatedBy.Email);
+        Assert.Equal(updateProject.Description, actual.Description);
+        Assert.Equal(updateProject.StartDate, actual.StartDate);
+        Assert.Equal(updateProject.EndDate, actual.EndDate);
+        Assert.Equal(updateProject.StudentEmails, actual.Students.Select(s => s.Email).ToList());
+        Assert.Equal(updateProject.SupervisorsEmails, actual.Supervisors.Select(s => s.Email).ToList());
+        Assert.Equal(updateProject.Tags, actual.Tags.Select(t => t.Name).ToList());
+    }
+
+    [Fact]
+    public async Task DeleteProject_Given_Nonexisting_Id_Returns_NotFound()
+    {
+        var response = await _repository.DeleteProject(42);
+
+        Assert.Equal(Status.NotFound, response);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_deletes_and_returns_Deleted()
+    {
+        var response = await _repository.DeleteProject(2);
+
+        var entity = await _context.Projects.FindAsync(2);
+
+        Assert.Equal(Status.Deleted, response);
+        Assert.Null(entity);
     }
 
     public void Dispose()
