@@ -121,6 +121,10 @@
         {
             exception.Redirect();
         }
+        catch (Exception exc) 
+        {
+            _projectFeed.ClearAllProjects();
+        }
     }
 
     public async void SearchAsync()
