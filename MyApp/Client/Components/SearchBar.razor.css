@@ -2,6 +2,10 @@ input {
   outline: none;
 }
 
+#search-bar {
+  flex-grow: 4;
+}
+
 #search-bnt {
   padding-left: 1px;
   padding-right: 0;
@@ -10,5 +14,7 @@ input {
 }
 
 #search-bar-field {
-  width: 333px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: right;
 }
