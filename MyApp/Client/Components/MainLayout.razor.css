@@ -9,17 +9,18 @@ main {
 }
 
 .top-row {
+  height: 90px;
+  padding-left: 50px;
+  padding-right: 39px;
+
   color: #f3f3f3;
   background-color: #43b4f3;
   box-shadow: -1px 1px 5px 0.5px rgba(0, 0, 0, 0.2);
 
-  height: 190px;
-
   justify-content: space-between;
-  height: 4.2rem;
   display: flex;
   align-items: center;
-} 
+}
 
 .top-row ::deep a,
 .top-row ::deep .btn-link {
@@ -30,4 +31,11 @@ main {
 .top-row ::deep a:hover,
 .top-row ::deep .btn-link:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 650px) {
+  .top-row {
+    padding-left: 20px;
+    padding-right: 6px;
+  }
 }

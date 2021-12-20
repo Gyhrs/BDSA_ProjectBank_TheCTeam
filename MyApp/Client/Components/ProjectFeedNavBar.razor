@@ -1,5 +1,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.JSInterop
+@using System.Threading.Tasks
 @using MyApp.Shared
 @attribute [Authorize]
 @inject HttpClient Http
@@ -7,21 +9,30 @@
 
 <div class="tag-row">
     <div class="colum-container">
-        <h6>Settings:</h6>
-        <hr class="line" />
-        <button class="button-like" @onclick="() => onClearAllButtonClicked()">Clear</button>
+        <!-- this NOT in mobile-friendly layout -->
+        <div class="desktop-only">
+            <h6>Settings:</h6>
+            <hr class="line" />
+            <button class="button-like" @onclick="() => onClearAllButtonClicked()">Clear</button>
+        </div>
+
+        <!-- this IS ONLY in mobile-friendly layout -->
+        <div class="cross-screen" id="upper-mobile-nav-bar">
+            <button class="button-like" @onclick="() => onClearAllButtonClicked()">Clear</button>
+            <SearchBar @ref="_mobileSearchBar" parentSearch="SearchAsync"></SearchBar>
+        </div>
     </div>
 
-    <div class="colum-container">
-        <h6 id="invisible">Hej ehj</h6>
-        <hr class="invisible-line" id="invisible" />
+    <!-- this NOT in mobile-friendly layout -->
+    <div class="desktop-only colum-container" id="scroll-bnt-div">
+        <div style="height: 28px;"></div>
         <button class="button-like" id="round-bnt" onclick="document.getElementById('tagbar').scrollLeft -= 40"> ⮜
         </button>
     </div>
 
     <div class="colum-container">
-        <h6>Tags:</h6>
-        <hr class="line" style="background-color: #47abb9; width: 100%" />
+        <h6 class="desktop-only">Tags:</h6>
+        <hr class="desktop-only line" style="background-color: #47abb9; width: 100%" />
         <div class="scrollable" id="tagbar">
             @if (_tags != null)
             {
@@ -45,18 +56,20 @@
         </div>
     </div>
 
-    <div class="colum-container">
-        <h6 id="invisible">filling</h6>
-        <hr class="invisible-line" id="invisible" />
-        <button class="button-like" id="round-bnt" onclick="document.getElementById('tagbar').scrollLeft += 40" active>
+    <!-- this NOT in mobile-friendly layout -->
+    <div class="desktop-only colum-container" id="scroll-bnt-div">
+        <div style="height: 28px;"></div>
+        <button class="button-like" id="round-bnt" onclick="document.getElementById('tagbar').scrollLeft += 40">
             ⮞
         </button>
     </div>
 
-    <div class="colum-container">
-        <h6 id="invisible">filling</h6>
-        <hr class="invisible-line" id="invisible" />
-        <SearchBar @ref="_searchBar" parentSearch="SearchAsync"></SearchBar>
+    <!-- This NOT in mobile-friendly layout -->
+    <div style="" class="desktop-only colum-container">
+        <!--  -->
+        <h6>Search:</h6>
+        <hr class="line" />
+        <SearchBar @ref="_desktopSearchBar" parentSearch="SearchAsync"></SearchBar>
     </div>
 
 </div>
@@ -68,19 +81,19 @@
     public int scrollvalue { get; set; } = 0;
     private TagDTO[]? _tags;
     private ProjectFeed _projectFeed;
-    private SearchBar _searchBar;
+    private SearchBar _desktopSearchBar;
+    private SearchBar _mobileSearchBar;
+    private String? _lastSearchName;
     private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
-
-    private String test;
 
 
     private string ReturnColor(string tag)
     {
-        if (activeTags[tag]) { return "lightblue"; } 
-        
+        if (activeTags[tag]) { return "lightblue"; }
+
         return "none";
     }
-      
+
     private async Task onTagButtonClicked(string tag)
     {
         System.Console.WriteLine("Tag has been pressed: " + tag);
@@ -99,9 +112,8 @@
             activeTags[t.Name] = false;
         }
 
-        _searchBar._searchString = "";
-
-        
+        _desktopSearchBar._searchString = "";
+        _mobileSearchBar._searchString = "";
 
         await _projectFeed.GetAllProjects();
         _projectFeed.Refresh();
@@ -110,8 +122,6 @@
     public string GetSearchTags()
     {
         return string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());
-
-
     }
 
     protected override async Task OnInitializedAsync()
@@ -131,9 +141,30 @@
         }
     }
 
+    private String? getLastChangedSearchName()
+    {
+        var SearchName = _lastSearchName;
+
+        if (_lastSearchName != _desktopSearchBar._searchString)
+        {
+            SearchName = _desktopSearchBar._searchString;
+
+            _mobileSearchBar._searchString = _desktopSearchBar._searchString;
+        }
+        else if (_lastSearchName != _mobileSearchBar._searchString)
+        {
+            SearchName = _mobileSearchBar._searchString;
+            _desktopSearchBar._searchString = _mobileSearchBar._searchString;
+        }
+
+        _lastSearchName = SearchName;
+
+        return SearchName;
+    }
+
     public async void SearchAsync()
     {
-        var searchName = _searchBar._searchString;
+        var searchName = getLastChangedSearchName();
         var activeTags = GetSearchTags();
 
         if (searchName.Length == 0)
