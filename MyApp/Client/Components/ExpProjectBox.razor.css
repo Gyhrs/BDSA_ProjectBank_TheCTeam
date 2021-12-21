@@ -18,7 +18,7 @@
 
 .MainBox {
   max-width: 800px;
-  margin-bottom: 25px;
+  margin-bottom: 0px;
 }
 
 .inviscontainer {
@@ -64,6 +64,10 @@
     padding-right: 0px;
   }
 
+  .MainBox {
+    margin-bottom: 25px;
+  }
+
   .expandedlayout {
     display: flex;
     flex-flow: column;
@@ -91,6 +95,10 @@
   .expandedlayout {
     margin-left: 15px;
     margin-right: 15px;
+  }
+
+  .MainBox {
+    margin-bottom: 25px;
   }
 
   .inviscontainer {
