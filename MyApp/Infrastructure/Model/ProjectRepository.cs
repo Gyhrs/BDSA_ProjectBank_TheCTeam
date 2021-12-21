@@ -1,9 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using MyApp.Shared;
-using System.Linq;
-
-namespace MyApp.Infrastructure;
-
+namespace MyApp.Infrastructure.Model;
 public class ProjectRepository : IProjectRepository
 {
     private readonly IStudyBankContext _context;

@@ -1,4 +1,4 @@
-namespace MyApp.Shared;
+namespace MyApp.Infrastructure.Model;
 
 public interface ITagRepository
 {

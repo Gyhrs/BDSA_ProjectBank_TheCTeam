@@ -1,13 +1,4 @@
-using System;
-using Microsoft.EntityFrameworkCore;
-using MyApp.Infrastructure;
-using MyApp.Shared;
-using Xunit;
-using Microsoft.Data.Sqlite;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 public class ProjectRepositoryTests : IDisposable
 {

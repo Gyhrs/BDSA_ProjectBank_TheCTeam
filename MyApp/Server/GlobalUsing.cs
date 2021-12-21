@@ -1,0 +1,11 @@
+global using MyApp.Infrastructure.Core;
+global using MyApp.Infrastructure.Model;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Identity.Web;
+global using Microsoft.OpenApi.Models;
+global using MyApp.Shared;
+global using MyApp.Server;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Identity.Web.Resource;

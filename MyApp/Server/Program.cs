@@ -1,15 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Models;
-
-using MyApp.Infrastructure;
-using MyApp.Shared;
-using MyApp.Server;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

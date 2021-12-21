@@ -1,10 +1,3 @@
-using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using MyApp.Infrastructure;
-using MyApp.Shared;
-
 namespace MyApp.Server.Controllers;
 
 [Authorize]

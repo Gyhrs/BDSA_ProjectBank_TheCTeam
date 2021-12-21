@@ -1,6 +1,4 @@
-using MyApp.Shared;
-
-namespace MyApp.Infrastructure;
+namespace MyApp.Infrastructure.Model;
 public interface IProjectRepository
 {
     Task<ProjectDTO> GetProjectFromIDAsync(int projectId);

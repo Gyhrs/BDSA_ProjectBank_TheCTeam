@@ -16,5 +16,6 @@ global using System.Security.Claims;
 global using System.Text.Encodings.Web;
 global using Xunit;
 
-global using MyApp.Infrastructure;
+global using MyApp.Infrastructure.Core;
+global using MyApp.Infrastructure.Model;
 global using MyApp.Shared;

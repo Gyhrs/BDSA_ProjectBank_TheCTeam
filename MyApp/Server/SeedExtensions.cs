@@ -1,9 +1,3 @@
-using System.Collections;
-using Microsoft.EntityFrameworkCore;
-using MyApp.Infrastructure;
-using System;
-using System.Collections.Generic;
-
 namespace MyApp.Server;
 
 public static class SeedExtensions

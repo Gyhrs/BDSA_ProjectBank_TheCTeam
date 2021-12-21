@@ -1,16 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Moq;
-using MyApp.Server.Controllers;
-using MyApp.Shared;
-using Xunit;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Globalization;
-using System.Collections.Generic;
-using MyApp.Infrastructure;
-
 public class ProjectsControllerTests
 {
     [Fact]
