@@ -54,10 +54,9 @@
 </div>
 
 @code {
-
     [Parameter] public ProjectDTO project { get; set; }
-    [Parameter] public List<StudentDTO>? Students { get; set; }
-    [Parameter] public List<SupervisorDTO>? Supervisors { get; set;}
+    private List<StudentDTO>? Students { get; set; }
+    private List<SupervisorDTO>? Supervisors { get; set;}
 
     protected override async Task OnInitializedAsync() {
         Students = await Http.GetFromJsonAsync<List<StudentDTO>>("api/Users/students/"+project.Id);
