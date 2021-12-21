@@ -3,9 +3,22 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 2px;
   flex-shrink: 10;
+}
+
+.desktop-layout {
+  display: flex;
+  justify-content: space-between;
+  width: 1325px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.MainBox {
+  max-width: 800px;
+  margin-bottom: 25px;
 }
 
 .inviscontainer {
@@ -15,6 +28,7 @@
 
 .Small-Container {
   flex-flow: column;
+  width: 350px;
 }
 
 .bbutton {
@@ -38,9 +52,32 @@
   border: none;
 }
 
-@media screen and (max-width: 915px) {
-  
-  .expandedlayout {
+@media screen and (max-width: 1300px) {
+  .desktop-layout {
+    display: block;
     flex-flow: column;
+    align-items: center;
+    width: auto;
+
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .expandedlayout {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+
+  .Small-Container {
+    max-width: 800px;
+    width: auto;
+    flex-grow: 2;
+  }
+
+  .Smallbox {
+    max-width: 800px;
   }
 }
