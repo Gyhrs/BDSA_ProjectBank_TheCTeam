@@ -12,8 +12,6 @@ using MyApp.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
-
 // Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(options =>
@@ -27,16 +25,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             builder.Configuration.Bind("AzureAd", options);
         });
 
-
-
-// builder.Services.Configure<JwtBearerOptions>(
-//     JwtBearerDefaults.AuthenticationScheme, options =>
-//     {
-//         options.TokenValidationParameters.NameClaimType = "name";
-//     });
 builder.Services.AddControllersWithViews();
-
-
 
 builder.Services.AddRazorPages();
 
@@ -56,12 +45,6 @@ builder.Services.AddScoped<IStudyBankContext, StudyBankContext>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
-
-// builder.Services.Configure<JwtBearerOptions>(
-// JwtBearerDefaults.AuthenticationScheme, options =>
-// {
-//     options.TokenValidationParameters.NameClaimType = "name";
-// });
 
 var app = builder.Build();
 

@@ -26,14 +26,8 @@ public static class SeedExtensions
         // If the DB doesn't contain any projects, populate it with data. Otherwise keep the old data.
         // Use the startup.ps1 if changes have been made to the seeding algorithm / Entities.
         if (!context.Projects.Any())
-        { //These sql queries doesnt work, because of some foreign key entity core problems :(
-        // context.Database.ExecuteSqlRaw("DELETE dbo.Users");
-        // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
-        // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
-        // context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
-        // context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
-
-        PopulateDatabase(context);
+        { 
+            PopulateDatabase(context);
         }
     }
     ///<summary> 
