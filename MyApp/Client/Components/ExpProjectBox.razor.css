@@ -24,6 +24,7 @@
 .inviscontainer {
   display: flex;
   justify-content: space-evenly;
+  margin-bottom: 0px;
 }
 
 .Small-Container {
@@ -79,5 +80,22 @@
 
   .Smallbox {
     max-width: 800px;
+  }
+
+  .inviscontainer {
+    margin-bottom: 25px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .expandedlayout {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .inviscontainer {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 15px;
   }
 }
