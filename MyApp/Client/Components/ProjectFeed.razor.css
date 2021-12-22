@@ -9,3 +9,10 @@
   justify-content: space-around;
   align-content: flex-start;
 }
+
+@media (max-width: 900px) {
+  .project-feed {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
