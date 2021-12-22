@@ -73,9 +73,9 @@ public class ProjectsController : ControllerBase
     }
 
     [AllowAnonymous]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(typeof(ProjectDTO), 200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
     [HttpGet("tags/{tags}")]
     public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetFromTags(string tags)
     {
@@ -96,9 +96,9 @@ public class ProjectsController : ControllerBase
     }
 
     [AllowAnonymous]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(typeof(ProjectDTO), 200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status200OK)]
     [HttpGet("tags/{tags}/{name}")]
     public async Task<ActionResult<IReadOnlyCollection<ProjectDTO>>> GetFromTagsAndTitle(string tags, string name)
     {
@@ -119,9 +119,9 @@ public class ProjectsController : ControllerBase
     }
 
     [Authorize]
-    [ProducesResponseType(400)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(409)]
-    [ProducesResponseType(typeof(ProjectDTO), 201)]
+    [ProducesResponseType(typeof(ProjectDTO), StatusCodes.Status201Created)]
     [HttpPost]
     public async Task<ActionResult<ProjectDTO>> CreateProject(ProjectCreateDTO inputProject)
     {
@@ -140,16 +140,16 @@ public class ProjectsController : ControllerBase
             case Status.Conflict:
                 return Conflict(created);
             case Status.Created:
-                return Created(new Uri("/api/Projects", UriKind.Relative), created);
+                return Created(new Uri("/api/Projects", UriKind.Relative), created); //CreatedAtAction(nameof(GetFromId), new {created.Id}, created);
             default:
                 return BadRequest();
         }
     }
 
     [Authorize]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(409)]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPut("id/{id}")]
     public async Task<ActionResult<ProjectDTO>> UpdateProject(int id, [FromBody] ProjectUpdateDTO inputProject)
     {
@@ -175,8 +175,8 @@ public class ProjectsController : ControllerBase
     }
 
     [Authorize]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpDelete("id/{id}")]
     public async Task<ActionResult<ProjectDTO>> Delete(int id)
     {
