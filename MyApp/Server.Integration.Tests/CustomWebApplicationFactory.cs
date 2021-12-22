@@ -103,7 +103,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             EndDate = DateTime.ParseExact("28/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
             Supervisors = new List<Supervisor> { sup1, sup2 },
-            Tags = new List<Tag> { t3 }
+            Tags = new List<Tag> { t2 }
         };
 
         Project p3 = new Project
