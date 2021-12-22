@@ -20,7 +20,7 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetAll()
+    public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetAllAsync()
     {
         var users = await _repository.GetAllUsersAsync();
         return Ok(users);
@@ -32,7 +32,7 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("email/{email}")]
-    public async Task<ActionResult<UserDTO>> GetFromEmail(string email)
+    public async Task<ActionResult<UserDTO>> GetFromEmailAsync(string email)
     {
         if (email.Length == 0)
         {
@@ -61,7 +61,7 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("students/{id}")]
-    public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetStudentsFromProjectId(int id)
+    public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetStudentsFromProjectIdAsync(int id)
     {
         if (id < 0)
         {
@@ -82,7 +82,7 @@ public class UsersController : ControllerBase // Inherits from ControllerBase. C
     [ProducesResponseType(400)]
     [ProducesResponseType(typeof(UserDTO), 200)]
     [HttpGet("supervisors/{id}")]
-    public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetSupervisorsFromProjectId(int id)
+    public async Task<ActionResult<IReadOnlyCollection<UserDTO>>> GetSupervisorsFromProjectIdAsync(int id)
     {
          if (id < 0)
         {

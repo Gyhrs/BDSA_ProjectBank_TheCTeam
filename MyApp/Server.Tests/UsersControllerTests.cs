@@ -1,7 +1,7 @@
 public class UsersControllerTests
 {
     [Fact]
-    public async Task Get_returns_Ok()
+    public async Task GetAsync_returns_Ok()
     {
         // Arrange
         var logger = new Mock<ILogger<UsersController>>();
@@ -11,14 +11,14 @@ public class UsersControllerTests
 
 
         // Act
-        var actual = await controller.GetAll();
+        var actual = await controller.GetAllAsync();
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromEmail_Returns_NotFound_Given_Nonexisting_Email()
+    public async Task GetFromEmailAsync_Returns_NotFound_Given_Nonexisting_Email()
     {
 
         // Arrange
@@ -28,14 +28,14 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromEmail("anton@berg.hotmail.com");
+        var actual = await controller.GetFromEmailAsync("anton@berg.hotmail.com");
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromEmail_Returns_BadRequest_Given_Invalid_Email()
+    public async Task GetFromEmailAsync_Returns_BadRequest_Given_Invalid_Email()
     {
 
         // Arrange
@@ -45,14 +45,14 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromEmail("kl");
+        var actual = await controller.GetFromEmailAsync("kl");
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromEmail_Returns_Ok_Given_existing_Email()
+    public async Task GetFromEmailAsync_Returns_Ok_Given_existing_Email()
     {
 
         // Arrange
@@ -70,14 +70,14 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromEmail("Anton@hotmail.com");
+        var actual = await controller.GetFromEmailAsync("Anton@hotmail.com");
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetStudentsFromProjectId_Returns_BadRequest_Given_Negative_Id()
+    public async Task GetStudentsFromProjectIdAsync_Returns_BadRequest_Given_Negative_Id()
     {
 
         // Arrange
@@ -87,14 +87,14 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetStudentsFromProjectId(-1);
+        var actual = await controller.GetStudentsFromProjectIdAsync(-1);
 
         // Assert
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetStudentsFromProjectId_Returns_NotFound_Given_Existing_Id()
+    public async Task GetStudentsFromProjectIdAsync_Returns_NotFound_Given_Existing_Id()
     {
 
         // Arrange
@@ -104,14 +104,14 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetStudentsFromProjectId(1);
+        var actual = await controller.GetStudentsFromProjectIdAsync(1);
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetStudentsFromProjectId_Returns_Ok_Given_Existing_Id()
+    public async Task GetStudentsFromProjectIdAsync_Returns_Ok_Given_Existing_Id()
     {
 
         // Arrange
@@ -130,14 +130,14 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetStudentsFromProjectId(1);
+        var actual = await controller.GetStudentsFromProjectIdAsync(1);
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetSupervisorsFromProjectId_Returns_BadRequest_Given_Negative_Id()
+    public async Task GetSupervisorsFromProjectIdAsync_Returns_BadRequest_Given_Negative_Id()
     {
 
         // Arrange
@@ -147,14 +147,14 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetSupervisorsFromProjectId(-1);
+        var actual = await controller.GetSupervisorsFromProjectIdAsync(-1);
 
         // Assert
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetSupervisorsFromProjectId_Returns_NotFound_Given_Existing_Id()
+    public async Task GetSupervisorsFromProjectIdAsync_Returns_NotFound_Given_Existing_Id()
     {
 
         // Arrange
@@ -164,14 +164,14 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetSupervisorsFromProjectId(1);
+        var actual = await controller.GetSupervisorsFromProjectIdAsync(1);
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetSupervisorsFromProjectId_Returns_Ok_Given_Existing_Id()
+    public async Task GetSupervisorsFromProjectIdAsync_Returns_Ok_Given_Existing_Id()
     {
 
         // Arrange
@@ -189,7 +189,7 @@ public class UsersControllerTests
         var controller = new UsersController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetSupervisorsFromProjectId(1);
+        var actual = await controller.GetSupervisorsFromProjectIdAsync(1);
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);

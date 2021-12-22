@@ -98,7 +98,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetAllTags_Returns_All_Tags()
+    public async Task GetAllTagsAsync_Returns_All_Tags()
     {
         // Arrange
         var expectedCount = 3;

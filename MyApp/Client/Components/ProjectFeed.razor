@@ -27,10 +27,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await GetAllProjects();
+        await GetAllProjectsAsync();
     }
 
-    public async Task GetAllProjects()
+    public async Task GetAllProjectsAsync()
     {
         try
         {
@@ -42,11 +42,11 @@
         }
     }
 
-    public async Task setProjectsFromTag(string tag)
+    public async Task setProjectsFromTagAsync(string tag)
     {
         if (tag.Length == 0)
         {
-            GetAllProjects();
+            GetAllProjectsAsync();
         }
         else
         {
@@ -65,7 +65,7 @@
         }
     }
 
-    public async Task setProjectsFromSearchString(string searchString)
+    public async Task setProjectsFromSearchStringAsync(string searchString)
     {
         try
         {
@@ -81,7 +81,7 @@
         }
     }
 
-    public async Task setProjectsFromTagsAndString(string searchString)
+    public async Task setProjectsFromTagsAndStringAsync(string searchString)
     {
         try
         {

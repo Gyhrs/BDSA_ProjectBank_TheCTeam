@@ -18,7 +18,7 @@ public class TagsController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)] 
     [HttpGet] 
-    public async Task<ActionResult<IReadOnlyCollection<TagDTO>>> GetAll()
+    public async Task<ActionResult<IReadOnlyCollection<TagDTO>>> GetAllAsync()
     {
         var tags = await _repository.GetAllTagsAsync();
         return Ok(tags); 
