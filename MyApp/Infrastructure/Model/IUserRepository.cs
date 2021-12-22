@@ -1,8 +1,6 @@
-namespace MyApp.Shared;
-
+namespace MyApp.Infrastructure.Model;
 public interface IUserRepository
 {
-    
     Task<UserDTO> GetUserFromEmailAsync(string userEmail);
 
     Task<IReadOnlyCollection<UserDTO>> GetAllUsersAsync();

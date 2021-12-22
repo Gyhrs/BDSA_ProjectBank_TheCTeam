@@ -2,33 +2,28 @@
 @inject HttpClient Http
 
 <div class="project-box mb-4 box-layout" @onclick="navigateToProject">
-    <h2>@name</h2>
-    @if (CreatedBy != null)
+    <h2>@dto.Name</h2>
+    @if (dto.CreatedBy != null)
     {
-        <h5>@CreatedBy</h5>
+        <h5>@dto.CreatedBy</h5>
     }
     else
     {
         <h5>No Author</h5>
     }
     <br>
-    <div class="descriptionBox">@description</div>
+    <div class="descriptionBox">@dto.Description</div>
     <br>
-    @foreach (var tag in tags)
+    @foreach (var tag in dto.Tags)
     {
         <PassiveTag TagName="@tag"></PassiveTag>
     }
 </div>
 
 @code {
-    [Parameter] public int id {get; set;}
-    [Parameter] public string? name {get; set;}
-    [Parameter] public string? CreatedBy {get; set;}
-    [Parameter] public string? CreatedByEmail {get; set;}
-    [Parameter] public string? description {get; set;}
-    [Parameter] public List<string>? tags {get; set;}
+    [Parameter] public ProjectDTO? dto {get; set;}
 
     public void navigateToProject() {
-        NavigationManager.NavigateTo("project/"+id);
+        NavigationManager.NavigateTo("project/"+dto.Id);
     }
 }

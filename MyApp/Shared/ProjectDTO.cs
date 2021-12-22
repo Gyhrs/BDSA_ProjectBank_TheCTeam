@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace MyApp.Shared;
 public record ProjectDTO
 (

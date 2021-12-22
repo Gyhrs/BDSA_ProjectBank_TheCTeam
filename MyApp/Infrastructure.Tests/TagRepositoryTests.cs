@@ -1,14 +1,3 @@
-using System;
-using Microsoft.EntityFrameworkCore;
-using MyApp.Infrastructure;
-using MyApp.Shared;
-using Xunit;
-using Microsoft.Data.Sqlite;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-
 public class TagRepositoryTests : IDisposable
 {
     private readonly IStudyBankContext _context;
@@ -116,7 +105,7 @@ public class TagRepositoryTests : IDisposable
         var expectedTags = new List<string> { "UI", "Business", "Consulting"};
 
         // Act
-        var actualTags = await _repository.GetAllTags();
+        var actualTags = await _repository.GetAllTagsAsync();
         var actualCount = actualTags.Count;
 
         //Assert
