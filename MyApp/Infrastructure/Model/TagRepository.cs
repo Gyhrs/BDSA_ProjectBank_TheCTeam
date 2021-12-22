@@ -1,8 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using MyApp.Shared;
-using System.Linq;
-
-namespace MyApp.Infrastructure;
+namespace MyApp.Infrastructure.Model;
 
 public class TagRepository : ITagRepository
 {
@@ -12,7 +8,7 @@ public class TagRepository : ITagRepository
     {
         _context = context;
     }
-    public async Task<IReadOnlyCollection<TagDTO>> GetAllTags()
+    public async Task<IReadOnlyCollection<TagDTO>> GetAllTagsAsync()
     {
         var tags = await (
             from p in _context.Tags

@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using MyApp.Shared;
-
 namespace MyApp.Server.Controllers;
 
 [Authorize]
@@ -25,7 +20,7 @@ public class TagsController : ControllerBase
     [HttpGet] 
     public async Task<ActionResult<IReadOnlyCollection<TagDTO>>> GetAll()
     {
-        var tags = await _repository.GetAllTags();
+        var tags = await _repository.GetAllTagsAsync();
         return Ok(tags); 
     }
 }

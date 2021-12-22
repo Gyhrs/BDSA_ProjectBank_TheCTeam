@@ -1,9 +1,3 @@
-using System.Collections;
-using Microsoft.EntityFrameworkCore;
-using MyApp.Infrastructure;
-using System;
-using System.Collections.Generic;
-
 namespace MyApp.Server;
 
 public static class SeedExtensions
@@ -16,26 +10,14 @@ public static class SeedExtensions
         {
             var context = scope.ServiceProvider.GetRequiredService<StudyBankContext>();
 
-            SeedProjects(context);
+            if (!context.Projects.Any())
+            {
+                PopulateDatabase(context);
+            }
         }
         return host;
     }
 
-    private static void SeedProjects(StudyBankContext context)
-    {
-        // If the DB doesn't contain any projects, populate it with data. Otherwise keep the old data.
-        // Use the startup.ps1 if changes have been made to the seeding algorithm / Entities.
-        if (!context.Projects.Any())
-        { //These sql queries doesnt work, because of some foreign key entity core problems :(
-        // context.Database.ExecuteSqlRaw("DELETE dbo.Users");
-        // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectTag");
-        // context.Database.ExecuteSqlRaw("DELETE dbo.ProjectSupervisor");
-        // context.Database.ExecuteSqlRaw("DELETE dbo.Projects");
-        // context.Database.ExecuteSqlRaw("DELETE dbo.Tags");
-
-        PopulateDatabase(context);
-        }
-    }
     ///<summary> 
     ///Default version of PopulateDatabase method with 50 Supervisors, 200 Projects, and 1-7 Tags per Project. 
     ///Adds the 200 randomly generated Projects (with 50 randomly assigned Supervisors, and a number of Tags) and 
@@ -152,7 +134,7 @@ public static class SeedExtensions
         return project;
     }
 
-    public static Student RandomStudent()
+    private static Student RandomStudent()
     {
         // Name is build up of 1 first name and 2 surnames
         Random r = new Random();

@@ -1,11 +1,5 @@
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using Microsoft.JSInterop
-@using System.Threading.Tasks
-@using MyApp.Shared
 @attribute [Authorize]
 @inject HttpClient Http
-
 
 <div class="tag-row">
     <div class="colum-container">
@@ -78,21 +72,12 @@
 </div>
 
 @code {
-    public int scrollvalue { get; set; } = 0;
     private TagDTO[]? _tags;
     private ProjectFeed _projectFeed;
     private SearchBar _desktopSearchBar;
     private SearchBar _mobileSearchBar;
     private String? _lastSearchName;
     private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
-
-    private string ReturnColor(string tag)
-    {
-        if (activeTags[tag]) { return "lightblue"; }
-
-        return "none";
-    }
-
     private async Task onTagButtonClicked(string tag)
     {
         activeTags[tag] = !activeTags[tag];
@@ -100,7 +85,6 @@
         SearchAsync();
         _projectFeed.Refresh();
     }
-
     private async Task onClearAllButtonClicked()
     {
         _projectFeed.ClearAllProjects();
@@ -117,12 +101,10 @@
         await _projectFeed.GetAllProjects();
         _projectFeed.Refresh();
     }
-
     public string GetSearchTags()
     {
         return string.Join("_", activeTags.Where(t => t.Value).Select(t => t.Key).ToList());
     }
-
     protected override async Task OnInitializedAsync()
     {
         try

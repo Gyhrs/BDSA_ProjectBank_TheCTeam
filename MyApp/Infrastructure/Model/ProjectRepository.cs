@@ -1,9 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using MyApp.Shared;
-using System.Linq;
-
-namespace MyApp.Infrastructure;
-
+namespace MyApp.Infrastructure.Model;
 public class ProjectRepository : IProjectRepository
 {
     private readonly IStudyBankContext _context;
@@ -16,7 +11,7 @@ public class ProjectRepository : IProjectRepository
     /// <summary>
     /// GetAllProjects() returns an async read-only list of ProjectDTO's of all projects in the DB.
     /// </summary> 
-    public async Task<IReadOnlyCollection<ProjectDTO>> GetAllProjects()
+    public async Task<IReadOnlyCollection<ProjectDTO>> GetAllProjectsAsync()
     {
         // Await simply allows the application to perform other actions while it waits for a response from the database.
         var projects = await (
@@ -39,7 +34,7 @@ public class ProjectRepository : IProjectRepository
     ///<summary>
     /// GetProjectFromId finds a project in the datbase, with the given ID.
     ///</summary>
-    public async Task<ProjectDTO> GetProjectFromID(int projectId)
+    public async Task<ProjectDTO> GetProjectFromIDAsync(int projectId)
     {
         var projects = from p in _context.Projects
                        where p.Id == projectId
@@ -58,7 +53,7 @@ public class ProjectRepository : IProjectRepository
         return await projects.FirstOrDefaultAsync();
     }
 
-    public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTags(List<string> searchTags)
+    public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTagsAsync(List<string> searchTags)
     {
         // Finds all tags that contain a searchTag. E.g. if you have searched for "UI" and "AI" we find [UI, AI]
         // which points to respective lists (UI -> [p1, p2, p3], etc.) 
@@ -124,9 +119,9 @@ public class ProjectRepository : IProjectRepository
         return projects.AsReadOnly();
     }
 
-    public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTagsAndName(List<string> searchTags, string title)
+    public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromTagsAndNameAsync(List<string> searchTags, string title)
     {
-        var tagProjects = await GetProjectsFromTags(searchTags);
+        var tagProjects = await GetProjectsFromTagsAsync(searchTags);
 
         return tagProjects.Where(t => t.Name.ToLower().Contains(title.ToLower())).ToList().AsReadOnly();
     }
@@ -145,7 +140,7 @@ public class ProjectRepository : IProjectRepository
     }
 
 
-    public async Task<(Status, ProjectDTO)> CreateProject(ProjectCreateDTO create)
+    public async Task<(Status, ProjectDTO)> CreateProjectAsync(ProjectCreateDTO create)
     {
         var conflict = await _context.Projects.Where
         (
@@ -200,7 +195,7 @@ public class ProjectRepository : IProjectRepository
         ));
     }
 
-    public async Task<Status> UpdateProject(int id, ProjectUpdateDTO project)
+    public async Task<Status> UpdateProjectAsync(int id, ProjectUpdateDTO project)
     {
         var entity = await _context.Projects.Where(p => p.Id == project.Id).FirstOrDefaultAsync();
         if (entity == null)
@@ -221,7 +216,7 @@ public class ProjectRepository : IProjectRepository
         return Status.Updated;
     }
     
-    public async Task<Status> DeleteProject(int projectId)
+    public async Task<Status> DeleteProjectAsync(int projectId)
     {
         var entity = await _context.Projects.FindAsync(projectId);
 

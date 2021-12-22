@@ -1,6 +1,6 @@
-namespace MyApp.Shared;
+namespace MyApp.Infrastructure.Model;
 
 public interface ITagRepository
 {
-    Task<IReadOnlyCollection<TagDTO>> GetAllTags();
+    Task<IReadOnlyCollection<TagDTO>> GetAllTagsAsync();
 }

@@ -1,8 +1,8 @@
-@using Shared;
 @inject HttpClient Http;
 
 <div class="expandedlayout">
-        <div class="MainBox m-4 box-layout col-7 col-md-6 p-2">
+    <div class="desktop-layout">
+        <div class="MainBox box-layout">
             <h2>@project.Name</h2>
             @if (project.CreatedBy != null)
             {
@@ -16,28 +16,34 @@
             <div class="descriptionBox">@project.Description</div>
         </div>
 
-        <div class="Small-Container d-flex justify-space-between col-7 col-md-auto">
-            <div class="Smallbox my-4 box-layout p-2">
+        <div class="Small-Container d-flex justify-space-between">
+            <div class="Smallbox box-layout">
                 <p><b>Supervisors:</b></p>
                 @if (Supervisors != null)
                 {
-                    foreach (var sv in Supervisors) {
-                        <p>@sv.Name : @sv.Email</p>
-                    }   
-                } else {
+                    foreach (var sv in Supervisors)
+                    {
+                        <p>@sv.Name : <br /> @sv.Email</p>
+                    }
+                }
+                else
+                {
                     <p>No supervisors yet</p>
                 }
                 <p><b>Students:</b></p>
                 @if (Students != null)
                 {
-                    foreach (var stu in Students) {
-                        <p>@stu.Name : @stu.Email</p>
-                    }   
-                } else {
+                    foreach (var stu in Students)
+                    {
+                        <p>@stu.Name : <br /> @stu.Email</p>
+                    }
+                }
+                else
+                {
                     <p>No Students yet</p>
                 }
             </div>
-            <div class="Smallbox my-4 box-layout p-2">
+            <div class="Smallbox my-4 box-layout">
                 @foreach (var tag in project.Tags)
                 {
                     <PassiveTag TagName="@tag"></PassiveTag>
@@ -52,17 +58,17 @@
                 </button>
             </div>
         </div>
+    </div>
 </div>
 
 @code {
-
     [Parameter] public ProjectDTO project { get; set; }
+    private List<StudentDTO>? Students { get; set; }
+    private List<SupervisorDTO>? Supervisors { get; set;}
 
-    [Parameter] public List<StudentDTO>? Students { get; set; }
-    [Parameter] public List<SupervisorDTO>? Supervisors { get; set;}
-
-    protected override async Task OnInitializedAsync() {
-        Students = await Http.GetFromJsonAsync<List<StudentDTO>>("api/Users/students/"+project.Id);
-        Supervisors = await Http.GetFromJsonAsync<List<SupervisorDTO>>("api/Users/supervisors/"+project.Id);
+    protected override async Task OnInitializedAsync()
+    {
+        Students = await Http.GetFromJsonAsync<List<StudentDTO>>("api/Users/students/" + project.Id);
+        Supervisors = await Http.GetFromJsonAsync<List<SupervisorDTO>>("api/Users/supervisors/" + project.Id);
     }
 }

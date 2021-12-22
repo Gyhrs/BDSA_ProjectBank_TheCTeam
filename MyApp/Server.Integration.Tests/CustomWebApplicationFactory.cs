@@ -133,6 +133,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             p1, p2, p3, p4
         );
 
-        context.SaveChanges(); //context.SaveChangesAsync();//?
+        context.SaveChanges();
     }
 }
