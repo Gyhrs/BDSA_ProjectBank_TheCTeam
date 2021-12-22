@@ -22,7 +22,7 @@ public class ProjectTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Get_returns_projects()
+    public async Task GetAsync_returns_projects()
     {
         var projects = await _client.GetFromJsonAsync<ProjectDTO[]>("/api/projects");
 
@@ -36,7 +36,7 @@ public class ProjectTests : IClassFixture<CustomWebApplicationFactory>
     [InlineData(2, "Algorithm")]
     [InlineData(3, "Supercomputer")]
     [InlineData(4, "Blockchain")]
-    public async Task Get_From_ID_Returns_Correct_Project(int id, string expectedname)
+    public async Task Get_From_IDAsync_Returns_Correct_Project(int id, string expectedname)
     {
         var project = await _client.GetFromJsonAsync<ProjectDTO>("/api/projects/id/" + id);
 
@@ -49,7 +49,7 @@ public class ProjectTests : IClassFixture<CustomWebApplicationFactory>
     [InlineData("Blockchain",new[]{1,4})]
     [InlineData("Algorithm",new[]{2})]
     [InlineData("Supercomputer",new[]{3})]
-    public async Task Get_From_Name_Returns_Correct_Projects(string name, int[] ids)
+    public async Task Get_From_NameAsync_Returns_Correct_Projects(string name, int[] ids)
     {
         var projects = await _client.GetFromJsonAsync<ProjectDTO[]>("/api/projects/name/" + name);
         foreach (var id in ids)
@@ -62,7 +62,7 @@ public class ProjectTests : IClassFixture<CustomWebApplicationFactory>
     [InlineData("UI",new[]{1,3})]
     [InlineData("Business",new[]{1,2})]
     [InlineData("UI_Consulting",new[]{3})]
-    public async Task Get_From_Tags_Returns_Correct_Projects(string tags, int[] ids)
+    public async Task Get_From_TagsAsync_Returns_Correct_Projects(string tags, int[] ids)
     {
         var projects = await _client.GetFromJsonAsync<ProjectDTO[]>("/api/projects/tags/" + tags);
         foreach (var id in ids)
@@ -77,7 +77,7 @@ public class ProjectTests : IClassFixture<CustomWebApplicationFactory>
     [InlineData("UI","Supercomputer", new[]{3})]
     [InlineData("Business","Algorithm",new[]{2})]
     [InlineData("UI_Consulting","Supercomputer",new[]{3})]
-    public async Task Get_From_Tags_And_Name_Returns_Correct_Projects(string tags, string name, int[] ids)
+    public async Task Get_From_TagsAsync_And_Name_Returns_Correct_Projects(string tags, string name, int[] ids)
     {
         var projects = await _client.GetFromJsonAsync<ProjectDTO[]>("/api/projects/tags/" + tags + "/" + name);
         foreach (var id in ids)
@@ -89,7 +89,7 @@ public class ProjectTests : IClassFixture<CustomWebApplicationFactory>
     [Theory]
     [InlineData("UI","nonexistent", new int[]{})]
     [InlineData("Algorithm_Consulting","Business",new int[]{})]
-    public async Task Get_From_Tags_And_Name_Returns_404_for_nonexistent_project_tag_combination(string tags, string name, int[] ids)
+    public async Task Get_From_Tags_And_NameAsync_Returns_404_for_nonexistent_project_tag_combination(string tags, string name, int[] ids)
     {
         try
         {
@@ -102,34 +102,4 @@ public class ProjectTests : IClassFixture<CustomWebApplicationFactory>
         }
         Assert.False(false);
     }
-
-    /*[Fact]
-    public async Task Post_returns_Created_Project()
-    {
-        var project = new ProjectCreateDTO()
-        {
-            Name = "New",
-            StartDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            EndDate = DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture),
-            StudentEmails = new List<string>() {"student1@email.com","student2@email.com"},
-            SupervisorsEmails = new List<string>() {"supervisor1@email.com","supervisor2@email.com"},
-            CreatedByEmail = "creator@email.com"
-        };
-        
-        var response = await _client.PostAsJsonAsync("/api/projects", project);
-                
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        
-        var created = await response.Content.ReadFromJsonAsync<ProjectDTO>();
-        
-        Assert.NotNull(created);
-        Assert.Equal(5, created.Id);
-        Assert.Equal("New", created.Name);
-        Assert.Equal(DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture), created.StartDate);
-        Assert.Equal(DateTime.ParseExact("26/11/2021", "dd/MM/yyyy", CultureInfo.InvariantCulture), created.EndDate);
-        Assert.Equal("creator@email.com", created.CreatedByEmail);
-        
-        new List<string>() {"student1@email.com","student2@email.com"}.ForEach(e => Assert.Contains(e,created.StudentEmails));
-        new List<string>() {"supervisor1@email.com","supervisor2@email.com"}.ForEach(e => Assert.Contains(e,created.SupervisorsEmails));
-    }*/
 }

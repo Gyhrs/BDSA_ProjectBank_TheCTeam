@@ -7,12 +7,12 @@
         <div class="desktop-only">
             <h6>Settings:</h6>
             <hr class="line" />
-            <button class="button-like" @onclick="() => onClearAllButtonClicked()">Clear</button>
+            <button class="button-like" @onclick="() => onClearAllButtonClickedAsync()">Clear</button>
         </div>
 
         <!-- this IS ONLY in mobile-friendly layout -->
         <div class="cross-screen" id="upper-mobile-nav-bar">
-            <button class="button-like" @onclick="() => onClearAllButtonClicked()">Clear</button>
+            <button class="button-like" @onclick="() => onClearAllButtonClickedAsync()">Clear</button>
             <SearchBar @ref="_mobileSearchBar" parentSearch="SearchAsync"></SearchBar>
         </div>
     </div>
@@ -35,7 +35,7 @@
                     @if ((activeTags[tag.Name]))
                     {
                         <button class="button-like" style="background-color: #43b4f3; color: white"
-                @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
+                @onclick="() => onTagButtonClickedAsync(tag.Name)">@tag.Name</button>
                     }
                 }
                 @foreach (var tag in _tags)
@@ -43,7 +43,7 @@
                     @if (!(activeTags[tag.Name]))
                     {
                         <button class="button-like" style="background-color: none; color: black"
-                @onclick="() => onTagButtonClicked(tag.Name)">@tag.Name</button>
+                @onclick="() => onTagButtonClickedAsync(tag.Name)">@tag.Name</button>
                     }
                 }
             }
@@ -78,14 +78,14 @@
     private SearchBar _mobileSearchBar;
     private String? _lastSearchName;
     private IDictionary<string, bool> activeTags = new Dictionary<string, bool>();
-    private async Task onTagButtonClicked(string tag)
+    private async Task onTagButtonClickedAsync(string tag)
     {
         activeTags[tag] = !activeTags[tag];
 
         SearchAsync();
         _projectFeed.Refresh();
     }
-    private async Task onClearAllButtonClicked()
+    private async Task onClearAllButtonClickedAsync()
     {
         _projectFeed.ClearAllProjects();
         
@@ -98,7 +98,7 @@
         _mobileSearchBar._searchString = "";
 
 
-        await _projectFeed.GetAllProjects();
+        await _projectFeed.GetAllProjectsAsync();
         _projectFeed.Refresh();
     }
     public string GetSearchTags()
@@ -158,12 +158,12 @@
             // SearchName is empty but tags isnt - search only on tags
             if (activeTags.Length != 0)
             {
-                await _projectFeed.setProjectsFromTag(activeTags);
+                await _projectFeed.setProjectsFromTagAsync(activeTags);
             }
             else
             {
                 _projectFeed.ClearAllProjects();
-                await _projectFeed.GetAllProjects();
+                await _projectFeed.GetAllProjectsAsync();
             }
         }
         else
@@ -171,11 +171,11 @@
             // SearchName and tags are not empty - search on both
             if (activeTags.Length != 0)
             {
-                await _projectFeed.setProjectsFromTagsAndString(activeTags + "/" + searchName);
+                await _projectFeed.setProjectsFromTagsAndStringAsync(activeTags + "/" + searchName);
             }
             else // SearchName isnt empty, but tags are - search only on searchname
             {
-                await _projectFeed.setProjectsFromSearchString(searchName);
+                await _projectFeed.setProjectsFromSearchStringAsync(searchName);
             }
         }
         _projectFeed.Refresh();

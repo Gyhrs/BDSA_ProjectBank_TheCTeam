@@ -137,8 +137,7 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetAllProjects_Returns_All_Projects()
-
+    public async Task GetAllProjectsAsync_Returns_All_Projects()
     {
         // Arrange
         var expected = 4;
@@ -155,7 +154,7 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData(1, "Blockchain")]
     [InlineData(2, "Algorithm")]
     [InlineData(3, "Supercomputer")]
-    public async Task GetProjectFromID_Returns_Correct_Project(int id, string name)
+    public async Task GetProjectFromIDAsync_Returns_Correct_Project(int id, string name)
     {
         // Arrange
         var expected = name;
@@ -169,7 +168,7 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetProjectFromID_Returns_Null_Given_Nonexisting_ProjectId()
+    public async Task GetProjectFromIDAsync_Returns_Null_Given_Nonexisting_ProjectId()
     {
         // Arrange
         // Act
@@ -187,7 +186,7 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData("Consulting#Business#UI", 0)]
     [InlineData("Fast", 0)]
 
-    public async Task GetProjectsFromTags_Returns_Correct_Projects(string tags, int expected)
+    public async Task GetProjectsFromTagsAsync_Returns_Correct_Projects(string tags, int expected)
 
     {
         // Arrange
@@ -202,7 +201,7 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetProjectsFromTags_Returns_Empty_Given_Nonexisting_Tag()
+    public async Task GetProjectsFromTagsAsync_Returns_Empty_Given_Nonexisting_Tag()
     {
         // Act
         var actual = await _repository.GetProjectsFromTagsAsync(new List<string> { "J#" });
@@ -215,14 +214,14 @@ public class ProjectRepositoryTests : IDisposable
     [InlineData(2, "Blockchain")]
     [InlineData(1, "Algorithm")]
     [InlineData(1, "Supercomputer")]
-    public async Task GetProjectsFromName_Returns_Correct_Projects(int count, string name)
+    public async Task GetProjectsFromNameAsync_Returns_Correct_Projects(int count, string name)
 
     {
         // Arrange
         var expected = count;
 
         // Act
-        var actual = (await _repository.GetProjectsFromName(name)).Count;
+        var actual = (await _repository.GetProjectsFromNameAsync(name)).Count;
 
 
         // Assert
@@ -230,17 +229,17 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetProjectsFromName_Returns_Empty_Given_Nonexisting_Project_Name()
+    public async Task GetProjectsFromNameAsync_Returns_Empty_Given_Nonexisting_Project_Name()
     {
         // Act
-        var actual = await _repository.GetProjectsFromName("Antons projekt");
+        var actual = await _repository.GetProjectsFromNameAsync("Antons projekt");
 
         // Assert
         Assert.Empty(actual);
     }
 
     [Fact]
-    public async Task GetProjectsFromTagsAndName_Returns_Correct_Projects()
+    public async Task GetProjectsFromTagsAndNameAsync_Returns_Correct_Projects()
     {
         // Arrange
         var tags = new List<string> { "UI" };
@@ -257,7 +256,7 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task CreateProject_Adds_Project_To_DB()
+    public async Task CreateProjectAsync_Adds_Project_To_DB()
     {
         // Arrange
         var inputProject = new ProjectCreateDTO()
@@ -290,7 +289,7 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task CreateProject_Adds_Project_To_DB_Returns_Correct_DTO()
+    public async Task CreateProjectAsync_Adds_Project_To_DB_Returns_Correct_DTO()
     {
         // Arrange
         var inputProject = new ProjectCreateDTO()
@@ -323,7 +322,7 @@ public class ProjectRepositoryTests : IDisposable
         Assert.Equal(Status.Created, actualStatus);
     }
     [Fact]
-    public async Task UpdateProject_Updates_All_Values_In_Correct_Project()
+    public async Task UpdateProjectAsync_Updates_All_Values_In_Correct_Project()
     {
         // Arrange
         var updateProject = new ProjectUpdateDTO()
@@ -354,7 +353,7 @@ public class ProjectRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task DeleteProject_Given_Nonexisting_Id_Returns_NotFound()
+    public async Task DeleteProjectAsync_Given_Nonexisting_Id_Returns_NotFound()
     {
         var response = await _repository.DeleteProjectAsync(42);
 

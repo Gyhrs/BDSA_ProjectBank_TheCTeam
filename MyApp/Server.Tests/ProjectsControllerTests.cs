@@ -1,7 +1,7 @@
 public class ProjectsControllerTests
 {
     [Fact]
-    public async Task GetAll_returns_Ok()
+    public async Task GetAllAsync_returns_Ok()
     {
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -11,14 +11,14 @@ public class ProjectsControllerTests
 
 
         // Act
-        var actual = await controller.GetAll();
+        var actual = await controller.GetAllAsync();
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromId_Returns_NotFound_Given_Nonexisting_ProjectId()
+    public async Task GetFromIdAsync_Returns_NotFound_Given_Nonexisting_ProjectId()
     {
 
         // Arrange
@@ -28,14 +28,14 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromId(101);
+        var actual = await controller.GetFromIdAsync(101);
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromId_Returns_BadRequest_Given_Negative_ProjectId()
+    public async Task GetFromIdAsync_Returns_BadRequest_Given_Negative_ProjectId()
     {
 
         // Arrange
@@ -45,14 +45,14 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromId(-1);
+        var actual = await controller.GetFromIdAsync(-1);
 
         // Assert
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromId_Returns_Ok_Given_existing_ProjectId()
+    public async Task GetFromIdAsync_Returns_Ok_Given_existing_ProjectId()
     {
 
         // Arrange
@@ -76,7 +76,7 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromId(1);
+        var actual = await controller.GetFromIdAsync(1);
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);
@@ -84,41 +84,41 @@ public class ProjectsControllerTests
 
     
     [Fact]
-    public async Task GetFromName_Returns_NotFound_Given_Nonexisting_ProjectName()
+    public async Task GetFromNameAsync_Returns_NotFound_Given_Nonexisting_ProjectName()
     {
 
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
-        repository.Setup(m => m.GetProjectsFromName("Blockchain")).ReturnsAsync(Array.Empty<ProjectDTO>); // "For a reference-type it returns null"
+        repository.Setup(m => m.GetProjectsFromNameAsync("Blockchain")).ReturnsAsync(Array.Empty<ProjectDTO>); // "For a reference-type it returns null"
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromName("Blockchain");
+        var actual = await controller.GetFromNameAsync("Blockchain");
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromName_Returns_BadRequest_Given_Empty_ProjectName()
+    public async Task GetFromNameAsync_Returns_BadRequest_Given_Empty_ProjectName()
     {
 
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
         var repository = new Mock<IProjectRepository>();
-        repository.Setup(m => m.GetProjectsFromName("Blockchain")).ReturnsAsync(Array.Empty<ProjectDTO>); // "For a reference-type it returns null"
+        repository.Setup(m => m.GetProjectsFromNameAsync("Blockchain")).ReturnsAsync(Array.Empty<ProjectDTO>); // "For a reference-type it returns null"
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromName("");
+        var actual = await controller.GetFromNameAsync("");
 
         // Assert
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromName_Returns_Ok_Given_Existing_ProjectName()
+    public async Task GetFromNameAsync_Returns_Ok_Given_Existing_ProjectName()
     {
 
         // Arrange
@@ -138,18 +138,18 @@ public class ProjectsControllerTests
             "Lars",
             new List<string> { "Business", "Blockchain"}
         );
-        repository.Setup(m => m.GetProjectsFromName("Blockchain")).ReturnsAsync(new List<ProjectDTO> { project });
+        repository.Setup(m => m.GetProjectsFromNameAsync("Blockchain")).ReturnsAsync(new List<ProjectDTO> { project });
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromName("Blockchain");
+        var actual = await controller.GetFromNameAsync("Blockchain");
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromTags_Returns_Ok_Given_Existing_Tag()
+    public async Task GetFromTagsAsync_Returns_Ok_Given_Existing_Tag()
     {
 
         // Arrange
@@ -190,14 +190,14 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromTags("Business_Blockchain");
+        var actual = await controller.GetFromTagsAsync("Business_Blockchain");
 
         // Assert
         Assert.IsType<OkObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromTags_Returns_BadRequest_Given_Empty_Tag_String()
+    public async Task GetFromTagsAsync_Returns_BadRequest_Given_Empty_Tag_String()
     {
 
         // Arrange
@@ -208,14 +208,14 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromTags("");
+        var actual = await controller.GetFromTagsAsync("");
 
         // Assert
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task GetFromTags_Returns_NotFound_Given_Nonexistent_Tag()
+    public async Task GetFromTagsAsync_Returns_NotFound_Given_Nonexistent_Tag()
     {
 
         // Arrange
@@ -226,14 +226,14 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.GetFromTags("Testing");
+        var actual = await controller.GetFromTagsAsync("Testing");
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
 
      [Fact]
-    public async Task CreateProject_Returns_Created_Given_Valid_Data()
+    public async Task CreateProjectAsync_Returns_Created_Given_Valid_Data()
     {
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -269,14 +269,14 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.CreateProject(inputProject);
+        var actual = await controller.CreateProjectAsync(inputProject);
 
         // Assert
         Assert.IsType<CreatedResult>(actual.Result);
     }
 
     [Fact]
-    public async Task CreateProject_Returns_BadRequest_Given_Invalid_Data()
+    public async Task CreateProjectAsync_Returns_BadRequest_Given_Invalid_Data()
     {
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -312,13 +312,13 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.CreateProject(inputProject);
+        var actual = await controller.CreateProjectAsync(inputProject);
 
         // Assert
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
     [Fact]
-    public async Task UpdateProject_Returns_BadRequest_Given_Bad_Input()
+    public async Task UpdateProjectAsync_Returns_BadRequest_Given_Bad_Input()
     {
         //Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -341,13 +341,13 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         //Act
-        var actual = await controller.UpdateProject(20, inputProject);
+        var actual = await controller.UpdateProjectAsync(20, inputProject);
 
         //Assert
         Assert.IsType<BadRequestObjectResult>(actual.Result);
     }
     [Fact]
-    public async Task UpdateProject_Returns_NotFound_Given_Invalid_ID()
+    public async Task UpdateProjectAsync_Returns_NotFound_Given_Invalid_ID()
     {
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -370,13 +370,13 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.UpdateProject(42, inputProject);
+        var actual = await controller.UpdateProjectAsync(42, inputProject);
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
     [Fact]
-    public async Task UpdateProject_Returns_OK_Given_Valid_Parameters()
+    public async Task UpdateProjectAsync_Returns_OK_Given_Valid_Parameters()
     {
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -399,14 +399,14 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.UpdateProject(42, inputProject);
+        var actual = await controller.UpdateProjectAsync(42, inputProject);
 
         // Assert
         Assert.IsType<OkResult>(actual.Result);
     }
 
     [Fact]
-    public async Task DeleteProject_Returns_NotFound_Given_Nonexisting_Project()
+    public async Task DeleteProjectAsync_Returns_NotFound_Given_Nonexisting_Project()
     {
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -416,14 +416,14 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.Delete(42);
+        var actual = await controller.DeleteAsync(42);
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(actual.Result);
     }
 
     [Fact]
-    public async Task DeleteProject_Returns_Ok_Given_Existing_Project()
+    public async Task DeleteProjectAsync_Returns_Ok_Given_Existing_Project()
     {
         // Arrange
         var logger = new Mock<ILogger<ProjectsController>>();
@@ -433,7 +433,7 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(logger.Object, repository.Object);
 
         // Act
-        var actual = await controller.Delete(42);
+        var actual = await controller.DeleteAsync(42);
 
         // Assert
         Assert.IsType<OkResult>(actual.Result);

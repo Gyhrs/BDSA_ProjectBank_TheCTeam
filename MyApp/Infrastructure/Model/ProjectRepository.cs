@@ -95,7 +95,7 @@ public class ProjectRepository : IProjectRepository
         return projects.AsReadOnly();
     }
 
-    public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromName(string name)
+    public async Task<IReadOnlyCollection<ProjectDTO>> GetProjectsFromNameAsync(string name)
     {
 
 
@@ -173,9 +173,9 @@ public class ProjectRepository : IProjectRepository
             EndDate = create.EndDate,
             Description = create.Description,
             Students = await GetStudentsFromList(create.StudentEmails),
-            Supervisors = await GetSupervisorsFromList(create.SupervisorsEmails),
-            CreatedBy = await GetUserFromEmail(create.CreatedByEmail),
-            Tags = await GetTagsFromStringList(create.Tags)
+            Supervisors = await GetSupervisorsFromListAsync(create.SupervisorsEmails),
+            CreatedBy = await GetUserFromEmailAsync(create.CreatedByEmail),
+            Tags = await GetTagsFromStringListAsync(create.Tags)
         };
 
         _context.Projects.Add(entity);
@@ -203,13 +203,13 @@ public class ProjectRepository : IProjectRepository
             return Status.NotFound;
         }
         entity.Name = project.Name;
-        entity.CreatedBy = await GetUserFromEmail(project.CreatedByEmail);
+        entity.CreatedBy = await GetUserFromEmailAsync(project.CreatedByEmail);
         entity.Description = project.Description;
         entity.StartDate = project.StartDate;
         entity.EndDate = project.EndDate;
         entity.Students = await GetStudentsFromList(project.StudentEmails);
-        entity.Supervisors = await GetSupervisorsFromList(project.SupervisorsEmails);
-        entity.Tags = await GetTagsFromStringList(project.Tags);
+        entity.Supervisors = await GetSupervisorsFromListAsync(project.SupervisorsEmails);
+        entity.Tags = await GetTagsFromStringListAsync(project.Tags);
 
         await _context.SaveChangesAsync();
 
@@ -230,7 +230,7 @@ public class ProjectRepository : IProjectRepository
         return Status.Deleted;
     }
 
-    private async Task<List<Supervisor>> GetSupervisorsFromList(List<string> userEmails)
+    private async Task<List<Supervisor>> GetSupervisorsFromListAsync(List<string> userEmails)
     {
         List<Supervisor> users = new List<Supervisor>();
         foreach (var item in userEmails)
@@ -243,11 +243,11 @@ public class ProjectRepository : IProjectRepository
         }
         return users;
     }
-    private async Task<StudyBankUser> GetUserFromEmail(string userEmail)
+    private async Task<StudyBankUser> GetUserFromEmailAsync(string userEmail)
     {
         return await _context.Users.Where(u => u.Email == userEmail).FirstOrDefaultAsync();
     }
-    private async Task<List<Tag>> GetTagsFromStringList(List<string> tags)
+    private async Task<List<Tag>> GetTagsFromStringListAsync(List<string> tags)
     {
         List<Tag> list = new List<Tag>();
         foreach (var tag in tags)

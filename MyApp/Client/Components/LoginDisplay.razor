@@ -4,7 +4,7 @@
 <AuthorizeView>
     <Authorized>
         <!-- Hello, @context.User.Identity?.Name! -->
-        <a class="nav-link" href="" @onclick="BeginLogout">Log out</a>
+        <a class="nav-link" href="" @onclick="BeginLogoutAsync">Log out</a>
         <!-- <button class="button-like" @onclick="BeginLogout">Log out</button> -->
     </Authorized>
     <NotAuthorized>
@@ -14,7 +14,7 @@
 </AuthorizeView>
 
 @code {
-    private async Task BeginLogout(MouseEventArgs args)
+    private async Task BeginLogoutAsync(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
